@@ -15,8 +15,6 @@
   };
 
   modifications = final: prev: {
-    yazi = final.unstable.yazi;
-    opencode = final.unstable.opencode;
     yaziPlugins = prev.yaziPlugins // {
       smart-switch = final.callPackage ../pkgs/smart-switch { };
       smart-tab = final.callPackage ../pkgs/smart-tab { };

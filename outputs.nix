@@ -21,10 +21,10 @@ in
   overlays = import ./overlays { inherit inputs; };
 
   packages = forEachSystem (pkgs: import ./pkgs { inherit pkgs; });
-  devShells = forEachSystem (pkgs: import ./shell.nix { inherit pkgs; });
+  devShells = forEachSystem (pkgs: import ./shell.nix { inherit pkgs experimentalFeatures; });
 
-  nixosConfigurations.argo = lib.nixosSystem {
-    modules = [ ./hosts/argo ];
+  nixosConfigurations.pioneer2 = lib.nixosSystem {
+    modules = [ ./hosts/pioneer2 ];
     specialArgs = {
       inherit
         inputs

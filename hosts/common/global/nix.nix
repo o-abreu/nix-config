@@ -29,5 +29,4 @@
     # (e.g., import <nixpkgs> {}).
     nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
   };
-  users.mutableUsers = false;
 }

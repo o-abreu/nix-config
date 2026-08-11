@@ -5,7 +5,7 @@
   ...
 }:
 {
-  config = lib.mkIf (options ? hydenix && config.hydenix.hm.enable) {
+  config = lib.optionalAttrs (options ? hydenix) {
     hydenix.hm.theme = {
       enable = true;
       active = "One Dark";

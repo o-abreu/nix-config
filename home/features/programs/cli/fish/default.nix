@@ -2,6 +2,7 @@
 {
   programs.fish = {
     enable = true;
+    functions.fish_greeting = "";
     shellAbbrs = {
       md = "mkdir -p";
       ":q" = "exit";

@@ -35,12 +35,6 @@ with lib;
         };
       };
     };
-
-    extraPackages = mkOption {
-      type = listOf package;
-      default = [ ];
-      description = "List of packages whose binaries will be added to the opencode runtime PATH.";
-    };
   };
 
   config =
@@ -88,9 +82,10 @@ with lib;
             dataHome = "${config.xdg.dataHome}/opencode";
           in
           lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+            $DRY_RUN_CMD mkdir -p $VERBOSE_ARG "${dataHome}"
             $DRY_RUN_CMD ln -sfn $VERBOSE_ARG \
-              "${dataHome}/opencode-stable.db" \
-              "${dataHome}/opencode.db"
+            "${dataHome}/opencode-stable.db" \
+            "${dataHome}/opencode.db"
           '';
       };
     };

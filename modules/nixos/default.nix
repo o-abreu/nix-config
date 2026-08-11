@@ -8,6 +8,5 @@ in
   avahi = import ./avahi.nix;
   kanata = tree [ ./kanata ];
   monitor-toggle = tree [ ./monitor-toggle ];
-  nh = import ./nh.nix;
   openfortivpn = tree [ ./openfortivpn ];
 }

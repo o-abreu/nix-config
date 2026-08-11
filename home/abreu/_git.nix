@@ -13,7 +13,7 @@ in
   };
 
   home.file.${pubKeyFile}.text = ''
-    ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICszJOQVJNvrR0Mv7HqQsTDiEybj4mLMscXoHbXwVwDL 87032834+de-abreu@users.noreply.github.com
+    ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAWdwXxSon1mmnLIC9CKByWYM6tYapsawQ/AwsV1TC+x Github
   '';
 
   programs = {

@@ -1,7 +1,14 @@
 keys:
-  - &primary age1n97qyqenegge5eve926mt68e0qd8u79h47wcvnxgv8ttam3enupqrlsh89
+  - &user_abreu age1s5gpka8kfarmqr8rl3aswpkxll0hrhp22ke5r94xrunejmsspdmqpxes3s
+  - &host_pioneer2 age1n97qyqenegge5eve926mt68e0qd8u79h47wcvnxgv8ttam3enupqrlsh89
+  
 creation_rules:
-  - path_regex: ^secrets/.*\.yaml$
+  - path_regex: secrets/users/.*\.yaml$
     key_groups:
       - age:
-          - *primary
+         - *user_abreu
+         
+  - path_regex: ^secrets/hosts/.*\.yaml$
+    key_groups:
+      - age:
+          - *host_pioneer2

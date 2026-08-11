@@ -7,7 +7,7 @@
   ...
 }:
 {
-  config = lib.mkIf (options ? hydenix) {
+  config = lib.optionalAttrs (options ? hydenix) {
     hydenix.hm.hyprland = lib.mkIf (config.hydenix.hm.enable or false) {
       extraConfig =
         # hyprlang

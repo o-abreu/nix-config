@@ -40,7 +40,7 @@ in
           # Setting a distinctive color to catch the user's eye
           color = {
             fg =
-              if config ? stylix && config.stylix.enable then
+              if config.stylix.enable or false then
                 config.lib.stylix.colors.withHashtag.base09
               else
                 "#ff9e64";

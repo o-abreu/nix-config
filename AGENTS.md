@@ -2,21 +2,15 @@
 
 Coding agent instructions for this NixOS configuration repository.
 
-## Documentation
-
-Before modifying configurations, check `docs/README.md` for the documentation
-index and `docs/architecture.md` for the flake structure overview. Documentation
-mirrors the config structure: `home/features/cli/fish` →
-`docs/home/features/cli/fish.md`.
-
 ## Project Overview
 
 This is a NixOS flake-based configuration using:
 
 - **home-manager** for user-level configuration
 - **sops-nix** for secrets management
+- **disko** for disk partitioning
+- **preservation** for tmpfs based impermanence
 - **nixvim** for Neovim configuration
-- **hydenix** for desktop environment
 
 ## Build Commands
 
@@ -68,7 +62,6 @@ Run `nix flake check` to validate the flake evaluates correctly.
 ├── flake.nix           # Flake entry point
 ├── flake-outputs.nix   # Flake outputs definition
 ├── hosts/              # NixOS host configurations
-│   └── argo/           # Host-specific config
 ├── home/               # Home Manager configurations
 │   ├── common.nix      # Shared home settings
 │   ├── abreu/          # User-specific home config
