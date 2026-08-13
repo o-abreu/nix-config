@@ -4,8 +4,9 @@ let
 in
 {
   cheatsheet = tree [ ./cheatsheet ];
-  mutability = import ./mutability.nix;
-  stylix_presenterm = import ./stylix/presenterm;
+  mutability = tree [ ./mutability ];
+  ssh-agent = tree [ ./ssh-agent ];
+  stylix_presenterm = tree [ ./stylix/presenterm ];
   presenterm = tree [ ./presenterm ];
   wezterm-override = tree [ ./wezterm-override ];
   wfrc = tree [ ./wfrc ];

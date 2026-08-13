@@ -229,23 +229,6 @@
         "type": "github"
       }
     },
-    "fish-ssh-agent": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1729455809,
-        "narHash": "sha256-cFroQ7PSBZ5BhXzZEKTKHnEAuEu8W9rFrGZAb8vTgIE=",
-        "owner": "danhper",
-        "repo": "fish-ssh-agent",
-        "rev": "f10d95775352931796fd17f54e6bf2f910163d1b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "danhper",
-        "ref": "master",
-        "repo": "fish-ssh-agent",
-        "type": "github"
-      }
-    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": [
@@ -894,7 +877,6 @@
         "disko": "disko",
         "faster-piper": "faster-piper",
         "firefox-addons": "firefox-addons",
-        "fish-ssh-agent": "fish-ssh-agent",
         "home-manager": "home-manager",
         "hydenix": "hydenix",
         "hyprmcp": "hyprmcp",

@@ -140,12 +140,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # INFO: Fish
-    fish-ssh-agent = {
-      url = "github:danhper/fish-ssh-agent/master";
-      flake = false;
-    };
   };
-
   outputs = inputs: import ./outputs.nix inputs;
 }

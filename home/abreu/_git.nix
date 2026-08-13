@@ -1,18 +1,24 @@
 # TODO: Merge this configuration with the one defined in cli/git, using sops.template to generate the final config file instead of home-manager's git.settings.
 { config, ... }:
 let
-  pubKeyFile = ".ssh/git.pub";
+  sshKey = ".ssh/git";
+  homeDir = config.home.homeDirectory;
 in
 {
   sops.secrets = {
     "ssh-keys/github/private" = {
-      path = "${config.home.homeDirectory}/.ssh/git";
+      path = "${homeDir}/.ssh/git";
       mode = "0600";
     };
-    "api-keys/github" = { };
+    "ssh-keys/github/password" = {
+      mode = "0600";
+    };
+    "api-keys/github" = {
+      mode = "0600";
+    };
   };
 
-  home.file.${pubKeyFile}.text = ''
+  home.file."${sshKey}.pub".text = ''
     ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAWdwXxSon1mmnLIC9CKByWYM6tYapsawQ/AwsV1TC+x Github
   '';
 
@@ -26,7 +32,7 @@ in
       };
       signing = {
         format = "ssh";
-        key = "${config.home.homeDirectory}/${pubKeyFile}";
+        key = "${homeDir}/${sshKey}.pub";
         signByDefault = true;
       };
     };
@@ -34,4 +40,11 @@ in
       export GH_TOKEN=(cat ${config.sops.secrets."api-keys/github".path})
     '';
   };
+
+  services.ssh-agent.addKeys = [
+    {
+      path = "${homeDir}/${sshKey}";
+      passwordSecret = "ssh-keys/github/password";
+    }
+  ];
 }

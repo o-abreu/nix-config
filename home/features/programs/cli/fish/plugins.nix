@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 {
   programs.fish.plugins =
     (map
@@ -34,12 +34,5 @@
         "sponge"
         # INFO: Automatically exclude errors from the command history
       ]
-    )
-    ++ [
-      {
-        # INFO: Add a ssh key to the ssh-agent through the "ssh-add" command.
-        name = "fish-ssh-agent";
-        src = inputs.fish-ssh-agent;
-      }
-    ];
+    );
 }
