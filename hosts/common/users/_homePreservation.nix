@@ -61,10 +61,6 @@ in
           mode = "0700";
         }
       ]
-      # Fish Shell History
-      ++ optionals hmConfig.programs.fish.enable [
-        ".local/share/fish"
-      ]
       # Zoxide Navigation History
       ++ optionals hmConfig.programs.zoxide.enable [
         ".local/share/zoxide"
@@ -75,7 +71,6 @@ in
         ".local/state/nvim"
         ".cache/nvim"
       ]
-
       # Other directories
       ++ [
         ".config/libreoffice"
@@ -90,6 +85,14 @@ in
           how = "symlink";
           configureParent = true;
         }
+      ]
+      # Fish Shell History
+      ++ optionals hmConfig.programs.fish.enable [
+        ".local/share/fish/fish_history"
+      ]
+      # Lazygit
+      ++ optionals hmConfig.programs.lazygit.enable [
+        ".local/state/lazygit/state.yml"
       ];
   };
 }
