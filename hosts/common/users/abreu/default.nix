@@ -5,20 +5,26 @@
   outputs,
   pkgs,
   ...
-}: let
+}:
+let
   username = "abreu";
   relativeFlakePath = ".config/nix-config";
   flakePath = "/home/${username}/${relativeFlakePath}";
-in {
+in
+{
 
   _module.args = {
     username = username;
     relativeFlakePath = relativeFlakePath;
+    hmConfig = config.home-manager.users.${username};
   };
 
-  imports = [
-    inputs.home-manager.nixosModules.default
-    ../_homePreservation.nix
+  imports = with inputs; [
+    home-manager.nixosModules.default
+    (import-tree [
+      ../../global
+      ../../optional
+    ])
   ];
 
   programs = {

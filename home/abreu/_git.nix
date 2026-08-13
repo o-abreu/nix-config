@@ -18,16 +18,28 @@ in
     };
   };
 
-  home.file."${sshKey}.pub".text = ''
-    ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAWdwXxSon1mmnLIC9CKByWYM6tYapsawQ/AwsV1TC+x Github
-  '';
+  home.file = {
+    "${sshKey}.pub".text = ''
+      ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAWdwXxSon1mmnLIC9CKByWYM6tYapsawQ/AwsV1TC+x Github
+    '';
+
+    # INFO: Mutable known_hosts so ssh can append hosts on the fly; reset to this
+    # content on every new generation by the mutability module.
+    ".ssh/known_hosts" = {
+      text = ''
+        github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
+      '';
+      force = true;
+      mutable = true;
+    };
+  };
 
   programs = {
     git = {
       settings = {
         user = {
           name = "Abreu";
-          email = "87032834+de-abreu@users.noreply.github.com";
+          email = "316380489+o-abreu@users.noreply.github.com";
         };
       };
       signing = {

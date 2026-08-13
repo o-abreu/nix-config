@@ -17,7 +17,7 @@
 
       (import-tree [
         ./features
-        ../common
+        ../common/users
       ])
     ]
     # Custom modules
