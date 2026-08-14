@@ -48,6 +48,7 @@
       "Projects"
       "Templates"
       "Videos"
+      ".local/share/Trash"
     ]
     # Others
     ++ [
