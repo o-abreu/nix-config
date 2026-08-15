@@ -1,4 +1,4 @@
-{
+{ pkgs, ... }: {
   programs = {
     git = {
       enable = true;
@@ -17,6 +17,7 @@
       enable = true;
       settings.gui.mouseEvents = false;
     };
+    yazi.plugins = { inherit (pkgs.yaziPlugins) lazygit; };
     fish.shellAbbrs.lg = "lazygit";
   };
 }
