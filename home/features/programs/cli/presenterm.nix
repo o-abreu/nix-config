@@ -3,7 +3,7 @@
   programs = {
     presenterm = {
       enable = true;
-      package = pkgs.unstable.presenterm;
+      package = pkgs.presenterm;
 
       settings = {
         options = {

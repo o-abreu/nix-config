@@ -6,6 +6,7 @@
 }:
 {
   programs.wezterm = {
+    package = pkgs.unstable.wezterm;
     enable = true;
     extraConfig =
       with lib;
