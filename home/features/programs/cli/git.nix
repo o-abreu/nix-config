@@ -5,7 +5,10 @@
       lfs.enable = true;
       settings = {
         init.defaultBranch = "main";
-        push.autoSetupRemote = true;
+        push = {
+          autoSetupRemote = true;
+          default = "current";
+        };
         pull.rebase = true;
         merge.conflictStyle = "zdiff3";
         rerere.enabled = true;
