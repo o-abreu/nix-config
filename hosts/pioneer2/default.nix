@@ -14,6 +14,7 @@
     [
       sops-nix.nixosModules.sops # Secrets management module
       preservation.nixosModules.default # Impermanence module
+      nix-index-database.nixosModules.nix-index # Access to "comma" tool
 
       (import-tree [
         ./features
@@ -57,6 +58,7 @@
       addBinaryToPath = true;
     };
     openfortivpn.configFile = config.sops.secrets.uspnet-vpn.path;
+    nix-index-database.comma.enable = true;
   };
 
   users.mutableUsers = false;

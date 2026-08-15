@@ -590,6 +590,26 @@
         "type": "github"
       }
     },
+    "nix-index-database_2": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1786249295,
+        "narHash": "sha256-Y2mSr+HLKYoOsjiackgilxkHXe8gkJ3z4hFFekjQX3I=",
+        "owner": "nix-community",
+        "repo": "nix-index-database",
+        "rev": "14d55b8069119e3b88da7aa2f6c97f86a2cd3cd6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nix-index-database",
+        "type": "github"
+      }
+    },
     "nix-yazi-plugins": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -682,11 +702,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1781577229,
-        "narHash": "sha256-lrp67w8AulE9Ks53n27I45ADSzbOCn4H+CNW1Ck8B+8=",
+        "lastModified": 1786599213,
+        "narHash": "sha256-yNJd40f11EzXBjSByCB7IPpeFFAdeoSKKM67dGkfFoU=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "567a49d1913ce81ac6e9582e3553dd90a955875f",
+        "rev": "0e251e24a4f24e036a084b6b4b2d2491af4167f4",
         "type": "github"
       },
       "original": {
@@ -881,6 +901,7 @@
         "hydenix": "hydenix",
         "hyprmcp": "hyprmcp",
         "import-tree": "import-tree",
+        "nix-index-database": "nix-index-database_2",
         "nix-yazi-plugins": "nix-yazi-plugins",
         "nixos-hardware": "nixos-hardware_2",
         "nixpkgs": "nixpkgs_4",

@@ -43,6 +43,12 @@
     systems.url = "github:nix-systems/default-linux";
     nixos-hardware.url = "github:nixos/nixos-hardware/master";
 
+    # INFO: Provide the Comma tool
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # INFO: Nixvim
     nixvim.url = "github:nix-community/nixvim/nixos-26.05";
 
