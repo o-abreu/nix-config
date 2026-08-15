@@ -2,6 +2,9 @@
 .neoconf/
 .opencode/
 
+# Trash bin
+.Trash-1000/
+
 # Notes for personal reference
 TODO.md
 
