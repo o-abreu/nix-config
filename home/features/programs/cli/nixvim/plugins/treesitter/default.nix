@@ -5,7 +5,7 @@
 }:
 {
 
-  # Strip nvim-treesitter dependency from companion plugins (fixes the "two versions of treesitter installed" error).
+  # INFO: Strip nvim-treesitter dependency from companion plugins (fixes the "two versions of treesitter installed" error).
   nixpkgs.overlays = [
     (_: prev: {
       vimPlugins =
@@ -13,7 +13,6 @@
         // (lib.genAttrs
           [
             "nvim-treesitter-context"
-            "nvim-treesitter-refactor"
             "nvim-treesitter-textobjects"
             "ts-comments-nvim"
           ]

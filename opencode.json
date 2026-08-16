@@ -2,16 +2,17 @@
   "$schema": "https://opencode.ai/config.json",
   "permission": {
     "external_directory": {
-      "/nix/store/**": "allow"
-      "~/.config/**": "allow"
-      "~/.local/**": "allow"
-      "~/.cache/**": "allow"
+      "/nix/store/**": "allow",
+      "~/.config/**": "allow",
+      "~/.local/**": "allow",
+      "~/.cache/**": "allow",
+      "/tmp": "allow",
     },
     "edit": {
-     "/nix/store/**": "deny"
-      "~/.config/**": "deny"
-      "~/.local/**": "deny"
-      "~/.cache/**": "deny"
+     "/nix/store/**": "deny",
+      "~/.config/**": "deny",
+      "~/.local/**": "deny",
+      "~/.cache/**": "deny",
     }
   }
 }

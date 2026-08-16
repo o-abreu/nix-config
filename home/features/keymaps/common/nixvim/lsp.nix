@@ -36,6 +36,17 @@ in
         action = "<cmd>LspInfo<cr>";
         options.desc = "Lsp Info";
       }
+
+      {
+        mode = "n";
+        key = "gR";
+        action.__raw = "vim.lsp.buf.rename";
+        options = {
+          buffer = true;
+          silent = true;
+          desc = "Lsp buf rename";
+        };
+      }
     ];
 
     lsp.servers.clangd.config.onAttach.function =
