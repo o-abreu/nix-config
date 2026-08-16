@@ -3,9 +3,15 @@
   "permission": {
     "external_directory": {
       "/nix/store/**": "allow"
+      "~/.config/**": "allow"
+      "~/.local/**": "allow"
+      "~/.cache/**": "allow"
     },
     "edit": {
      "/nix/store/**": "deny"
+      "~/.config/**": "deny"
+      "~/.local/**": "deny"
+      "~/.cache/**": "deny"
     }
   }
 }

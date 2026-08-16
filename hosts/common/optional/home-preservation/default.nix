@@ -46,6 +46,7 @@
       "Music"
       "Pictures"
       "Projects"
+      "Public"
       "Templates"
       "Videos"
       ".local/share/Trash"
