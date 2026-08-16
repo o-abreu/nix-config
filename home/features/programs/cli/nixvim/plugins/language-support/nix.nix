@@ -28,7 +28,7 @@ in
 
       conform-nvim.settings = {
         formatters_by_ft.nix = [ "nixfmt" ];
-        formatters.nixfmt.command = getExe pkgs.nixfmt-rfc-style;
+        formatters.nixfmt.command = getExe pkgs.nixfmt;
       };
 
       lint = {

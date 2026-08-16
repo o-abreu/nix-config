@@ -60,17 +60,23 @@
     indent.enable = true;
     folding.enable = false; # Disabled in favor of nvim-ufo
 
-    settings = {
-      highlight = {
-        additional_vim_regex_highlighting = true;
-        disable = ''
-          function(lang, bufnr)
-            return vim.api.nvim_buf_line_count(bufnr) > 10000
-          end
-        '';
-      };
-
-      incremental_selection.enable = true;
-    };
+    settings.incremental_selection.enable = true;
   };
+
+  # INFO: Disable treesitter highlighting for very large buffers (> 10k lines)
+  programs.nixvim.extraConfigLua =
+    # lua
+    ''
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "*",
+        callback = function(args)
+          local bufnr = args.buf
+          if vim.api.nvim_buf_line_count(bufnr) > 10000 then
+            vim.schedule(function()
+              pcall(vim.treesitter.stop, bufnr)
+            end)
+          end
+        end,
+      })
+    '';
 }
