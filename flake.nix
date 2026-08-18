@@ -146,6 +146,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # INFO: Noctalia
+    noctalia = {
+      url = "github:noctalia-dev/noctalia";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = inputs: import ./outputs.nix inputs;
 }

@@ -1,38 +1,43 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 {
   programs.fish.plugins =
-    (map
-      (plugin: {
-        name = "${plugin}";
-        inherit (pkgs.fishPlugins."${plugin}") src;
-      })
-      [
-        "autopair"
-        # INFO: Automatically closes pairs of symbols such as "", (), [], etc.
+    with lib;
+    with programs;
+    (
+      map
+        (plugin: {
+          name = "${plugin}";
+          inherit (pkgs.fishPlugins."${plugin}") src;
+        })
+        [
+          "autopair"
+          # INFO: Automatically closes pairs of symbols such as "", (), [], etc.
 
-        "bang-bang"
-        # INFO: Typing "!$" repeats the previous command, while "!!" only its last argument
+          "bang-bang"
+          # INFO: Typing "!$" repeats the previous command, while "!!" only its last argument
 
-        "colored-man-pages"
-        # INFO: Highlight the text displayed using the "man" command
+          "colored-man-pages"
+          # INFO: Highlight the text displayed using the "man" command
 
-        "done"
-        # INFO: Emit a notification when a command with a long execution time finishes.
+          "done"
+          # INFO: Emit a notification when a command with a long execution time finishes.
 
-        "fish-bd"
-        # INFO: Adds the "bd" command to navigate to parent folders
+          "fish-bd"
+          # INFO: Adds the "bd" command to navigate to parent folders
 
-        "fish-you-should-use"
-        # INFO: Suggest abbreviations and aliases when available
+          "fish-you-should-use"
+          # INFO: Suggest abbreviations and aliases when available
 
+          "sponge"
+          # INFO: Automatically exclude errors from the command history
+        ]
+      ++ optional fzf.enable [
         "fzf-fish"
         # INFO: Use fuzzy finding to perform a variety of operations
-
+      ]
+      ++ optional git.enable [
         "git-abbr"
         # INFO: Add git abbreviations
-
-        "sponge"
-        # INFO: Automatically exclude errors from the command history
       ]
     );
 }

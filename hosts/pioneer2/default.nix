@@ -41,13 +41,8 @@
 
   services = {
     xserver.enable = true;
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
-    pipewire = {
-      enable = true;
-      pulse.enable = true;
-    };
     libinput.enable = true;
+    gvfs.enable = true; # INFO: Enable mounting of external volumes
   };
 
   sops.secrets.uspnet-vpn = { };
@@ -62,6 +57,5 @@
   };
 
   users.mutableUsers = false;
-
   system.stateVersion = "26.05";
 }

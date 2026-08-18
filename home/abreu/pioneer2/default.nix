@@ -11,12 +11,7 @@
       sops-nix.homeManagerModules.sops
       vortriz-nur.homeModules.zotero
 
-      (import-tree [
-        ../../features/desktop-environment/stylix
-        ../../features/keymaps
-        ../../features/programs
-      ])
-
+      (import-tree [ ../../features ])
       ../_git.nix
     ]
     # Custom modules

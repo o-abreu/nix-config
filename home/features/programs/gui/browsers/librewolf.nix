@@ -19,7 +19,7 @@
   };
 
   home.sessionVariables.BROWSER = "librewolf";
-  xdg.mimeApps.defaultApplications = lib.foldr (n: acc: { ${n} = "librewolf.desktop"; } // acc) { } [
+  xdg.mimeApps.defaultApplications = lib.genAttrs [
     "text/html"
     "x-scheme-handler/http"
     "x-scheme-handler/https"
@@ -30,5 +30,5 @@
     "application/xhtml+xml"
     "application/x-extension-xhtml"
     "application/x-extension-xht"
-  ];
+  ] (_: "librewolf.desktop");
 }

@@ -24,17 +24,20 @@ in
       # Allow users in the wheel group to start/stop openfortivpn without a
       # password prompt. The Polkit JavaScript engine checks the action ID,
       # unit name, and group membership before authorizing.
-      security.polkit.extraConfig =
-        # javascript
-        ''
-          polkit.addRule(function(action, subject) {
-            if (action.id == "org.freedesktop.systemd1.manage-units" &&
+      security.polkit = {
+        enable = true;
+        extraConfig =
+          # javascript
+          ''
+            polkit.addRule(function(action, subject) {
+              if (action.id == "org.freedesktop.systemd1.manage-units" &&
                 action.lookup("unit") == "openfortivpn.service" &&
                 subject.isInGroup("wheel")) {
-              return polkit.Result.YES;
-            }
-          });
-        '';
+                return polkit.Result.YES;
+              }
+            });
+          '';
+      };
 
       # Stop/start the VPN in response to global connectivity changes.
       # Uses a flag file to only restart if the VPN was *already running* when

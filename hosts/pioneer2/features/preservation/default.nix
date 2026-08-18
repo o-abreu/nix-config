@@ -1,9 +1,4 @@
 { persistentPath, ... }: {
-
-  security.sudo.extraConfig = ''
-    Defaults lecture = never
-  '';
-
   boot = {
     initrd.systemd.enable = true;
     tmp.cleanOnBoot = true;
