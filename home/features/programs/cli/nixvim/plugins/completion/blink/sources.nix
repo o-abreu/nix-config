@@ -247,6 +247,7 @@ in
         module = "blink-cmp-spell";
         max_items = 3;
         score_offset = 15;
+        preselect_current_word = false;
       };
 
       yank = lib.mkIf (lib.elem pkgs.vimPlugins.blink-cmp-yanky config.programs.nixvim.extraPlugins) {

@@ -15,7 +15,16 @@
         };
       in
       {
-        actions.opencode_send.__raw = "function(...) return require('opencode').snacks_picker_send(...) end";
+        actions.opencode_send.__raw = ''
+          function(picker)
+            local items = vim.tbl_map(function(item)
+              return item.file
+                and require("opencode").format({ path = item.file, from = item.pos, to = item.end_pos })
+                or item.text
+            end, picker:selected({ fallback = true }))
+            require("opencode").prompt(table.concat(items, ", ") .. " ")
+          end
+        '';
         win = bindings;
         sources.explorer.win = bindings;
       };
