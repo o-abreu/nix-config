@@ -8,6 +8,18 @@
 let
   userJs = "${config.home.homeDirectory}/.zotero/zotero/${config.home.username}/user.js";
   zoteroAddons = inputs.vortriz-nur.legacyPackages.${system}.zoteroAddons;
+
+  # INFO: Temporary hash override for zotero-better-bibtex 9.0.63
+  # Upstream (Vortriz/nur-packages) shipped a stale hash for the .xpi
+  # (specified: sha256-NKbXp..., got: sha256-Ok0IDsl...). The release was
+  # re-uploaded, so the old hash no longer matches.
+  # Remove this override once upstream publishes a fixed hash.
+  better-bibtex = zoteroAddons.zotero-better-bibtex.overrideAttrs (old: {
+    src = pkgs.fetchurl {
+      url = "https://github.com/retorquere/zotero-better-bibtex/releases/download/v9.0.63/zotero-better-bibtex-9.0.63.xpi";
+      hash = "sha256-Ok0IDslBU6jCS/gnVonF+UbZnjFLauD6tQYNaXD1Y4g=";
+    };
+  });
 in
 {
 
@@ -18,10 +30,10 @@ in
     profiles.${config.home.username} = {
       isDefault = true;
 
-      extensions = with zoteroAddons; [
-        zotero-better-bibtex
-        zotero-scipdf
-        zotmoov
+      extensions = [
+        better-bibtex
+        zoteroAddons.zotero-scipdf
+        zoteroAddons.zotmoov
       ];
     };
   };

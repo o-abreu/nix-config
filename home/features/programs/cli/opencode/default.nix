@@ -6,6 +6,7 @@
       settings = {
         autoupdate = false;
         default_agent = "plan";
+        lsp = true;
         server.port = 8765;
         permission.bash."sudo *" = "deny";
       };

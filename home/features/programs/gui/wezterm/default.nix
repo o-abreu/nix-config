@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   pkgs,
   lib,
@@ -22,7 +23,7 @@
   systemd.user.tmpfiles.rules = [ "d %t/wezterm - - -" ];
 
   home = {
-    sessionVariables.TERMINAL = "wezterm";
+    sessionVariables.TERMINAL = "${lib.getExe config.programs.wezterm.package}";
     packages = [ pkgs.wezterm-floating ];
   };
 }

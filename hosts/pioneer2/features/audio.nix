@@ -4,14 +4,14 @@
     enable = true;
     alsa = {
       enable = true;
-      alsa.support32Bit = true;
+      support32Bit = true;
     };
     pulse.enable = true;
     wireplumber.enable = true;
   };
 
   # INFO: Lets PipeWire/PulseAudio grab realtime Linux scheduling priority (less audio stutter/latency) by default set to false. PipeWire strongly recommends it.
-  security.rkit.enable = true;
+  security.rtkit.enable = true;
 
   # Bluetooth support (replacing GNOME's built-in stack)
   hardware.bluetooth.enable = true;

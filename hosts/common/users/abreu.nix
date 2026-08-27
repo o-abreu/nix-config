@@ -22,8 +22,8 @@ in
   imports = with inputs; [
     home-manager.nixosModules.default
     (import-tree [
-      ../../global
-      ../../optional
+      ../global
+      ../optional
     ])
   ];
 
@@ -42,6 +42,7 @@ in
   security.sudo.extraConfig = "Defaults timestamp_timeout=360";
 
   users.users.${username} = {
+    uid = 1000;
     shell = config.programs.fish.package;
     isNormalUser = true;
     description = "Abreu";

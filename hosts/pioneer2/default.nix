@@ -15,6 +15,8 @@
       sops-nix.nixosModules.sops # Secrets management module
       preservation.nixosModules.default # Impermanence module
       nix-index-database.nixosModules.nix-index # Access to "comma" tool
+      noctalia.nixosModules.default # Desktop Environment
+      noctalia-greeter.nixosModules.default # Login manager
 
       (import-tree [
         ./features
@@ -48,6 +50,10 @@
   sops.secrets.uspnet-vpn = { };
 
   programs = {
+    hyprland = {
+      mirrorToggle.main = "eDP-1";
+      touchpadToggle.name = "HTIX5288:00 36B6:C001 Touchpad";
+    };
     kanata = {
       devices = [ "/dev/input/by-path/platform-i8042-serio-0-event-kbd" ];
       addBinaryToPath = true;

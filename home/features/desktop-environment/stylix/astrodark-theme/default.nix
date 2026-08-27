@@ -7,6 +7,7 @@
 
   stylix = with pkgs; {
     enable = true;
+    image = ./old.png;
     base16Scheme = ./astrodark.yaml;
     polarity = "dark";
 

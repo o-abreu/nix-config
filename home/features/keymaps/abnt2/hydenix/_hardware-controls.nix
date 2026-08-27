@@ -8,7 +8,7 @@ let
   inherit (lib) optionalString getExe;
   adjustKeyboardBacklight = osConfig.programs.adjustKeyboardBacklight or { enable = false; };
   bctl = "hyde-shell brightnesscontrol";
-  monitorToggle = osConfig.programs.monitorToggle or { enable = false; };
+  mirrorToggle = osConfig.programs.hyprland.mirrorToggle or { enable = false; };
   pctl = playerctl;
   screenlock = "${pctl} pause; loginctl lock-session";
   vctl = "hyde-shell volumecontrol";
@@ -38,9 +38,9 @@ in
   $d=[$hc|Power]
   binddlt = , XF86PowerOff, $d suspend, exec, ${screenlock}; systemctl suspend
 
-  ${optionalString monitorToggle.enable ''
+  ${optionalString mirrorToggle.enable ''
     $d=[$hc|Display]
-    bindd = , F8, $d toggle mirror/extend, exec, ${getExe monitorToggle.package}
+    bindd = , F8, $d toggle mirror/extend, exec, ${getExe mirrorToggle.package}
   ''}
 
   ${optionalString vpnToggle.enable ''

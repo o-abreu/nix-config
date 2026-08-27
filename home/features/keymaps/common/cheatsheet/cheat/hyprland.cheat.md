@@ -175,5 +175,5 @@ echo "!exec hyde-shell brightnesscontrol d"
 # Suspend — XF86PowerOff
 echo "!exec playerctl pause; loginctl lock-session; systemctl suspend"
 
-# Toggle mirror/extend display — XF86Display
-echo "!exec monitor-toggle"
+# Toggle mirrored/extended display — XF86Display
+echo "!exec mirror-toggle"

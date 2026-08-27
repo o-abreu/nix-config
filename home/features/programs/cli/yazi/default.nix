@@ -1,7 +1,9 @@
 {
+  config,
   inputs,
-  system,
+  lib,
   pkgs,
+  system,
   ...
 }:
 {
@@ -29,5 +31,5 @@
       };
     };
   };
-  home.sessionVariables.FILEBROWSER = "yazi";
+  home.sessionVariables.FILEBROWSER = "${lib.getExe config.programs.yazi.package}";
 }

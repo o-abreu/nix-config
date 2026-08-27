@@ -1,14 +1,19 @@
-{ lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   programs.fish.plugins =
     with lib;
-    with programs;
-    (
-      map
-        (plugin: {
-          name = "${plugin}";
-          inherit (pkgs.fishPlugins."${plugin}") src;
-        })
+    with config.programs;
+    (map
+      (plugin: {
+        name = "${plugin}";
+        inherit (pkgs.fishPlugins."${plugin}") src;
+      })
+      (
         [
           "autopair"
           # INFO: Automatically closes pairs of symbols such as "", (), [], etc.
@@ -31,13 +36,14 @@
           "sponge"
           # INFO: Automatically exclude errors from the command history
         ]
-      ++ optional fzf.enable [
-        "fzf-fish"
-        # INFO: Use fuzzy finding to perform a variety of operations
-      ]
-      ++ optional git.enable [
-        "git-abbr"
-        # INFO: Add git abbreviations
-      ]
+        ++ optionals fzf.enable [
+          "fzf-fish"
+          # INFO: Use fuzzy finding to perform a variety of operations
+        ]
+        ++ optionals git.enable [
+          "git-abbr"
+          # INFO: Add git abbreviations
+        ]
+      )
     );
 }

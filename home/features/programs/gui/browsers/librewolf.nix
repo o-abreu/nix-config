@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ config, lib, ... }:
 {
   programs.librewolf = {
     enable = true;
@@ -18,7 +18,7 @@
     };
   };
 
-  home.sessionVariables.BROWSER = "librewolf";
+  home.sessionVariables.BROWSER = "${lib.getExe config.programs.librewolf.package}";
   xdg.mimeApps.defaultApplications = lib.genAttrs [
     "text/html"
     "x-scheme-handler/http"

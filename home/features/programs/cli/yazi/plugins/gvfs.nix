@@ -6,7 +6,7 @@
   ...
 }:
 {
-  programs.yazi = lib.mkIf osConfig.programs.gvfs.enable {
+  programs.yazi = lib.mkIf osConfig.services.gvfs.enable {
     plugins.gvfs = pkgs.yaziPlugins.gvfs;
     yaziPlugins.require.gvfs = { };
     settings.plugin.prepend_previewers =
@@ -15,7 +15,7 @@
       in
       [
         {
-          url = "/run/user/${uid}/gvfs/**/*";
+          url = "/run/user/${toString uid}/gvfs/**/*";
           run = "noop";
         }
       ];

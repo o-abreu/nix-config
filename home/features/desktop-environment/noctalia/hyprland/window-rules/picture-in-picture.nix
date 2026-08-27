@@ -14,7 +14,7 @@
             73
             72
           ];
-          size = "25%";
+          size = "25% 25%";
           pin = true;
         }
         |> lib.mapAttrsToList (name: value: { ${name} = value; } // { match.tag = pip; });

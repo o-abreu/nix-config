@@ -7,6 +7,7 @@ in
   adjust-kbd-backlight = tree [ ./adjust-kbd-backlight ];
   avahi = import ./avahi.nix;
   kanata = tree [ ./kanata ];
-  monitor-toggle = tree [ ./monitor-toggle ];
+  mirror-toggle = tree [ ./mirror-toggle ];
   openfortivpn = tree [ ./openfortivpn ];
+  touchpad-toggle = tree [ ./touchpad-toggle ];
 }
