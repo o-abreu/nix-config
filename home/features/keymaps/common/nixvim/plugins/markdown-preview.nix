@@ -12,7 +12,6 @@
       in
       lib.mkIf cfg.enable [
         {
-          mode = "n";
           key = "<leader>uM";
           action = "<cmd>MarkdownPreviewToggle<cr>";
           options = {

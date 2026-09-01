@@ -20,7 +20,7 @@
           };
 
           progress.enabled = true;
-          signature.enabled = !config.programs.nixvim.plugins.lsp-signature.enable;
+          signature.enabled = true;
         };
 
         presets = {

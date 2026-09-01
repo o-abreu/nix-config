@@ -4,7 +4,8 @@ let
   lua = lib.generators.mkLuaInline;
   dispatch = cmd: lua "hl.dsp.${cmd}";
   border-cmd =
-    color: "hyprctl eval \\\"hl.config({ general = { col = { active_border = 'rgb(${color})' } } })\\\"";
+    color:
+    "hyprctl eval \\\"hl.config({ general = { col = { active_border = 'rgb(${color})' } } })\\\"";
   oneShot =
     cmd:
     lua
@@ -44,7 +45,7 @@ in
         (binds "SUPER + ") ++ [
           {
             _args = [
-              "SUPER_L"
+              "SUPER + SUPER_L"
               (lua
                 # lua
                 ''
@@ -63,7 +64,7 @@ in
     submaps.hyprmode.settings.bind = (binds "") ++ [
       {
         _args = [
-          "escape"
+          "SUPER_L"
           (lua
             # lua
             ''
