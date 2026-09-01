@@ -1,8 +1,8 @@
 # TODO: Come back after having installed some of Noctalia's plugins, seek feature parity with the launchers we've setup for hydenix.
 {
-  exec,
   config,
   lib,
+  oneShot,
   prefix,
 }:
 let
@@ -13,7 +13,7 @@ optionals (sessionVariables ? TERMINAL) [
   {
     _args = [
       (prefix + "T")
-      (exec sessionVariables.TERMINAL)
+      (oneShot "exec_cmd('${sessionVariables.TERMINAL}')")
       { description = "Terminal"; }
     ];
   }
@@ -22,7 +22,7 @@ optionals (sessionVariables ? TERMINAL) [
   {
     _args = [
       (prefix + "B")
-      (exec sessionVariables.BROWSER)
+      (oneShot "exec_cmd('${sessionVariables.BROWSER}')")
       { description = "Browser"; }
     ];
   }
@@ -30,8 +30,8 @@ optionals (sessionVariables ? TERMINAL) [
 ++ optionals (sessionVariables ? FILEBROWSER) [
   {
     _args = [
-      (prefix + "F")
-      (exec sessionVariables.FILEBROWSER)
+      (prefix + "E")
+      (oneShot "exec_cmd('${sessionVariables.FILEBROWSER}')")
       { description = "File browser"; }
     ];
   }

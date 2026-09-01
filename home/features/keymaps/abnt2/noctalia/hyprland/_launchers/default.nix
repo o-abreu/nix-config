@@ -1,18 +1,15 @@
 {
-  dispatch,
   config,
   lib,
+  oneShot,
   prefix,
 }:
-let
-  exec = cmd: dispatch "exec_cmd('${cmd}')";
-in
 (import ./applications.nix {
   inherit
-    exec
     config
     lib
+    oneShot
     prefix
     ;
 })
-++ (import ./noctalia.nix { inherit exec prefix; })
+++ (import ./noctalia.nix { inherit oneShot prefix; })

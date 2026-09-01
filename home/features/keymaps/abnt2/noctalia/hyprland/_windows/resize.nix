@@ -3,47 +3,21 @@
   dispatch,
   prefix,
 }:
+let
+  resize = keybind: x: y: direction: [
+    keybind
+    (dispatch "window.resize({x = ${toString x}, y = ${toString y}, relative = true})")
+    {
+      description = "Resize window ${direction}";
+      repeating = true;
+    }
+  ];
+in
 [
-  {
-    _args = [
-      (prefix + "ALT + J")
-      (dispatch "window.resize({x = -30, y = 0})")
-      {
-        description = "Resize window left";
-        repeating = true;
-      }
-    ];
-  }
-  {
-    _args = [
-      (prefix + "ALT + K")
-      (dispatch "window.resize({x = 0, y = 30})")
-      {
-        description = "Resize window down";
-        repeating = true;
-      }
-    ];
-  }
-  {
-    _args = [
-      (prefix + "ALT + L")
-      (dispatch "window.resize({x = 0, y = -30})")
-      {
-        description = "Resize window up";
-        repeating = true;
-      }
-    ];
-  }
-  {
-    _args = [
-      (prefix + "ALT + ${ccedilla}")
-      (dispatch "window.resize({x = 30, y = 0})")
-      {
-        description = "Resize window right";
-        repeating = true;
-      }
-    ];
-  }
+  { _args = resize (prefix + "ALT + J") (-30) 0 "left"; }
+  { _args = resize (prefix + "ALT + K") 0 30 "down"; }
+  { _args = resize (prefix + "ALT + L") 0 (-30) "up"; }
+  { _args = resize (prefix + "ALT + " + ccedilla) 30 0 "right"; }
   {
     _args = [
       (prefix + "ALT + mouse:272")
