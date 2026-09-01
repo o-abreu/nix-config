@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  inputs,
   ...
 }:
 let
@@ -11,11 +10,6 @@ let
   opencodeCmd = lib.getExe opencode.package;
 
   # INFO: Following the latest release.
-  opencode-nvim = pkgs.vimUtils.buildVimPlugin {
-    pname = "opencode.nvim";
-    version = "2026-06-07";
-    src = inputs.opencode-nvim;
-  };
 in
 {
   programs.nixvim = {
@@ -25,7 +19,7 @@ in
 
     plugins = lib.mkIf opencode.enable {
       opencode = {
-        package = opencode-nvim;
+        package = pkgs.unstable.vimPlugins.opencode-nvim;
         enable = true;
         lazyLoad.settings.lazy = true;
 
@@ -49,7 +43,7 @@ in
 
     globals.opencode_opts = {
       lsp.enabled = true;
-      events.reload = true;
+      events.reload.enabled = true;
     };
 
     autoCmd = lib.mkIf snacks.enable [
