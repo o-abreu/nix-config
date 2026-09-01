@@ -5,6 +5,13 @@
 [
   {
     _args = [
+      (prefix + "G")
+      (dispatch "group.toggle()")
+      { description = "Toggle grouping"; }
+    ];
+  }
+  {
+    _args = [
       (prefix + "Left")
       (dispatch "group.prev()")
       { description = "Change active group backwards"; }

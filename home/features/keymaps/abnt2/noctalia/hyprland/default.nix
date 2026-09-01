@@ -1,75 +1,81 @@
 { config, lib, ... }:
 let
-  # INFO: `SUPER` is the canonical modifier name used in key combos;
-  # `SUPER_L` is the physical key used for the tap-to-enter-hyprmode bind.
-  mod = "SUPER";
-  leaderKey = "SUPER_L";
-  dispatch = cmd: lib.generators.mkLuaInline "hl.dsp.${cmd}";
-in
-{
-  wayland.windowManager.hyprland.settings = {
-    config.input.kb_layout = "br";
-    bind =
-      let
-        prefix = "${mod} + ";
-      in
-      (import ./_launchers {
-        inherit
-          dispatch
-          config
-          lib
-          prefix
-          ;
-      })
-      ++ (import ./_windows {
-        inherit dispatch prefix;
-      })
-      ++ (import ./_workspaces {
-        inherit dispatch lib prefix;
-      })
-      ++ [
-        {
-          _args = [
-            leaderKey
-            (dispatch "submap('hyprmode')")
-            { description = "Enter Hyprmode"; }
-          ];
-        }
-      ];
-  };
+  inherit (config.lib.stylix) colors;
+  lua = lib.generators.mkLuaInline;
+  dispatch = cmd: lua "hl.dsp.${cmd}";
+  border-cmd =
+    color: "hyprctl eval \\\"hl.config({ general = { col = { active_border = 'rgb(${color})' } } })\\\"";
+  oneShot =
+    cmd:
+    lua
+      # lua
+      ''
+        function()
+          hl.dispatch(hl.dsp.${cmd})
+          hl.dispatch(hl.dsp.exec_cmd("${border-cmd colors.base0D}"))
+          hl.dispatch(hl.dsp.submap('reset'))
+        end
+      '';
 
-  wayland.windowManager.hyprland.submaps.hyprmode.settings.bind =
-    let
-      prefix = "";
-    in
+  binds =
+    prefix:
     (import ./_launchers {
       inherit
-        dispatch
         config
         lib
+        oneShot
         prefix
         ;
     })
     ++ (import ./_windows {
-      inherit dispatch prefix;
+      inherit dispatch oneShot prefix;
     })
     ++ (import ./_workspaces {
       inherit dispatch lib prefix;
-    })
-    ++ [
+    });
+in
+{
+  wayland.windowManager.hyprland = {
+    settings = {
+      config.input.kb_layout = "br";
+      bind =
+        # INFO: `SUPER` is the canonical modifier name used in key combos;
+        # `SUPER_L` is the physical key used for the tap-to-enter-hyprmode bind.
+        (binds "SUPER + ") ++ [
+          {
+            _args = [
+              "SUPER_L"
+              (lua
+                # lua
+                ''
+                  function()
+                    hl.dispatch(hl.dsp.exec_cmd("${border-cmd colors.base08}"))
+                    hl.dispatch(hl.dsp.submap('hyprmode'))
+                  end
+                ''
+              )
+              { description = "Enter Hyprmode"; }
+            ];
+          }
+        ];
+    };
+
+    submaps.hyprmode.settings.bind = (binds "") ++ [
       {
         _args = [
           "escape"
-          (dispatch "submap('reset')")
+          (lua
+            # lua
+            ''
+              function()
+                hl.dispatch(hl.dsp.exec_cmd("${border-cmd colors.base0D}"))
+                hl.dispatch(hl.dsp.submap('reset'))
+              end
+            ''
+          )
           { description = "Exit Hyprmode"; }
         ];
       }
-      {
-        _args = [
-          "catchall"
-          (dispatch "submap('reset')")
-          { non_consuming = true; }
-        ];
-      }
     ];
+  };
 }

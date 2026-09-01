@@ -1,6 +1,6 @@
 # TODO: Come back after having installed some of Noctalia's plugins, seek feature parity with the launchers we've setup for hydenix.
 {
-  exec,
+  oneShot,
   prefix,
 }:
 let
@@ -11,21 +11,21 @@ in
   {
     _args = [
       (prefix + "Space")
-      (exec "${panelToggle} launcher")
+      (oneShot "exec_cmd('${panelToggle} launcher')")
       { description = "Application launcher"; }
     ];
   }
   {
     _args = [
       (prefix + "Tab")
-      (exec "${panelToggle} window-switcher")
+      (oneShot "exec_cmd('${panelToggle} window-switcher')")
       { description = "Window switcher"; }
     ];
   }
   {
     _args = [
       (prefix + apostrophe)
-      (exec "${panelToggle} session")
+      (oneShot "exec_cmd('${panelToggle} session')")
       { description = "Session menu"; }
     ];
   }

@@ -29,9 +29,15 @@
         name = "Noto Color Emoji";
       };
       sizes = {
-        terminal = 10;
-        desktop = 12;
+        terminal = 12;
+        desktop = 14;
       };
+    };
+
+    cursor = {
+      name = "Bibata-Modern-Ice";
+      package = pkgs.bibata-cursors;
+      size = 24;
     };
   };
 }

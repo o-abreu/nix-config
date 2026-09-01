@@ -3,33 +3,16 @@
   dispatch,
   prefix,
 }:
+let
+  focus = keybind: direction: [
+    keybind
+    (dispatch "focus({direction = '${builtins.substring 0 1 direction}'})")
+    { description = "Move window focus ${direction}"; }
+  ];
+in
 [
-  {
-    _args = [
-      (prefix + "J")
-      (dispatch "focus({direction = 'l'})")
-      { description = "Focus left window"; }
-    ];
-  }
-  {
-    _args = [
-      (prefix + "K")
-      (dispatch "focus({direction = 'u'})")
-      { description = "Focus window below"; }
-    ];
-  }
-  {
-    _args = [
-      (prefix + "L")
-      (dispatch "focus({direction = 'd'})")
-      { description = "Focus window above"; }
-    ];
-  }
-  {
-    _args = [
-      (prefix + ccedilla)
-      (dispatch "focus({direction = 'r'})")
-      { description = "Focus right window"; }
-    ];
-  }
+  { _args = focus (prefix + "J") "left"; }
+  { _args = focus (prefix + "K") "down"; }
+  { _args = focus (prefix + "L") "up"; }
+  { _args = focus (prefix + ccedilla) "right"; }
 ]
