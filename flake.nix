@@ -52,11 +52,6 @@
     # INFO: Nixvim
     nixvim.url = "github:nix-community/nixvim/nixos-26.05";
 
-    opencode-nvim = {
-      url = "github:nickjvandyke/opencode.nvim/main";
-      flake = false;
-    };
-
     alpha-ascii-nvim = {
       url = "github:nhattVim/alpha-ascii.nvim/main";
       flake = false;
@@ -96,7 +91,7 @@
     # INFO: Yazi
     nix-yazi-plugins = {
       url = "github:lordkekz/nix-yazi-plugins";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     cd-git-root = {

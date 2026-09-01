@@ -263,6 +263,72 @@ Create a module in `home/features/programs/cli/`:
    }
    ```
 
+### Overlay Pattern
+
+Overlays are split into per-concern files in `overlays/` and aggregated by
+`overlays/default.nix`. The `outputs.nix` exposes them as a named set:
+`nixpkgs.overlays = lib.attrValues outputs.overlays;`
+
+#### Fragment Types
+
+Fragments come in two shapes:
+
+**Bare overlays** — no `inputs` wrapper, use `final: prev:` directly:
+
+```nix
+# overlays/yazi.nix, overlays/additions.nix, overlays/snacks.nix
+final: prev: {
+  my-package = final.callPackage ../pkgs/my-package { };
+}
+```
+
+**Wrapper overlays** — need access to `inputs` (e.g. `nixpkgs-unstable`):
+
+```nix
+# overlays/unstable-packages.nix, overlays/firefox-addons.nix
+{ inputs, ... }:
+final: _prev: {
+  unstable = import inputs.nixpkgs-unstable {
+    system = final.stdenv.hostPlatform.system;
+  };
+}
+```
+
+#### Aggregation in default.nix
+
+`overlays/default.nix` uses `from` for wrapper-style overlays and plain `import`
+for bare overlays:
+
+```nix
+{ inputs, ... }:
+let
+  lib = inputs.nixpkgs.lib;
+  from = path: import path { inherit inputs; };
+in
+{
+  additions = import ./additions.nix;          # bare
+  unstable-packages = from ./unstable-packages.nix;  # wrapper
+  firefox-addons = from ./firefox-addons.nix;         # wrapper
+  yazi-plugins = inputs.nix-yazi-plugins.overlays.default;
+  modifications = lib.composeManyExtensions [
+    (import ./yazi.nix)    # bare
+    (import ./snacks.nix)  # bare
+  ];
+}
+```
+
+**Important:** Do not apply `from` to bare overlays — applying `{ inputs }` to a
+bare `final: prev:` overlay binds `final = { inputs }`, breaking the overlay
+contract and producing "attempt to call a set" errors.
+
+#### Adding a New Overlay Fragment
+
+1. Create `overlays/my-feature.nix` as a bare overlay (`final: prev: { ... }`)
+2. If it needs `inputs`, use the wrapper form (`{ inputs, ... }: final: prev: { ... }`)
+3. Wire it into `overlays/default.nix`:
+   - Add to the attrset directly: `my-feature = import ./my-feature.nix;`
+   - Or compose via `modifications`: add to the `composeManyExtensions` list
+
 ## Important Files
 
 - `.sops.yaml` - Sops configuration

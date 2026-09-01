@@ -616,7 +616,7 @@
         "flake-utils-plus": "flake-utils-plus",
         "haumea": "haumea",
         "nixpkgs": [
-          "nixpkgs-unstable"
+          "nixpkgs"
         ],
         "systems": "systems"
       },
@@ -879,23 +879,6 @@
         "type": "github"
       }
     },
-    "opencode-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1787321091,
-        "narHash": "sha256-WdSWFAxxKKmAjTTyNaTAVLZW4yMaACC4cCMPOHIHRuk=",
-        "owner": "nickjvandyke",
-        "repo": "opencode.nvim",
-        "rev": "2ddeebd3212596b51bf078e6ff52862655b80419",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nickjvandyke",
-        "ref": "main",
-        "repo": "opencode.nvim",
-        "type": "github"
-      }
-    },
     "preservation": {
       "locked": {
         "lastModified": 1757436102,
@@ -949,7 +932,6 @@
         "nixvim": "nixvim",
         "noctalia": "noctalia",
         "noctalia-greeter": "noctalia-greeter",
-        "opencode-nvim": "opencode-nvim",
         "preservation": "preservation",
         "qalc-nvim": "qalc-nvim",
         "smart-arrow": "smart-arrow",
