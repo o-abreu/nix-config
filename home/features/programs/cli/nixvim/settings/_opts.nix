@@ -29,8 +29,8 @@
   exrc = true; # Allow project-local .nvim.lua config files
 
   # Identation and formatting
-  tabstop = 2; # Follow shiftwidth
-  shiftwidth = 0;
+  tabstop = 2;
+  shiftwidth = 0; # Follows tabstop
   expandtab = true;
   autoindent = true;
   copyindent = true;

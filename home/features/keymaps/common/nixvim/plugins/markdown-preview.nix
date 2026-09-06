@@ -6,19 +6,19 @@
 }:
 {
   config = lib.mkIf (options ? programs.nixvim) {
-    programs.nixvim.keymaps =
-      let
-        cfg = config.programs.nixvim.plugins.markdown-preview;
-      in
-      lib.mkIf cfg.enable [
+    programs.nixvim.files."ftplugin/markdown.lua" =
+      lib.mkIf config.programs.nixvim.plugins.markdown-preview.enable
         {
-          key = "<leader>uM";
-          action = "<cmd>MarkdownPreviewToggle<cr>";
-          options = {
-            silent = true;
-            desc = "Toggle markdown preview";
-          };
-        }
-      ];
+          keymaps = [
+            {
+              key = "<leader>uM";
+              action = "<cmd>MarkdownPreviewToggle<cr>";
+              options = {
+                silent = true;
+                desc = "Toggle markdown preview";
+              };
+            }
+          ];
+        };
   };
 }

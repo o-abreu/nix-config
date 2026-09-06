@@ -40,7 +40,10 @@ in
     autoCmd = [
       {
         event = "FileType";
-        pattern = [ "c" "cpp" ];
+        pattern = [
+          "c"
+          "cpp"
+        ];
         command = "setlocal tabstop=4";
       }
     ];
@@ -120,5 +123,8 @@ in
         ];
       };
     };
+    files = lib.genAttrs [ "ftplugin/c.nix" "ftplugin/cpp.nix" ] (_: {
+      opts.tabstop = 4;
+    });
   };
 }

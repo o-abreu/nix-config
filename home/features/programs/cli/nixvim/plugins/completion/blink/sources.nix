@@ -7,6 +7,9 @@
 let
   isWordsEnabled = lib.any (p: p.__unkeyed-1 == "blink-cmp-words") config.extra.lz-n.plugins;
   isAvanteEnabled = lib.any (p: p.__unkeyed-1 == "blink-cmp-avante") config.extra.lz-n.plugins;
+  isVimtexEnabled = config.programs.nixvim.plugins.vimtex.enable;
+  isBlinkCmpLatexEnabled = config.programs.nixvim.plugins.blink-cmp-latex.enable;
+  isCmpVimtexEnabled = lib.elem pkgs.vimPlugins.cmp-vimtex config.programs.nixvim.extraPlugins;
 in
 {
   programs.nixvim.plugins.blink-cmp.settings.sources = {
@@ -31,6 +34,8 @@ in
           ${lib.optionalString config.programs.nixvim.plugins.blink-ripgrep.enable "table.insert(common_sources, 'ripgrep')"}
           ${lib.optionalString (lib.elem pkgs.vimPlugins.blink-cmp-npm-nvim config.programs.nixvim.extraPlugins) "if vim.fn.expand('%:t') == 'package.json' then table.insert(common_sources, 'npm') end"}
           ${lib.optionalString isAvanteEnabled "table.insert(common_sources, 'avante')"}
+          ${lib.optionalString isBlinkCmpLatexEnabled "table.insert(common_sources, 'latex')"}
+          ${lib.optionalString isCmpVimtexEnabled "table.insert(common_sources, 'vimtex')"}
 
           -- Special context handling
           local success, node = pcall(vim.treesitter.get_node)
@@ -177,7 +182,7 @@ in
       emoji = lib.mkIf config.programs.nixvim.plugins.blink-emoji.enable {
         name = "Emoji";
         module = "blink-emoji";
-        score_offset = 10;
+        score_offset = 0;
       };
 
       git = lib.mkIf config.programs.nixvim.plugins.blink-cmp-git.enable {
@@ -246,7 +251,7 @@ in
         name = "Spell";
         module = "blink-cmp-spell";
         max_items = 3;
-        score_offset = 15;
+        score_offset = -10;
         preselect_current_word = false;
       };
 
@@ -261,6 +266,32 @@ in
         name = "Avante";
         module = "blink-cmp-avante";
         score_offset = 50;
+      };
+
+      latex = lib.mkIf isBlinkCmpLatexEnabled {
+        name = "LaTeX";
+        module = "blink-cmp-latex";
+        score_offset = 70;
+        enabled.__raw =
+          # lua
+          ''
+            function()
+              return vim.bo.filetype == 'tex' or vim.bo.filetype == 'latex'
+            end
+          '';
+      };
+
+      vimtex = lib.mkIf isCmpVimtexEnabled {
+        name = "VimTeX";
+        module = "cmp-vimtex";
+        score_offset = 70;
+        enabled.__raw =
+          # lua
+          ''
+            function()
+              return vim.bo.filetype == 'tex' or vim.bo.filetype == 'latex'
+            end
+          '';
       };
     };
   };

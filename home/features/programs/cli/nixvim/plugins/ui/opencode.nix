@@ -38,7 +38,7 @@ in
             };
         };
       };
-      lualine.settings.lualine_z.sections.__unkeyed-1.__raw = "require('opencode').statusline";
+      lualine.settings.lualine_z.sections.__unkeyed-1.__raw = "function() local ok, s = pcall(require, 'opencode') return ok and s.statusline() or '' end";
     };
 
     globals.opencode_opts = {

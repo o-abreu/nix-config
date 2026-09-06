@@ -41,7 +41,6 @@
           "gnuplot"
           "haskell"
           "hlsl"
-          "julia"
           "koto"
           "lean"
           "nim"
