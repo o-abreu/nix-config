@@ -33,8 +33,8 @@ in
       {
         mode = "n";
         key = prefix + "Q";
-        action = "<cmd>LspInfo<cr>";
-        options.desc = "Lsp Info";
+        action = "<cmd>checkhealth vim.lsp<cr>";
+        options.desc = "Lsp Health";
       }
 
       {
