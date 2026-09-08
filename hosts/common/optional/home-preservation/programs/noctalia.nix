@@ -9,6 +9,6 @@
   preservation.preserveAt.${persistentPath}.users.${username}.directories =
     lib.mkIf hmConfig.programs.noctalia.enable
       [
-        ".config/noctalia"
+        ".cache/noctalia"
       ];
 }

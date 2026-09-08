@@ -7,9 +7,8 @@
 }:
 {
   preservation.preserveAt.${persistentPath}.users.${username}.directories =
-    lib.mkIf hmConfig.programs.librewolf.enable
+    lib.mkIf hmConfig.programs.bat.enable
       [
-        ".librewolf"
-        ".cache/librewolf"
+        ".cache/bat"
       ];
 }
