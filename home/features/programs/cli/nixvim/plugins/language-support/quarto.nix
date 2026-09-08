@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 let
   handledLanguages = [
     "julia"
@@ -8,6 +8,7 @@ let
 in
 {
   programs.nixvim = {
+    extraPackages = [ pkgs.quarto ];
     plugins = {
       quarto = {
         enable = true;

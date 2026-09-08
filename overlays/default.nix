@@ -12,5 +12,6 @@ in
   modifications = lib.composeManyExtensions [
     (import ./yazi.nix)
     (import ./snacks.nix)
+    (import ./quarto.nix)
   ];
 }
