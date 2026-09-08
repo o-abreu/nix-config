@@ -5,7 +5,10 @@
 }:
 {
   programs.nixvim.plugins = {
-    lsp.servers.marksman.enable = true;
+    lsp.servers.marksman = {
+      enable = true;
+      filetypes = [ "markdown" ];
+    };
     conform-nvim.settings.formatters_by_ft.markdown = [ "deno_fmt" ];
     lint = {
       lintersByFt.markdown = [ "markdownlint" ];

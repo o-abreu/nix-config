@@ -1,17 +1,7 @@
 {
   programs.nixvim.plugins.render-markdown = {
     enable = true;
-    lazyLoad.settings = {
-      event = [
-        "BufReadPre *.md"
-        "BufNewFile *.md"
-        "BufReadPre *.markdown"
-        "BufNewFile *.markdown"
-      ];
-      ft = [
-        "markdown"
-      ];
-    };
+    lazyLoad.settings.ft = [ "markdown" ];
     settings = {
       file_types = [ "markdown" ];
       # Keep Setext headings (===, ---) as-is instead of rendering as ATX (#)
