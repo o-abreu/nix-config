@@ -18,6 +18,7 @@ in
     # 2. Setup the plugin early in the Neovim boot process
     extraConfigLuaPre = ''
       local saved_term_win
+      local saved_term
 
         require("flatten").setup({
           window = {
@@ -25,8 +26,11 @@ in
           },
           hooks = {
             pre_open = function()
-              -- Grab the Neovim window ID of the Snacks terminal
+              -- Grab the Neovim window ID of the Snacks terminal and remember the
+              -- metadata Snacks keyed it by (cmd, cwd, env, count) so it can be
+              -- toggled back verbatim, regardless of how it was opened.
               saved_term_win = vim.api.nvim_get_current_win()
+              saved_term = vim.b.snacks_terminal
             end,
 
             post_open = function()
@@ -38,8 +42,18 @@ in
 
           ${lib.optionalString enable ''
             block_end = function()
-              -- Toggle the Snacks terminal back open when a blocking command finishes
-              require("snacks").terminal.toggle()
+              -- Toggle the Snacks terminal back open when a blocking command finishes.
+              -- Reuse the captured metadata so the tid matches the original terminal
+              -- (count included), restoring it instead of spawning a new one.
+              if saved_term then
+                require("snacks").terminal.toggle(saved_term.cmd, {
+                  cwd = saved_term.cwd,
+                  env = saved_term.env,
+                  count = saved_term.id,
+                })
+              else
+                require("snacks").terminal.toggle()
+              end
             end,
           ''}
           }
