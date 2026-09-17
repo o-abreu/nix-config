@@ -1,6 +1,6 @@
 { lib, options, ... }:
 {
-  config = lib.mkIf (options ? programs.nixvim) {
+  config = lib.optionalAttrs (options ? programs.nixvim) {
     programs.nixvim.plugins.fastaction.lazyLoad.settings.keys =
       let
         mkAction = func: { __raw = "function() require('fastaction').${func}() end"; };

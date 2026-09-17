@@ -1,6 +1,6 @@
 { lib, options, ... }:
 {
-  config = lib.mkIf (options ? programs.nixvim) {
+  config = lib.optionalAttrs (options ? programs.nixvim) {
     programs.nixvim.plugins =
       let
         mkAction = func: { __raw = "function() require('flash').${func}() end"; };

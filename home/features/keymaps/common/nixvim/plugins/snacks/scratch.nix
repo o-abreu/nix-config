@@ -5,7 +5,7 @@
   ...
 }:
 {
-  config = lib.mkIf (options ? programs.nixvim) {
+  config = lib.optionalAttrs (options ? programs.nixvim) {
     programs.nixvim =
       let
         cfg = config.programs.nixvim.plugins.snacks;

@@ -1,6 +1,6 @@
 { lib, options, ... }:
 {
-  config = lib.mkIf (options ? programs.nixvim) {
+  config = lib.optionalAttrs (options ? programs.nixvim) {
     programs.nixvim.plugins.treesitter.settings.incremental_selection.keymaps = {
       init_selection = "<A-o>";
       node_incremental = "<A-o>";

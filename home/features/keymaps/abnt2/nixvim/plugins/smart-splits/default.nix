@@ -90,7 +90,7 @@
             }
           ];
     in
-    lib.mkIf (options ? programs.nixvim) {
+    lib.optionalAttrs (options ? programs.nixvim) {
       programs = {
         nixvim.keymaps = enable (resize-windows ++ move-cursor ++ swap-buffers);
 

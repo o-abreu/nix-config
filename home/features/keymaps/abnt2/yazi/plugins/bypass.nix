@@ -1,6 +1,6 @@
 { lib, options, ... }:
 {
-  config = lib.mkIf (options ? programs.yazi.yaziPlugins) {
+  config = lib.optionalAttrs (options ? programs.yazi.yaziPlugins) {
     programs.yazi.yaziPlugins.plugins.bypass.keys = {
       smart-enter = {
         on = [ "ç" ];

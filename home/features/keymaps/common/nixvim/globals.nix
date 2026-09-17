@@ -1,6 +1,9 @@
+{ lib, options, ... }:
 {
-  programs.nixvim.globals = {
-    mapleader = " ";
-    maplocalleader = ",";
+  config = lib.optionalAttrs (options ? programs.nixvim) {
+    programs.nixvim.globals = {
+      mapleader = " ";
+      maplocalleader = ",";
+    };
   };
 }

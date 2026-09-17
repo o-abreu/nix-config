@@ -5,7 +5,7 @@
   ...
 }:
 {
-  config = lib.mkIf (options ? programs.nixvim) {
+  config = lib.optionalAttrs (options ? programs.nixvim) {
     programs.nixvim = {
       keymaps =
         let
@@ -15,7 +15,9 @@
           {
             action = "<cmd>Neotree Toggle<cr>";
             key = "<Leader>e";
-            options.desc = "Toggle Explorer";
+            options = {
+              desc = "Toggle Explorer";
+            };
             mode = "n";
           }
 

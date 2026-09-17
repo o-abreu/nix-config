@@ -5,7 +5,7 @@
   ...
 }:
 {
-  config = lib.mkIf (options ? programs.nixvim) {
+  config = lib.optionalAttrs (options ? programs.nixvim) {
     programs.nixvim =
       let
         cfg = config.programs.nixvim.plugins.snacks;
@@ -21,7 +21,6 @@
             action = mkAction "hide";
             options = {
               desc = "Dismiss all notifications";
-              silent = true;
             };
           }
 
@@ -31,7 +30,6 @@
             action = mkAction "show_history";
             options = {
               desc = "Show notification history";
-              silent = true;
             };
           }
         ];

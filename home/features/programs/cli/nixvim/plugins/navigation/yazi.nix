@@ -1,6 +1,6 @@
 {
   programs.nixvim.plugins.yazi = {
     enable = true;
-    lazyLoad.settings.cmd = ["Yazi"];
+    lazyLoad.settings.cmd = [ "Yazi" ];
   };
 }
