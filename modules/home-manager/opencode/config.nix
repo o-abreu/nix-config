@@ -20,7 +20,7 @@ with lib;
             readonly ${name}
           '') cfg.env.apiKeys
           |> concatStringsSep "\n";
-        runtimeInputs = cfg.extraPackages ++ optionals (cfg ? settings.plugin) [ pkgs.bun ];
+        runtimeInputs = cfg.extraPackages ++ optional (cfg ? settings.plugin) pkgs.bun;
         flags = optionalAttrs (cfg ? settings.server.port) {
           "--port" = toString cfg.settings.server.port;
         };

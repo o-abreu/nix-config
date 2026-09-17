@@ -7,32 +7,28 @@
 }:
 let
   inherit (config.home) sessionVariables;
-  inherit (lib) optionals;
+  inherit (lib) optional;
 in
-optionals (sessionVariables ? TERMINAL) [
-  {
-    _args = [
-      (prefix + "T")
-      (oneShot "exec_cmd('${sessionVariables.TERMINAL}')")
-      { description = "Terminal"; }
-    ];
-  }
-]
-++ optionals (sessionVariables ? BROWSER) [
-  {
-    _args = [
-      (prefix + "B")
-      (oneShot "exec_cmd('${sessionVariables.BROWSER}')")
-      { description = "Browser"; }
-    ];
-  }
-]
-++ optionals (sessionVariables ? FILEBROWSER) [
-  {
-    _args = [
-      (prefix + "E")
-      (oneShot "exec_cmd('${sessionVariables.FILEBROWSER}')")
-      { description = "File browser"; }
-    ];
-  }
-]
+optional (sessionVariables ? TERMINAL) {
+  _args = [
+    (prefix + "T")
+    (oneShot "exec_cmd('${sessionVariables.TERMINAL}')")
+    { description = "Terminal"; }
+  ];
+}
+
+++ optional (sessionVariables ? BROWSER) {
+  _args = [
+    (prefix + "B")
+    (oneShot "exec_cmd('${sessionVariables.BROWSER}')")
+    { description = "Browser"; }
+  ];
+}
+
+++ optional (sessionVariables ? FILEBROWSER) {
+  _args = [
+    (prefix + "E")
+    (oneShot "exec_cmd('${sessionVariables.FILEBROWSER}')")
+    { description = "File browser"; }
+  ];
+}

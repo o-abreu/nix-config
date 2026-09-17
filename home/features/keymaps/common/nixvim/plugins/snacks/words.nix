@@ -5,7 +5,7 @@
   ...
 }:
 {
-  config = lib.mkIf (options ? programs.nixvim) {
+  config = lib.optionalAttrs (options ? programs.nixvim) {
     programs.nixvim.keymaps =
       let
         cfg = config.programs.nixvim.plugins.snacks;
@@ -16,19 +16,19 @@
           }) end";
         };
       in
-      lib.optionals enable (
-        map (m: m // { mode = "n"; }) [
-          {
-            key = "]]";
-            action = mkAction "next";
-            options.desc = "Next Reference";
-          }
-          {
-            key = "[[";
-            action = mkAction "previous";
-            options.desc = "Previous Reference";
-          }
-        ]
-      );
+      [
+        {
+          key = "]]";
+          action = mkAction "next";
+          options.desc = "Next Reference";
+        }
+        {
+          key = "[[";
+          action = mkAction "previous";
+          options.desc = "Previous Reference";
+        }
+      ]
+      |> map (m: m // { mode = "n"; })
+      |> lib.optionals enable;
   };
 }

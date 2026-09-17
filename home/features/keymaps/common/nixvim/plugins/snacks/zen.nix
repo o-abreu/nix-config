@@ -5,7 +5,7 @@
   ...
 }:
 {
-  config = lib.mkIf (options ? programs.nixvim) {
+  config = lib.optionalAttrs (options ? programs.nixvim) {
     programs.nixvim.keymaps =
       let
         cfg = config.programs.nixvim.plugins.snacks;
@@ -13,7 +13,7 @@
         prefix = "<leader>u";
         mkAction = func: { __raw = "function() Snacks.${func}() end"; };
       in
-      lib.mkIf enable [
+      [
         {
           key = prefix + "z";
           action = mkAction "zen";
@@ -24,6 +24,8 @@
           action = mkAction "zen.zoom";
           options.desc = "Toggle Maximize (Zoom)";
         }
-      ];
+      ]
+      |> map (m: m // { mode = m.mode or "n"; })
+      |> lib.mkIf enable;
   };
 }

@@ -17,12 +17,8 @@ let
         typst
         pandoc
       ]
-      ++ optionals cfg.render.mermaid.enable [
-        mermaid-cli
-      ]
-      ++ optionals cfg.exportPdf.enable [
-        python3Packages.weasyprint
-      ];
+      ++ optional cfg.render.mermaid.enable mermaid-cli
+      ++ optional cfg.exportPdf.enable python3Packages.weasyprint;
   };
   yamlFormat = pkgs.formats.yaml { };
 in

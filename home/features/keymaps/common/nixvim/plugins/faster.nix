@@ -5,7 +5,7 @@
   ...
 }:
 {
-  config = lib.mkIf (options ? programs.nixvim) {
+  config = lib.optionalAttrs (options ? programs.nixvim) {
     programs.nixvim =
       let
         cfg = config.programs.nixvim.plugins;
@@ -49,24 +49,12 @@
             (mkFasterToggle "Vimopts" "<leader>uxy" "Vimopts")
             (mkFasterToggle "Filetype" "<leader>uxv" "Filetype")
           ]
-          ++ lib.optionals (cfg.noice.enable) [
-            (mkFasterToggle "Noice" "<leader>uxn" "Noice")
-          ]
-          ++ lib.optionals (cfg.lualine.enable) [
-            (mkFasterToggle "Lualine" "<leader>uxu" "Lualine")
-          ]
-          ++ lib.optionals (cfg.bufferline.enable) [
-            (mkFasterToggle "Bufferline" "<leader>uxo" "Bufferline")
-          ]
-          ++ lib.optionals (cfg.gitsigns.enable) [
-            (mkFasterToggle "Gitsigns" "<leader>uxg" "Gitsigns")
-          ]
-          ++ lib.optionals (cfg.blink-indent.enable) [
-            (mkFasterToggle "BlinkIndent" "<leader>uxd" "Blink Indent")
-          ]
-          ++ lib.optionals (cfg.snacks.enable) [
-            (mkFasterToggle "Snacks" "<leader>uxk" "Snacks")
-          ];
+          ++ lib.optional cfg.noice.enable (mkFasterToggle "Noice" "<leader>uxn" "Noice")
+          ++ lib.optional cfg.lualine.enable (mkFasterToggle "Lualine" "<leader>uxu" "Lualine")
+          ++ lib.optional cfg.bufferline.enable (mkFasterToggle "Bufferline" "<leader>uxo" "Bufferline")
+          ++ lib.optional cfg.gitsigns.enable (mkFasterToggle "Gitsigns" "<leader>uxg" "Gitsigns")
+          ++ lib.optional cfg.blink-indent.enable (mkFasterToggle "BlinkIndent" "<leader>uxd" "Blink Indent")
+          ++ lib.optional cfg.snacks.enable (mkFasterToggle "Snacks" "<leader>uxk" "Snacks");
 
         plugins.which-key.settings.spec = lib.mkIf cfg.faster.enable [
           {
