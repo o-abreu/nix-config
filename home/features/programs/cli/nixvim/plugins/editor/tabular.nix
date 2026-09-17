@@ -7,7 +7,7 @@
     }
   ];
 
-  extra.lz-n.plugins = [
+  programs.nixvim.plugins.lz-n.plugins = [
     {
       __unkeyed-1 = "tabular";
       cmd = [ "Tabular" ];
