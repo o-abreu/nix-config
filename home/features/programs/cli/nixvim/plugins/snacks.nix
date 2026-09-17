@@ -23,8 +23,7 @@
           "toggle"
           "zen"
         ]
-        ++ lib.optionals config.programs.git.enable [ "gitbrowse" ]
-        ++ lib.optionals config.programs.lazygit.enable [ "lazygit" ]
+        ++ lib.optional config.programs.git.enable "gitbrowse"
         |> (
           l:
           lib.genAttrs l (_: {
