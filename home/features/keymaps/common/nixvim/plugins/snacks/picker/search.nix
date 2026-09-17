@@ -5,7 +5,7 @@
   ...
 }:
 {
-  config = lib.mkIf (options ? programs.nixvim) {
+  config = lib.optionalAttrs (options ? programs.nixvim) {
     programs.nixvim =
       let
         cfg = config.programs.nixvim.plugins.snacks;
@@ -18,7 +18,10 @@
         plugins.which-key.settings.spec = lib.mkIf enable [
           {
             __unkeyed-1 = prefix;
-            mode = "n";
+            mode = [
+              "n"
+              "x"
+            ];
             group = "Search";
           }
         ];
