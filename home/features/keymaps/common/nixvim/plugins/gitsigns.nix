@@ -5,7 +5,7 @@
   ...
 }:
 {
-  config = lib.mkIf (options ? programs.nixvim) {
+  config = lib.optionalAttrs (options ? programs.nixvim) {
     programs.nixvim.plugins.gitsigns.settings =
       let
         cfg = config.programs.nixvim.plugins.which-key;
@@ -22,7 +22,7 @@
                   local wk = require('which-key')
 
                   wk.add({
-                    { prefix, group = "Hunk Actions", icon = " ", buffer = bufnr },
+                    { prefix, group = "Hunk Actions", icon = " ", buffer = bufnr, mode = { "n", "v" }},
                   })
                 ''
               }

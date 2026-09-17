@@ -1,19 +1,14 @@
 { lib, options, ... }:
 {
-  config = lib.mkIf (options ? programs.nixvim) {
-    programs.nixvim.plugins.which-key.settings.spec = [
+  config = lib.optionalAttrs (options ? programs.nixvim) {
+    programs.nixvim.plugins.which-key.settings.spec = map (m: m // { mode = "n"; }) [
       {
         __unkeyed-1 = "<leader>u";
-        mode = [
-          "n"
-          "x"
-        ];
         group = "UI/UX";
       }
 
       {
         __unkeyed-1 = "<leader>g";
-        mode = "n";
         group = "Git";
       }
     ];

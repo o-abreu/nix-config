@@ -5,7 +5,7 @@
   ...
 }:
 {
-  config = lib.mkIf (options ? programs.nixvim) {
+  config = lib.optionalAttrs (options ? programs.nixvim) {
     programs.nixvim =
       let
         cfg = config.programs.nixvim.plugins;
@@ -16,34 +16,37 @@
           switch = "K";
         };
 
-        keymaps = lib.mkIf cfg.nvim-ufo.enable [
-          {
-            mode = "n";
-            key = "zR";
-            action.__raw = "function() require('ufo').openAllFolds() end";
-            options.desc = "Open all folds";
-          }
-          {
-            mode = "n";
-            key = "zM";
-            action.__raw = "function() require('ufo').closeAllFolds() end";
-            options.desc = "Close all folds";
-          }
-          {
-            mode = "n";
-            key = "zK";
-            action.__raw =
-              # lua
-              ''
-                function()
-                  if not require('ufo').peekFoldedLinesUnderCursor() then
-                    vim.lsp.buf.hover()
+        keymaps =
+          let
+            prefix = "z";
+          in
+          [
+            {
+              key = prefix + "R";
+              action.__raw = "function() require('ufo').openAllFolds() end";
+              options.desc = "Open all folds";
+            }
+            {
+              key = prefix + "M";
+              action.__raw = "function() require('ufo').closeAllFolds() end";
+              options.desc = "Close all folds";
+            }
+            {
+              key = prefix + "k";
+              action.__raw =
+                # lua
+                ''
+                  function()
+                    if not require('ufo').peekFoldedLinesUnderCursor() then
+                      vim.lsp.buf.hover()
+                    end
                   end
-                end
-              '';
-            options.desc = "Peek Folded Lines or Hover";
-          }
-        ];
+                '';
+              options.desc = "Peek Folded Lines or Hover";
+            }
+          ]
+          |> map (m: m // { mode = m.mode or "n"; })
+          |> lib.mkIf cfg.nvim-ufo.enable;
       };
   };
 }

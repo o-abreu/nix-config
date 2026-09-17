@@ -5,7 +5,7 @@
   ...
 }:
 {
-  config = lib.mkIf (options ? programs.nixvim) {
+  config = lib.optionalAttrs (options ? programs.nixvim) {
     programs.nixvim.keymaps =
       let
         cfg = config.programs.nixvim.plugins.precognition;
@@ -28,7 +28,6 @@
 
           options = {
             desc = "Precognition Toggle";
-            silent = true;
           };
         }
       ];

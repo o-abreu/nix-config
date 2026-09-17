@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  options,
   ...
 }:
 let
@@ -8,78 +9,62 @@ let
   prefix = "<leader>l";
 in
 {
-  programs.nixvim = {
-    keymapsOnEvents.LspAttach = lib.mkIf cfg.enable [
-      {
-        key = prefix + "H";
-        mode = "n";
-        action.__raw = "vim.diagnostic.open_float";
-        options = {
-          silent = true;
-          desc = "Lsp diagnostic open_float";
-        };
-      }
-
-      {
-        key = prefix + "a";
-        mode = "n";
-        action.__raw = "vim.lsp.buf.code_action";
-        options = {
-          silent = true;
-          desc = "Lsp buf code_action";
-        };
-      }
-
-      {
-        mode = "n";
-        key = prefix + "Q";
-        action = "<cmd>checkhealth vim.lsp<cr>";
-        options.desc = "Lsp Health";
-      }
-
-      {
-        mode = "n";
-        key = "gR";
-        action.__raw = "vim.lsp.buf.rename";
-        options = {
-          buffer = true;
-          silent = true;
-          desc = "Lsp buf rename";
-        };
-      }
-
-      {
-        key = "<C-s>";
-        mode = "n";
-        action.__raw = # lua
-          ''
-            function()
-              require("noice").cmd.signature()
-            end
-          '';
-        options = {
-          silent = true;
-          desc = "Noice signature help";
-        };
-      }
-    ];
-
-    lsp.servers.clangd.config.onAttach.function =
-      # lua
-      ''
-        vim.keymap.set(
-          'n',
-          'gh',
-          "<cmd>ClangdSwitchSourceHeader<cr>",
+  config = lib.optionalAttrs (options ? programs.nixvim) {
+    programs.nixvim = {
+      keymapsOnEvents.LspAttach =
+        [
           {
-            desc = "Switch Source/Header (C/C++)",
-            buffer = bufnr
+            key = prefix + "H";
+            action.__raw = "vim.diagnostic.open_float";
+            options = {
+              desc = "Lsp diagnostic open_float";
+            };
           }
-        )
-      '';
 
-    plugins.which-key.settings.spec = lib.optional cfg.enable [
-      {
+          {
+            key = prefix + "a";
+            action.__raw = "vim.lsp.buf.code_action";
+            options = {
+              desc = "Lsp buf code_action";
+            };
+          }
+
+          {
+            key = prefix + "Q";
+            action = "<cmd>checkhealth vim.lsp<cr>";
+            options = {
+              desc = "Lsp Health";
+            };
+          }
+
+          {
+            key = "gR";
+            action.__raw = "vim.lsp.buf.rename";
+            options = {
+              buffer = true;
+              desc = "Lsp buf rename";
+            };
+          }
+        ]
+        |> map (m: m // { mode = m.mode or "n"; })
+        |> lib.mkIf cfg.enable;
+
+      lsp.servers.clangd.config.onAttach.function =
+        # lua
+        ''
+          vim.keymap.set(
+            'n',
+            'gh',
+            "<cmd>ClangdSwitchSourceHeader<cr>",
+            {
+              desc = "Switch Source/Header (C/C++)",
+              buffer = bufnr
+              silent = true;
+            }
+          )
+        '';
+
+      plugins.which-key.settings.spec = lib.optional cfg.enable {
         __unkeyed-1 = prefix;
         group = "LSP";
         icon = " ";
@@ -87,7 +72,7 @@ in
           "n"
           "v"
         ];
-      }
-    ];
+      };
+    };
   };
 }

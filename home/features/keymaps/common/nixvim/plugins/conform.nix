@@ -5,7 +5,7 @@
   ...
 }:
 {
-  config = lib.mkIf (options ? programs.nixvim) {
+  config = lib.optionalAttrs (options ? programs.nixvim) {
     programs.nixvim.keymaps =
       let
         cfg = config.programs.nixvim.plugins.conform-nvim;
@@ -22,7 +22,6 @@
           key = "<leader>lf";
           mode = "v";
           options = {
-            silent = true;
             buffer = false;
             desc = "Format selection";
           };
@@ -38,7 +37,6 @@
           key = "<leader>lf";
           mode = "n";
           options = {
-            silent = true;
             desc = "Format buffer";
           };
         }

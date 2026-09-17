@@ -5,7 +5,7 @@
   ...
 }:
 {
-  config = lib.mkIf (options ? programs.nixvim) {
+  config = lib.optionalAttrs (options ? programs.nixvim) {
     programs.nixvim.keymaps =
       let
         cfg = config.programs.nixvim.plugins.hardtime;
@@ -15,6 +15,10 @@
           action = "<cmd>Hardtime toggle<cr>";
           key = "<leader>uH";
           mode = "n";
+          options = {
+            silent = true;
+            desc = "Hardtime toggle";
+          };
         }
       ];
   };

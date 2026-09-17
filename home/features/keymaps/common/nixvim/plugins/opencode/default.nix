@@ -5,7 +5,7 @@
   ...
 }:
 {
-  config = lib.mkIf (options ? programs.nixvim) {
+  config = lib.optionalAttrs (options ? programs.nixvim) {
     programs.nixvim =
       let
         cfg = config.programs.nixvim.plugins.opencode;
@@ -17,7 +17,10 @@
         plugins.which-key.settings.spec = lib.mkIf cfg.enable [
           {
             __unkeyed-1 = prefix;
-            mode = "n";
+            mode = [
+              "n"
+              "x"
+            ];
             group = "AI";
           }
         ];
