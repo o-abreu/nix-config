@@ -5,7 +5,7 @@
   ...
 }:
 {
-  config = lib.mkIf (options ? programs.nixvim) {
+  config = lib.optionalAttrs (options ? programs.nixvim) {
     programs.nixvim =
       let
         enabled = with config.programs.nixvim.plugins; quarto.enable && otter.enable;
@@ -45,6 +45,7 @@
               action = ":QuartoHelp";
               options = {
                 buffer = true;
+                silent = true;
                 desc = "Help";
               };
             }
