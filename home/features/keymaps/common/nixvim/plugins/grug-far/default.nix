@@ -6,19 +6,17 @@
 }:
 
 {
-  config = lib.mkIf (options ? programs.nixvim) {
+  config = lib.optionalAttrs (options ? programs.nixvim) {
     programs.nixvim.plugins =
       let
         cfg = config.programs.nixvim.plugins.grug-far;
-        prefix = "<leader>ss";
+        prefix = "<leader>r";
       in
       {
-        which-key.settings.spec = lib.optional cfg.enable [
-          {
-            __unkeyed-1 = prefix;
-            group = "Search/Replace";
-          }
-        ];
+        which-key.settings.spec = lib.optional cfg.enable {
+          __unkeyed-1 = prefix;
+          group = "Search/Replace";
+        };
 
         # The Grug-far lazy load triggers, cleanly defined without the mkIf wrapper
         grug-far.lazyLoad.settings.keys = [
@@ -29,7 +27,7 @@
             desc = "Search/Replace workspace";
           }
           {
-            __unkeyed-1 = prefix + "e";
+            __unkeyed-1 = prefix + "t";
             __unkeyed-2.__raw =
               # lua
               ''
@@ -51,7 +49,7 @@
                 end
               '';
             mode = "n";
-            desc = "Search/Replace file";
+            desc = "Search/Replace in file";
           }
           {
             __unkeyed-1 = prefix + "w";
@@ -71,7 +69,7 @@
             desc = "Replace current word";
           }
           {
-            __unkeyed-1 = prefix + "s";
+            __unkeyed-1 = prefix;
             __unkeyed-2.__raw = "function() _G.grug_far_open(nil, true) end";
             mode = "x";
             desc = "Replace selection";

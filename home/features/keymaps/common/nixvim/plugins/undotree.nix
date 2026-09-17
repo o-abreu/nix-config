@@ -5,7 +5,7 @@
   ...
 }:
 {
-  config = lib.mkIf (options ? programs.nixvim) {
+  config = lib.optionalAttrs (options ? programs.nixvim) {
 
     programs.nixvim.keymaps =
       let
@@ -14,7 +14,7 @@
       lib.mkIf cfg.enable [
         {
           mode = "n";
-          key = "<leader>ut";
+          key = "<leader>uU";
           action = "<cmd>UndotreeToggle<CR>";
           options = {
             silent = true;
