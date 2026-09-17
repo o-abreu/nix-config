@@ -101,23 +101,6 @@
         "type": "github"
       }
     },
-    "beacon-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1719294964,
-        "narHash": "sha256-x/79mRkwwT+sNrnf8QqocsaQtM+Rx6BUvVj5Nnv5JDY=",
-        "owner": "DanilaMihailov",
-        "repo": "beacon.nvim",
-        "rev": "098ff96c33874339d5e61656f3050dbd587d6bd5",
-        "type": "github"
-      },
-      "original": {
-        "owner": "DanilaMihailov",
-        "ref": "master",
-        "repo": "beacon.nvim",
-        "type": "github"
-      }
-    },
     "cd-git-root": {
       "flake": false,
       "locked": {
@@ -879,6 +862,22 @@
         "type": "github"
       }
     },
+    "presenterm-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1759862398,
+        "narHash": "sha256-Hw6Lw1CfJcrlMuCi16WHior6EeJqXJ7S+aMfIg29HWk=",
+        "owner": "Piotr1215",
+        "repo": "presenterm.nvim",
+        "rev": "610ad9e44abbcff3fe41c71f14e42622b4f9a6f7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Piotr1215",
+        "repo": "presenterm.nvim",
+        "type": "github"
+      }
+    },
     "preservation": {
       "locked": {
         "lastModified": 1757436102,
@@ -915,7 +914,6 @@
       "inputs": {
         "alpha-ascii-nvim": "alpha-ascii-nvim",
         "anthropics-skills": "anthropics-skills",
-        "beacon-nvim": "beacon-nvim",
         "cd-git-root": "cd-git-root",
         "disko": "disko",
         "faster-piper": "faster-piper",
@@ -932,6 +930,7 @@
         "nixvim": "nixvim",
         "noctalia": "noctalia",
         "noctalia-greeter": "noctalia-greeter",
+        "presenterm-nvim": "presenterm-nvim",
         "preservation": "preservation",
         "qalc-nvim": "qalc-nvim",
         "smart-arrow": "smart-arrow",
@@ -942,6 +941,7 @@
         "systems": "systems_4",
         "tabline-wez": "tabline-wez",
         "upstash-context7": "upstash-context7",
+        "vim-slime-cells": "vim-slime-cells",
         "vortriz-nur": "vortriz-nur",
         "wezterm-unicode-input": "wezterm-unicode-input",
         "wrappers": "wrappers",
@@ -1256,6 +1256,23 @@
       "original": {
         "owner": "upstash",
         "repo": "context7",
+        "type": "github"
+      }
+    },
+    "vim-slime-cells": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1668689664,
+        "narHash": "sha256-d3+uH+LuIbrBFNp5BCHca2m94RN2asGgzQojC2f6yoQ=",
+        "owner": "Klafyvel",
+        "repo": "vim-slime-cells",
+        "rev": "2252bc83fc0174c8e67bcf9a519edf2d328b8bc9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Klafyvel",
+        "ref": "main",
+        "repo": "vim-slime-cells",
         "type": "github"
       }
     },

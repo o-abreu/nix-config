@@ -57,11 +57,6 @@
       flake = false;
     };
 
-    beacon-nvim = {
-      url = "github:DanilaMihailov/beacon.nvim/master";
-      flake = false;
-    };
-
     qalc-nvim = {
       url = "github:Apeiros-46B/qalc.nvim/main";
       flake = false;
@@ -69,6 +64,16 @@
 
     sshfs-nvim = {
       url = "github:uhs-robert/sshfs.nvim/main";
+      flake = false;
+    };
+
+    vim-slime-cells = {
+      url = "github:Klafyvel/vim-slime-cells/main";
+      flake = false;
+    };
+
+    presenterm-nvim = {
+      url = "github:Piotr1215/presenterm.nvim";
       flake = false;
     };
 
