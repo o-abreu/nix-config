@@ -8,7 +8,7 @@
   imports =
     with inputs;
     [
-      sops-nix.homeManagerModules.sops
+      sops-nix.homeModules.sops
       vortriz-nur.homeModules.zotero
 
       (import-tree [ ../../features ])
