@@ -55,6 +55,19 @@ nix-shell
 
 Run `nix flake check` to validate the flake evaluates correctly.
 
+## Task Tracking (TODO.md)
+
+Outstanding work is tracked in `TODO.md` at the repository root.
+
+- Manage `TODO.md` as part of the work: once a task is actually completed, check
+  it off and remove it (or move it to a completed section) so the file only
+  reflects remaining work.
+- If a new task is discovered while working, add it to `TODO.md` so it is not
+  lost.
+- Keep entries concise and actionable, with enough context (file paths, why) to
+  pick the task up later.
+- Do not leave `TODO.md` stale: it must be accurate at the end of every task.
+
 ## Project Structure
 
 ```
