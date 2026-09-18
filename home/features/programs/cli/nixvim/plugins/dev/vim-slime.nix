@@ -1,5 +1,4 @@
 {
-  inputs,
   pkgs,
   ...
 }:
@@ -7,11 +6,7 @@
   programs.nixvim = {
     extraPlugins = [
       {
-        plugin = pkgs.vimUtils.buildVimPlugin {
-          pname = "vim-slime-cells";
-          version = "main";
-          src = inputs.vim-slime-cells;
-        };
+        plugin = pkgs.vimPlugins.vim-slime-cells;
         optional = true;
       }
     ];

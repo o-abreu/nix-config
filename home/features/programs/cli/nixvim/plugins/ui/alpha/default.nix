@@ -3,20 +3,18 @@
   config,
   lib,
   pkgs,
-  inputs,
   ...
 }:
 let
-  alpha-ascii = import ./_alpha-ascii.nix { inherit pkgs inputs; };
   mkDashboardButton = import ./_mkDashboardButton.nix { inherit config lib; };
   icons = import ../_icons.nix;
 in
 {
   programs.nixvim = {
     extraConfigLuaPre = "vim.g.start_time = vim.uv.hrtime()";
-    extraPlugins = [
-      alpha-ascii
-      pkgs.vimPlugins.alpha-nvim
+    extraPlugins = with pkgs.vimPlugins; [
+      alpha-ascii-nvim
+      alpha-nvim
     ];
 
     extraConfigLua =
