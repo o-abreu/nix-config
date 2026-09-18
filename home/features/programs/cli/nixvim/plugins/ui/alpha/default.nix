@@ -11,12 +11,15 @@ let
 in
 {
   programs.nixvim = {
-    extraConfigLuaPre = "vim.g.start_time = vim.uv.hrtime()";
+    # INFO: alpha is configured manually below, so the nixvim `plugins.alpha`
+    # module is intentionally disabled. Enabling it always emits its own
+    # `require('alpha').setup(...)` (+ `require('alpha.term')`), which would run
+    # in addition to the `alpha.setup(dashboard.config)` call below.
     extraPlugins = with pkgs.vimPlugins; [
       alpha-ascii-nvim
       alpha-nvim
     ];
-
+    extraConfigLuaPre = "vim.g.start_time = vim.uv.hrtime()";
     extraConfigLua =
       # lua
       ''
@@ -50,27 +53,7 @@ in
           # lua
           ''
             function()
-              local dashboard = require("alpha.themes.dashboard")
-
-              -- 2. Calculate True Startup Time
-              -- hrtime is in nanoseconds. Divide by 1,000,000 for milliseconds,
-              -- and then format it to seconds with 3 decimal places.
-              local end_time = vim.uv.hrtime()
-              local duration_ms = (end_time - vim.g.start_time) / 1000000
-              local s = (math.floor(duration_ms) / 1000)
-
-              -- 3. Get Neovim Version
-              local v = vim.version()
-              local version = "v" .. v.major .. "." .. v.minor .. "." .. v.patch
-
-              -- 4. Update the Footer
-              dashboard.section.footer.val = {
-                  " ",
-                  " Nixvim " .. version .. "    " .. s .. "s",
-              }
-
-              -- Force redraw
-              pcall(vim.cmd.AlphaRedraw)
+              ${builtins.readFile ./footer/init.lua}
             end
           '';
       }
