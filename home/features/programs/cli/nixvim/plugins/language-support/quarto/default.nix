@@ -25,7 +25,11 @@ in
         lazyLoad.settings.ft = [ "quarto" ];
         settings = {
           lspFeatures.languages = handledLanguages;
-          codeRunner.default_method = "slime";
+          codeRunner = {
+            enabled = true;
+            default_method = "slime";
+            never_run = [ "yaml" ];
+          };
         };
       };
 
