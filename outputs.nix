@@ -18,6 +18,7 @@ in
 {
   nixosModules = import ./modules/nixos { inherit inputs; };
   homeModules = import ./modules/home-manager { inherit inputs; };
+  nixvimModules = import ./modules/nixvim { inherit inputs; };
   overlays = import ./overlays { inherit inputs; };
 
   packages = forEachSystem (pkgs: import ./pkgs { inherit pkgs; });

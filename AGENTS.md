@@ -69,9 +69,10 @@ Run `nix flake check` to validate the flake evaluates correctly.
 │       ├── desktop-environment/
 │       ├── keymaps/
 │       └── programs/
-├── modules/            # Custom NixOS and HM modules
+├── modules/            # Custom NixOS, HM, and nixvim modules
 │   ├── nixos/          # NixOS modules
-│   └── home-manager/   # Home Manager modules
+│   ├── home-manager/   # Home Manager modules
+│   └── nixvim/         # Portable nixvim plugin modules
 ├── overlays/           # Nixpkgs overlays
 ├── pkgs/                # Custom packages
 └── secrets/            # sops-nix encrypted secrets
@@ -254,7 +255,7 @@ Create a module in `home/features/programs/cli/`:
 
 ### Adding a Custom Module
 
-1. Create module in `modules/nixos/` or `modules/home-manager/`
+1. Create module in `modules/nixos/`, `modules/home-manager/`, or `modules/nixvim/`
 2. Export in `default.nix`:
 
    ```nix
