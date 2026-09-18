@@ -16,7 +16,7 @@
             # lua
             ''
               function()
-                if vim.g.slime_cell_delimeter or vim.b.slime_cell_delimeter then
+                if vim.g.slime_cell_delimiter or vim.b.slime_cell_delimiter then
                   return "<Plug>${plug}"
                 else
                   return "<cmd>lua vim.notify('No slime cell configured')<CR>"

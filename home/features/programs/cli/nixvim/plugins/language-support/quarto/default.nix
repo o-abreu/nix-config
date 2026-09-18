@@ -51,7 +51,7 @@ in
       lsp.servers.marksman.filetypes = [ "quarto" ];
     };
     files."ftplugin/quarto.lua".extraConfigLua = ''
-      vim.b.slime_cell_delimeter = "```"
+      vim.b.slime_cell_delimiter = "```"
     '';
   };
 }
