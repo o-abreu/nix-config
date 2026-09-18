@@ -6,7 +6,7 @@
 }:
 {
   config = lib.optionalAttrs (options ? programs.nixvim) {
-    programs.nixvim =
+    programs.nixvim.plugins =
       let
         cfg = config.programs.nixvim.plugins.neogen;
         prefix = "<leader>A";
@@ -16,7 +16,7 @@
       in
       {
         # --- Which-Key Grouping ---
-        plugins.which-key.settings.spec = lib.optional cfg.enable [
+        which-key.settings.spec = lib.mkIf cfg.enable [
           {
             __unkeyed-1 = prefix;
             mode = "n";
@@ -26,7 +26,7 @@
         ];
 
         # --- Lazy Load Triggers ---
-        plugins.neogen.lazyLoad.settings.keys = [
+        neogen.lazyLoad.settings.keys = [
           {
             __unkeyed-1 = prefix + "<CR>";
             __unkeyed-2 = mkAction "any";

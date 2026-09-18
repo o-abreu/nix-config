@@ -15,18 +15,6 @@ in
         prefix = "<localleader>r";
       in
       {
-        plugins.which-key.settings.spec = mkIf enabled [
-          {
-            __unkeyed-1 = prefix;
-            mode = [
-              "n"
-              "v"
-            ];
-            group = "Run";
-            icon = "⚡";
-          }
-        ];
-
         files."ftplugin/quarto.lua" = mkIf enabled {
           keymaps =
             let
@@ -93,6 +81,21 @@ in
                 };
               }
             ];
+
+          # INFO: Registered per-buffer so the "Run" group only shows up in
+          # quarto buffers. which-key drops spec entries whose `buffer` does not
+          # match the current buffer.
+          extraConfigLua = ''
+            require("which-key").add({
+              {
+                "${prefix}",
+                group = "Run",
+                icon = "⚡",
+                mode = { "n", "v" },
+                buffer = vim.api.nvim_get_current_buf(),
+              },
+            })
+          '';
         };
       };
   };

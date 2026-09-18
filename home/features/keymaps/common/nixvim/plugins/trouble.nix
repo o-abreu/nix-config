@@ -16,7 +16,7 @@
         plugins.which-key.settings.spec = lib.optional cfg.enable {
           __unkeyed-1 = prefix;
           mode = "n";
-          icon = "";
+          icon = "";
           group = "Trouble";
         };
 
