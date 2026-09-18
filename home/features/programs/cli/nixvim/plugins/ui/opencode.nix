@@ -38,7 +38,23 @@ in
             };
         };
       };
-      lualine.settings.lualine_z.sections.__unkeyed-1.__raw = "function() local ok, s = pcall(require, 'opencode') return ok and s.statusline() or '' end";
+
+      # INFO: Statusline segment showing the opencode session state.
+      #
+      # The path is `settings.sections.lualine_z` (not `settings.lualine_z.
+      # sections`); the latter was silently absorbed as a NEW top-level key by
+      # the `freeformType` on `settings`, so the component never rendered.
+      #
+      # `sections.<name>` is a list of components, and lualine assigns it
+      # wholesale (`config.lua:129`), replacing its own default rather than
+      # merging. `lualine_z` defaults to `{ "location" }`, so restate it here to
+      # keep the cursor position in the statusline.
+      lualine.settings.sections.lualine_z = [
+        "location"
+        {
+          __unkeyed-1.__raw = "function() local ok, s = pcall(require, 'opencode') return ok and s.statusline() or '' end";
+        }
+      ];
     };
 
     globals.opencode_opts = {
