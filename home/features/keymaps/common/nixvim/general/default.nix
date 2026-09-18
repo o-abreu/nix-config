@@ -30,10 +30,12 @@
       }
 
       {
-        action = "<cmd>enew<cr>";
+        # Trailing space opens the command line in edit mode so the user can
+        # name a new file or open an existing one.
+        action = "<cmd>e <cr>";
         key = "<Leader>n";
         options = {
-          desc = "New file";
+          desc = "New/Open file";
         };
         mode = "n";
       }

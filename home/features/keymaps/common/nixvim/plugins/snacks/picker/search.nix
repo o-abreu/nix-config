@@ -63,11 +63,6 @@
               ];
             }
             {
-              action = mkAction "command_history";
-              key = prefix + "c";
-              options.desc = "Command History";
-            }
-            {
               action = mkAction "commands";
               key = prefix + "C";
               options.desc = "Commands";
