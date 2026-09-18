@@ -43,4 +43,7 @@ let
       spacedRest;
 in
 # --- 4. Skip if not found ---
-if km == null then "" else ''dashboard.button("${displayKey}", "${icon}  ${desc}", ${action}),''
+if km == null then
+  lib.warn "alpha dashboard: no keymap found for desc '${targetDesc}'" ""
+else
+  ''dashboard.button("${displayKey}", "${icon}  ${desc}", ${action}),''

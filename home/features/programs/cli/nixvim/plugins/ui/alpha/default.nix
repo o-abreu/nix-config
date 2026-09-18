@@ -29,34 +29,71 @@ in
         local dashboard = require("alpha.themes.dashboard")
 
         dashboard.section.buttons.val = {
-            ${mkDashboardButton "New file" icons.file.new}
+            ${mkDashboardButton "New/Open file" icons.file.new}
             ${mkDashboardButton "Smart Find Files" icons.search}
             ${mkDashboardButton "Grep Files" icons.file.word}
-            ${mkDashboardButton "Find marks" icons.bookmarks}
-            ${mkDashboardButton "Find Config File" icons.config}
-            ${mkDashboardButton "Restore Session" icons.refresh}
-            dashboard.button("SPC c i", "  Change header image", ":AlphaAsciiNext<CR>"),
+            ${mkDashboardButton "Recent" icons.refresh}
+            ${mkDashboardButton "Toggle Explorer" icons.folder.open}
+            dashboard.button("SPC c i", "${icons.customize}  Change header image", ":AlphaAsciiNext<CR>"),
+            ${mkDashboardButton "Quit Nixvim" icons.tabClose}
         }
 
         alpha.setup(dashboard.config)
       '';
 
-    autoGroups.alpha_startup.clear = true;
-    autoCmd = [
-      {
-        event = "User";
-        pattern = "AlphaReady";
-        group = "alpha_startup";
-        desc = "Update Alpha dashboard footer with true startup stats";
-        once = true;
-        callback.__raw =
-          # lua
-          ''
-            function()
-              ${builtins.readFile ./footer/init.lua}
-            end
-          '';
-      }
-    ];
+    files."lua/alpha/whitelist-keybinds.lua".extraConfigLua =
+      builtins.readFile ./whitelist-keybinds/init.lua;
+
+    plugins.which-key.settings.disable.ft = [ "alpha" ];
+
+    autoGroups = {
+      alpha_keybind_lock.clear = true;
+      alpha_startup.clear = true;
+    };
+
+    autoCmd =
+      let
+        lockDashboard = {
+          __raw =
+            # lua
+            ''
+              function(args)
+                vim.schedule(function()
+                  require("alpha.whitelist-keybinds").lock(args.buf)
+                end)
+              end
+            '';
+        };
+      in
+      [
+        {
+          event = "FileType";
+          pattern = "alpha";
+          group = "alpha_keybind_lock";
+          desc = "Block all keymaps on the Alpha dashboard except its buttons";
+          callback = lockDashboard;
+        }
+        {
+          event = "User";
+          pattern = "AlphaRemap";
+          group = "alpha_keybind_lock";
+          desc = "Re-apply the Alpha dashboard keymap lock";
+          callback = lockDashboard;
+        }
+        {
+          event = "User";
+          pattern = "AlphaReady";
+          group = "alpha_startup";
+          desc = "Update Alpha dashboard footer with true startup stats";
+          once = true;
+          callback.__raw =
+            # lua
+            ''
+              function()
+                ${builtins.readFile ./footer/init.lua}
+              end
+            '';
+        }
+      ];
   };
 }

@@ -11,7 +11,7 @@ let
 in
 {
   config = lib.optionalAttrs (options ? programs.nixvim) {
-    programs.nixvim.keymapsOnEvents.BufWinEnter = lib.optional alphaEnabled {
+    programs.nixvim.keymaps = lib.optional alphaEnabled {
       key = "<leader>,";
       action = "<cmd>Alpha<cr>";
       options = {
@@ -19,19 +19,6 @@ in
         silent = true;
         desc = "Dashboard";
       };
-    };
-
-    programs.nixvim.autoGroups.alpha_no_dashboard_bind.clear = true;
-    programs.nixvim.autoCmd = lib.optional alphaEnabled {
-      event = "FileType";
-      pattern = "alpha";
-      group = "alpha_no_dashboard_bind";
-      desc = "Hide the Dashboard keybind on the Alpha dashboard";
-      callback.__raw = ''
-        function(args)
-          pcall(vim.keymap.del, "n", "<leader>,", { buffer = args.buf })
-        end
-      '';
     };
   };
 }
