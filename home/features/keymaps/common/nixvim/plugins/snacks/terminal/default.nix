@@ -24,7 +24,7 @@ in
             {
               __unkeyed-1 = prefix.term;
               group = "Terminal";
-              icon = " ";
+              icon = "";
             }
             {
               __unkeyed-1 = prefix.repl;
@@ -82,6 +82,7 @@ in
                 prefix,
                 count,
                 cmd ? null,
+                bindSlime ? false,
               }:
               [
                 {
@@ -103,7 +104,7 @@ in
               |> lib.map (layout: {
                 key = prefix + layout.key;
                 action = toggleTerm {
-                  inherit cmd;
+                  inherit cmd bindSlime;
                   opts = {
                     inherit count;
                     win.position = layout.position;
@@ -119,18 +120,22 @@ in
                 {
                   prefix = prefix.repl + "p";
                   cmd = "python";
+                  bindSlime = true;
                 }
                 {
                   prefix = prefix.repl + "i";
                   cmd = "ipython --no-confirm-exit --no-autoindent";
+                  bindSlime = true;
                 }
                 {
                   prefix = prefix.repl + "j";
                   cmd = "julia";
+                  bindSlime = true;
                 }
                 {
                   prefix = prefix.repl + "r";
                   cmd = "R --no-save";
+                  bindSlime = true;
                 }
               ]
               |> lib.imap1 (
@@ -138,6 +143,7 @@ in
                 allLayouts {
                   inherit (spec) prefix;
                   cmd = spec.cmd or null;
+                  bindSlime = spec.bindSlime or false;
                   count = i + 2; # INFO: Counts continue after lazygit (1) and btop (2)
                 }
               )

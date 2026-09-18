@@ -6,9 +6,10 @@
 {
   cmd ? null,
   opts,
+  bindSlime ? false,
 }:
-let
-  code =
+{
+  __raw =
     with config.lib.nixvim.lua;
     # lua
     ''
@@ -16,11 +17,29 @@ let
         local cmd = ${toLuaObject cmd}
         local count = ${toString opts.count}
         local position = ${toLuaObject (lib.attrByPath [ "win" "position" ] null opts)}
+        local bind_slime = ${toLuaObject bindSlime}
+        -- Capture the buffer that initiated the launch: that is the buffer
+        -- vim-slime should send from.
+        local source_buf = vim.api.nvim_get_current_buf()
         local terminal = require("snacks.terminal")
+
+        -- Point vim-slime at the given terminal by writing b:slime_config,
+        -- so sending a cell/selection never prompts for a target. Never bind
+        -- a terminal to itself.
+        local function attach_slime(term)
+          local tbuf = term and term.buf
+          local jobid = tbuf and vim.b[tbuf].terminal_job_id
+          if jobid and source_buf ~= tbuf then
+            vim.b[source_buf].slime_config = {
+              jobid = jobid,
+              pid = vim.fn.jobpid(jobid),
+            }
+          end
+        end
 
         -- Freeze the resolved target so <C-t> replays this exact
         -- terminal, regardless of the buffer focused at the time.
-        local function open(cwd)
+        local function open(cwd, bind)
           local replay = {
             count = count,
             cwd = cwd,
@@ -32,13 +51,17 @@ let
             terminal.toggle(cmd, replay)
           end
           _G.__last_term()
+
+          if bind and bind_slime then
+            attach_slime(terminal.get(cmd, replay))
+          end
         end
 
         -- 1. Inside a matching terminal: toggle it, reusing its
         --    recorded cwd verbatim (never spawn a sibling).
         local cur = vim.b.snacks_terminal
         if cur and cur.cmd == cmd and cur.id == count then
-          open(cur.cwd)
+          open(cur.cwd, false)
           return
         end
 
@@ -89,16 +112,13 @@ let
           end
         end
         if best then
-          open(best.meta.cwd)
+          open(best.meta.cwd, true)
           return
         end
 
         -- 4. No related terminal in this slot: spawn one seeded
         --    from the buffer's directory.
-        open(seed)
+        open(seed, true)
       end
     '';
-in
-{
-  __raw = code;
 }
