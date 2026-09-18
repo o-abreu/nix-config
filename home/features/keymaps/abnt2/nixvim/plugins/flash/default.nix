@@ -70,13 +70,6 @@
           }
         ];
         hardtime.settings.restricted_keys.h.__raw = "false";
-        snacks.settings.picker = {
-          win = {
-            input.keys.h = "flash";
-            list.keys.h = "flash";
-          };
-          sources.explorer.win.list.keys.h = "flash";
-        };
       };
   };
 }

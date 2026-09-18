@@ -11,7 +11,13 @@
             };
             "h" = "flash";
           };
-          list.keys."h" = "flash";
+          list.keys."h" = {
+            __unkeyed-1 = "flash";
+            mode = [
+              "n"
+              "x"
+            ];
+          };
         };
       in
       {
