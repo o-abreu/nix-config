@@ -1,7 +1,12 @@
-{ inputs, lib, ... }:
+{
+  inputs,
+  lib,
+  outputs,
+  ...
+}:
 {
   imports = [ inputs.nixvim.homeModules.nixvim ];
-  
+
   # INFO: Many plugin authors do not bother to add a LICENSE file to their plugins. When LICENSE is absent, nixpkgs defensively assumes that the software is unfree.
   nixpkgs.config.allowUnfreePredicate = pkg: pkg.name or "" |> lib.hasPrefix "vimplugin-";
 
@@ -11,6 +16,10 @@
       defaultEditor = true;
       nixpkgs.useGlobalPackages = true;
       viAlias = true;
+
+      # INFO: Plugin modules authored for this flake (see `modules/nixvim/`).
+      imports = builtins.attrValues outputs.nixvimModules;
     };
   };
+  xdg.configFile."nvim/util/dot.lua".source = ./util/dot/init.lua;
 }
