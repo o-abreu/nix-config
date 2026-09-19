@@ -9,6 +9,5 @@ in
   yaziPlugins = prev.yaziPlugins // {
     smart-switch = final.callPackage ../pkgs/smart-switch { };
     smart-tab = final.callPackage ../pkgs/smart-tab { };
-    max-preview = final.callPackage ../pkgs/max-preview { inherit (prev) yaziPlugins; };
   };
 }

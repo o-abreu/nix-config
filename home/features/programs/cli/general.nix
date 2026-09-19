@@ -4,7 +4,6 @@
     coreutils # GNU Core utilities
     gdu # disk usage analyzer
     imagemagick # Image manipulation
-    libnotify # notify-send for desktop notifications (opencode-notifier)
     pb_cli # Output to a pastebin
     pdftk # Manipulate pdf files
     ripgrep # search for text within various files

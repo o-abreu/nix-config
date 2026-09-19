@@ -15,7 +15,7 @@
     shellWrapperName = "y";
 
     plugins = {
-      inherit (pkgs.yaziPlugins) smart-paste smart-switch smart-tab;
+      inherit (pkgs.yaziPlugins) smart-paste smart-switch smart-tab toggle-pane;
       inherit (inputs) cd-git-root;
     };
     yaziPlugins = {
@@ -27,7 +27,6 @@
         full-border.enable = true;
         ouch.enable = true;
         smart-filter.enable = true;
-        max-preview.enable = true;
       };
     };
   };
