@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   pkgs,
   lib,
   ...
@@ -10,11 +9,8 @@
     enable = true;
     extraConfig =
       with lib;
-      builtins.readDir ./modules
-      |> builtins.attrNames
-      |> map (f: removeSuffix ".lua" f)
-      |> flip genAttrs (f: ./modules/${f}.lua);
-    plugins.tabline-wez = inputs.tabline-wez;
+      builtins.readDir ./modules |> builtins.attrNames |> flip genAttrs (f: ./modules/${f});
+    plugins.tabline-wez = pkgs.weztermPlugins.tabline-wez;
   };
 
   # INFO: Pre-create $XDG_RUNTIME_DIR/wezterm so wezterm's ssh-agent proxy
@@ -23,7 +19,7 @@
   systemd.user.tmpfiles.rules = [ "d %t/wezterm - - -" ];
 
   home = {
-    sessionVariables.TERMINAL = "${lib.getExe config.programs.wezterm.package}";
+    sessionVariables.TERMINAL = lib.getExe config.programs.wezterm.package;
     packages = [ pkgs.wezterm-floating ];
   };
 }

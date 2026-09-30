@@ -2,99 +2,17 @@
   config,
   lib,
   pkgs,
-  inputs,
   ...
 }:
 with lib;
 let
   cfg = config.programs.wezterm;
 
-  # INFO: WezTerm's plugin manager encodes repo URLs into directory names
-  # (see wezterm's config-registry encoding). Reproduced here so plugins
-  # installed via the generated shim resolve like official clones.
-  encodePluginUrl =
-    url: replaceStrings [ ":" "/" "\\" "." "%" ] [ "sCs" "sZs" "sBs" "sDs" "sPs" ] url;
-
-  # INFO: Infer canonical repository URLs from flake.lock. Flake input
-  # attrsets do not carry owner/repo, but each lock node records the
-  # original ref ({ type = "github"; owner; repo; }) and the locked rev.
-  # flake.lock is guaranteed consistent with flake.nix at evaluation time
-  # (nix relocks mismatched inputs before evaluating); only --override-input
-  # can desynchronize them, which simply misses here -> plain plugin.
-  urlByRev =
-    inputs.self
-    |> (self: fromJSON (readFile "${self}/flake.lock"))
-    |> (lock: removeAttrs lock.nodes [ "root" ])
-    |> mapAttrs (
-      _: node:
-      let
-        o = node.original or { };
-      in
-      if o.type == "github" || o.type == "gitlab" then
-        {
-          rev = (node.locked.rev or null);
-          url = "https://${o.type}.com/${o.owner}/${o.repo}";
-        }
-      else
-        {
-          rev = null;
-          url = null;
-        }
-    )
-    |> attrValues
-    |> filter (e: e.rev != null && e.url != null)
-    |> map (e: nameValuePair e.rev e.url)
-    |> listToAttrs;
-
-  # Classify each plugin: explicit { url, src } overrides; attrsets carrying
-  # a locked rev are matched against urlByRev (bare flake inputs); everything
-  # else (paths, unmatched inputs) stays plain. NOTE: bare flake inputs are
-  # path-coercible attrsets (outPath, rev, ...), not real paths.
-  registeredPlugins =
-    cfg.plugins
-    |> mapAttrs' (
-      name: v:
-      if isAttrs v && v ? url && v ? src then
-        nameValuePair name { inherit (v) url src; }
-      else if isAttrs v && v ? rev && urlByRev ? ${v.rev} then
-        nameValuePair name {
-          url = urlByRev.${v.rev};
-          src = v;
-        }
-      else
-        nameValuePair name null
-    )
-    |> filterAttrs (_: r: r != null);
-
-  plainPlugins = filterAttrs (
-    _: v: !((isAttrs v && v ? url && v ? src) || (isAttrs v && v ? rev && urlByRev ? ${v.rev}))
-  ) cfg.plugins;
-
-  # INFO: Lua shim making require()-loaded plugins visible to
-  # wezterm.plugin.list(), for plugins that assume installation via
-  # wezterm's built-in plugin manager.
-  pluginListShim =
+  inherit (import ./_plugins.nix { inherit cfg lib; })
+    plainPlugins
+    pluginListShim
     registeredPlugins
-    |> mapAttrsToList (
-      _: p:
-      "{ plugin = '${p.url}', plugin_dir = wezterm.config_dir .. '/plugins/${encodePluginUrl p.url}', component = '${encodePluginUrl p.url}' },"
-    )
-    |> concatStringsSep "\n"
-    |> (
-      entries:
-      optionalString (entries != "") ''
-        local __real_plugin_list = wezterm.plugin.list
-        wezterm.plugin.list = function()
-          local plugins = __real_plugin_list()
-          for _, entry in ipairs({
-            ${entries}
-          }) do
-            plugins[#plugins + 1] = entry
-          end
-          return plugins
-        end
-      ''
-    );
+    ;
 in
 {
   config = mkIf cfg.enable {
@@ -160,10 +78,7 @@ in
         # code does not need to know the encoded name.
         (mapAttrs' (
           _: p:
-          let
-            encoded = encodePluginUrl p.url;
-          in
-          nameValuePair "wezterm/plugins/${encoded}/plugin" {
+          nameValuePair "wezterm/plugins/${p.dir}/plugin" {
             source = "${p.src}/plugin";
           }
         ) registeredPlugins)

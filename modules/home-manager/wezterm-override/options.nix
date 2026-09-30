@@ -56,15 +56,16 @@ with lib;
     };
 
     plugins = mkOption {
-      # `attrs` (not `submodule`) so bare flake inputs — path-coercible
-      # attrsets — are accepted without forced interpolation.
+      # `attrs` (not `submodule`) so `{ url, src }` values and bare
+      # path-coercible attrsets are accepted without forced interpolation.
       type = attrsOf (either path attrs);
       default = { };
       example = literalExpression ''
         {
-          # URL inferred from flake.lock; registered in wezterm.plugin.list()
-          tabline-wez = inputs.tabline-wez;
-          # Manual override for sources not in flake.lock
+          # Catalog entry built from a flake input (see overlays/wezterm-plugins.nix);
+          # registered in wezterm.plugin.list()
+          tabline-wez = pkgs.weztermPlugins.tabline-wez;
+          # Manual override for sources not in the catalog
           my-plugin = {
             url = "https://github.com/user/my-plugin";
             src = inputs.my-plugin;
@@ -72,20 +73,21 @@ with lib;
         }
       '';
       description = ''
-        Attribute set mapping plugin names to their sources (typically
-        flake inputs). Each source must contain a {file}`plugin/init.lua`
-        file. The module will symlink each plugin into
-        {file}`$XDG_CONFIG_HOME/wezterm/plugins/`, making it accessible
-        via {lua}`require("plugins.<name>")`.
+        Attribute set mapping plugin names to their sources. Each source must
+        contain a {file}`plugin/init.lua` file. The module will symlink each
+        plugin into {file}`$XDG_CONFIG_HOME/wezterm/plugins/`, making it
+        accessible via {lua}`require("plugins.<name>")`.
 
-        Plugins whose canonical repository URL can be determined — either
-        from flake.lock (github/gitlab inputs, matched by locked revision)
-        or from an explicit `{ url, src }` attribute set — are additionally
-        installed using wezterm's official URL-encoded directory layout
-        and registered in {lua}`wezterm.plugin.list()` via a generated
-        shim. This makes plugins that assume installation through
-        wezterm's built-in plugin manager (e.g. by indexing
-        {lua}`wezterm.plugin.list()[1]` at load time) work unpatched.
+        Plugins supplied as an attribute set with `url` and `src` — such as
+        entries from {file}`pkgs.weztermPlugins` (see
+        {file}`overlays/wezterm-plugins.nix`) or explicit `{ url, src; }`
+        values — are additionally installed using wezterm's official
+        URL-encoded directory layout and registered in
+        {lua}`wezterm.plugin.list()` via a generated shim. This makes plugins
+        that assume installation through wezterm's built-in plugin manager
+        (e.g. by indexing {lua}`wezterm.plugin.list()[1]` at load time) work
+        unpatched. Sources without a `url` (paths or bare flake inputs) are
+        installed in the plain `require("plugins.<name>")` layout only.
 
         Only use this for plugins loaded exclusively via
         {lua}`require("plugins.<name>")`: a plugin that is also cloned by

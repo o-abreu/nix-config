@@ -1,5 +1,5 @@
 {
-  inputs,
+  pkgs,
   ...
 }:
 {
@@ -9,6 +9,6 @@
       "keybinds.panes-and-tabs" = ./panes-and-tabs.lua;
       "keybinds.unicode-input" = ./unicode-input.lua;
     };
-    plugins = { inherit (inputs) wezterm-unicode-input; };
+    plugins = { inherit (pkgs.weztermPlugins) wezterm-unicode-input; };
   };
 }
