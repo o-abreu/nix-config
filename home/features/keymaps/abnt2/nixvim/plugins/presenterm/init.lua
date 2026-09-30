@@ -16,7 +16,7 @@ function(bufnr)
   end
 
   wk.add {
-    "<localleader>p",
+    "<localleader>P",
     group = "Partials",
     icon = "",
     bufnr = bufnr,
@@ -43,18 +43,21 @@ function(bufnr)
     vim.cmd "startinsert"
   end
 
-  nmap(bind "n", dot.wrap "Presenterm new", "New slide after current")
-  nmap(bind "N", new_slide_before, "New slide before current")
-  nmap(bind "s", cmd "split", "Split slide")
-  nmap(bind "d", cmd "delete", "Delete slide")
-  nmap(bind "y", cmd "yank", "Yank slide")
-  nmap(bind "v", cmd "select", "Select slide")
-  nmap(bind "k", dot.wrap "Presenterm move-down", "Move slide down")
-  nmap(bind "l", dot.wrap "Presenterm move-up", "Move slide up")
-  nmap(bind "R", cmd "reorder", "Reorder slides")
-  nmap(bind "L", cmd "list", "List slides")
-  nmap(bind "c", cmd "layout", "Select column layout")
-  nmap(bind "pi", cmd "partial include", "Include partial file")
-  nmap(bind "pe", cmd "partial edit", "Edit partial file")
-  nmap(bind "pl", cmd "partial list", "List all partials")
+  -- INFO: All presenterm keys live under the `,P` prefix instead of the bare
+  -- `,` (which markdown-plus now owns for formatting/lists/code). The `,p`
+  -- leaf was also let go: markdown-plus uses it for Smart Paste.
+  nmap(bind "Pn", dot.wrap "Presenterm new", "New slide after current")
+  nmap(bind "PN", new_slide_before, "New slide before current")
+  nmap(bind "Ps", cmd "split", "Split slide")
+  nmap(bind "Pd", cmd "delete", "Delete slide")
+  nmap(bind "Py", cmd "yank", "Yank slide")
+  nmap(bind "Pv", cmd "select", "Select slide")
+  nmap(bind "Pk", dot.wrap "Presenterm move-down", "Move slide down")
+  nmap(bind "Pl", dot.wrap "Presenterm move-up", "Move slide up")
+  nmap(bind "PR", cmd "reorder", "Reorder slides")
+  nmap(bind "PL", cmd "list", "List slides")
+  nmap(bind "Pc", cmd "layout", "Select column layout")
+  nmap(bind "PPi", cmd "partial include", "Include partial file")
+  nmap(bind "PPe", cmd "partial edit", "Edit partial file")
+  nmap(bind "PPl", cmd "partial list", "List all partials")
 end
