@@ -1,3 +1,3 @@
 {
-  programs.noctalia-greeter.settings.keyboard.layout = "br";
+  services.displayManager.noctalia-greeter.settings.keyboard.layout = "br";
 }

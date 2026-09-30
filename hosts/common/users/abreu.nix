@@ -14,8 +14,7 @@ in
 {
 
   _module.args = {
-    username = username;
-    relativeFlakePath = relativeFlakePath;
+    inherit relativeFlakePath;
     hmConfig = config.home-manager.users.${username};
   };
 

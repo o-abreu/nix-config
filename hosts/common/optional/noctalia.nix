@@ -8,7 +8,6 @@
       enable = true;
       recommendedServices.enable = true;
     };
-    noctalia-greeter.enable = true;
     hyprland = {
       enable = true;
       # Launch Hyprland via UWSM (Universal Wayland Session Manager) for
@@ -23,7 +22,10 @@
 
   # The greeter user (auto-created by greetd) runs the noctalia-greeter
   # compositor, which needs access to the GPU/DRM devices.
-  users.users.greeter.extraGroups = [ "video" "render" ];
+  users.users.greeter.extraGroups = [
+    "video"
+    "render"
+  ];
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
@@ -32,8 +34,11 @@
   # flashing and returning to the login screen. Bypass the greeter and start
   # a Hyprland session directly. With `hyprland.withUWSM` enabled, using
   # `start-hyprland` is correct (uwsm units are present).
-  services.greetd.settings.default_session = {
-    user = "abreu";
-    command = "${config.programs.hyprland.package}/bin/start-hyprland";
+  services = {
+    displayManager.noctalia-greeter.enable = true;
+    greetd.settings.default_session = {
+      user = "abreu";
+      command = "${config.programs.hyprland.package}/bin/start-hyprland";
+    };
   };
 }
