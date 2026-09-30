@@ -4,27 +4,30 @@
   ...
 }:
 let
-  handledLanguages = [
+  languages = [
     "julia"
     "python"
     "r"
   ];
 in
 {
-  _module.args.handledLanguages = handledLanguages;
+  _module.args.quarto = { inherit languages; };
 
   imports = [
     ./_jupytext.nix
-    ./_render-markdown.nix
+    ./_img-clip.nix
+    ./_vim-slime.nix
   ];
+
   programs.nixvim = {
     extraPackages = [ pkgs.quarto ];
+
     plugins = {
       quarto = {
         enable = true;
         lazyLoad.settings.ft = [ "quarto" ];
         settings = {
-          lspFeatures.languages = handledLanguages;
+          lspFeatures = { inherit languages; };
           codeRunner = {
             enabled = true;
             default_method = "slime";
@@ -33,11 +36,11 @@ in
         };
       };
 
-      # REPL and terminal windows
-      vim-slime = {
+      render-markdown = {
         enable = lib.mkDefault true;
-        lazyLoad.settings.ft = [ "quarto" ];
+        settings.file_types = [ "quarto" ];
       };
+
       snacks = {
         enable = lib.mkDefault true;
         settings.terminal.enable = lib.mkDefault true;
@@ -50,8 +53,5 @@ in
       };
       lsp.servers.marksman.filetypes = [ "quarto" ];
     };
-    files."ftplugin/quarto.lua".extraConfigLua = ''
-      vim.b.slime_cell_delimiter = "```"
-    '';
   };
 }
