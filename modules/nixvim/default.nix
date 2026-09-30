@@ -12,4 +12,10 @@
 #   1. Expose its package via `overlays/vim-plugins.nix` (or nixpkgs).
 #   2. Add the module definition in this directory.
 #   3. List it below.
-{ ... }: { presenterm-nvim = import ./presenterm-nvim.nix; }
+{ ... }: {
+  presenterm = import ./presenterm/config.nix;
+  crazy-coverage = import ./crazy-coverage-nvim.nix;
+  markdown-plus = import ./markdown-plus.nix;
+  blink-cmp = import ./blink-cmp.nix;
+  alpha-dashboard = import ./alpha-dashboard.nix;
+}

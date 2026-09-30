@@ -4,7 +4,7 @@
 }:
 {
   programs.nixvim.plugins = {
-    presenterm-nvim = {
+    presenterm = {
       inherit (config.programs.presenterm) enable;
     };
 
