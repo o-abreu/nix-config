@@ -3,7 +3,9 @@
     prepend_preloaders = [
       {
         url = "*.ipynb";
-        run = "faster-piper -- ${lib.getExe pkgs.python3Packages.euporie} \"$1\"";
+        # INFO: Pin to Python 3.12 — euporie's `flatlatex` dependency has no
+        # build for the default `python3Packages` (3.14).
+        run = "faster-piper -- ${lib.getExe pkgs.python312Packages.euporie} \"$1\"";
       }
     ];
     prepend_previewers = [
