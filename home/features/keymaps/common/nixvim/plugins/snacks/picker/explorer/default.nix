@@ -1,33 +1,36 @@
+{ config, lib, ... }:
+let
+  cfg = config.programs.nixvim.plugins.snacks;
+in
 {
-  config,
-  lib,
-  options,
-  ...
-}:
-{
-  config = lib.optionalAttrs (options ? programs.nixvim) {
-    programs.nixvim = {
-      keymaps = lib.mkIf config.programs.nixvim.plugins.snacks.enable [
-        {
-          mode = "n";
-          key = "<leader>e";
-          action.__raw = "function() Snacks.explorer() end";
-          options.desc = "Toggle Explorer";
-        }
-        {
-          mode = "n";
-          key = "<leader>o";
-          action.__raw =
-            # lua
-            ''
-              function()
-                ${builtins.readFile ./init.lua}
-              end
-            '';
-          options.desc = "Toggle Explorer Focus";
-        }
-      ];
-      plugins.snacks.settings.picker = {
+  programs.nixvim = {
+    keymaps = lib.mkIf cfg.enable [
+      {
+        mode = "n";
+        key = "<leader>e";
+        action.__raw = "function() Snacks.explorer() end";
+        options.desc = "Toggle Explorer";
+      }
+      {
+        mode = "n";
+        key = "<leader>o";
+        action.__raw =
+          # lua
+          ''
+            function()
+              ${builtins.readFile ./init.lua}
+            end
+          '';
+        options.desc = "Toggle Explorer Focus";
+      }
+    ];
+    plugins = {
+      alpha.dashboardButtons = lib.optional cfg.enable {
+        desc = "Toggle Explorer";
+        icon = "";
+      };
+
+      snacks.settings.picker = {
         actions.explorer_focus_code.__raw =
           # lua
           ''

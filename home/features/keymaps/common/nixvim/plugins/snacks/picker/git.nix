@@ -1,20 +1,15 @@
+{ config, lib, ... }:
 {
-  config,
-  lib,
-  options,
-  ...
-}:
-{
-  config = lib.optionalAttrs (options ? programs.nixvim) {
-    programs.nixvim.keymaps =
-      let
-        cfg = config.programs.nixvim.plugins.snacks;
-        enable =
-          cfg.enable && ((cfg.settings.picker.enabled or false) == true) && config.programs.git.enable;
-        prefix = "<leader>g";
-        mkAction = func: { __raw = "function() Snacks.picker.${func}() end"; };
-      in
-      lib.mkIf enable (
+  programs.nixvim =
+    let
+      cfg = config.programs.nixvim.plugins.snacks;
+      enable =
+        cfg.enable && ((cfg.settings.picker.enabled or false) == true) && config.programs.git.enable;
+      prefix = "<leader>g";
+      mkAction = func: { __raw = "function() Snacks.picker.${func}() end"; };
+    in
+    {
+      keymaps =
         map (el: el // { mode = "n"; }) [
           {
             action = mkAction "git_branches";
@@ -52,6 +47,11 @@
             options.desc = "Log File";
           }
         ]
-      );
-  };
+        |> lib.mkIf enable;
+
+      plugins.alpha.dashboardButtons = lib.optional enable {
+        desc = "Diff (Hunks)";
+        icon = "";
+      };
+    };
 }
