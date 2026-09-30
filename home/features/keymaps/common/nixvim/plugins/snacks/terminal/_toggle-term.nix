@@ -7,15 +7,33 @@
   cmd ? null,
   opts,
   bindSlime ? false,
+  resolve ? null,
 }:
+let
+  lua = config.lib.nixvim.lua;
+  prelude =
+    if resolve == null then
+      ''
+        local cmd = ${lua.toLuaObject cmd}
+        local count = ${toString opts.count}
+      ''
+    else
+      ''
+        local spec = ${resolve}
+        if spec == nil or spec.cmd == nil or spec.count == nil then
+          return
+        end
+        local cmd = spec.cmd
+        local count = spec.count
+      '';
+in
 {
   __raw =
     with config.lib.nixvim.lua;
     # lua
     ''
       function()
-        local cmd = ${toLuaObject cmd}
-        local count = ${toString opts.count}
+        ${prelude}
         local position = ${toLuaObject (lib.attrByPath [ "win" "position" ] null opts)}
         local bind_slime = ${toLuaObject bindSlime}
         -- Capture the buffer that initiated the launch: that is the buffer
