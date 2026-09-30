@@ -8,11 +8,18 @@ let
 in
 {
   programs.nixvim = {
+    extraPackages = with pkgs; [
+      nix-unit
+      namaka
+    ];
+    extraPlugins = with pkgs.vimPlugins; [
+      neotest-nix
+    ];
     plugins = {
       lsp.servers.statix.enable = true;
 
       conform-nvim.settings = {
-        formatters_by_ft.nix = [ "nixfmt" ];
+        formatters_by_ft.nix = [ "alejandra" ];
         formatters.nixfmt.command = getExe pkgs.nixfmt;
       };
 
@@ -22,7 +29,10 @@ in
         linters.deadnix.cmd = getExe pkgs.deadnix;
       };
 
-      nix.enable = true;
+      neotest.settings.adapters = [
+        "require('neotest-nix')"
+      ];
+
       direnv.enable = pkgs.stdenv.hostPlatform.isLinux;
       nix-develop.enable = true;
     };
