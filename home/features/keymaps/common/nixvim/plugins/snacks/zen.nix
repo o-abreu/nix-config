@@ -1,31 +1,24 @@
+{ config, lib, ... }:
 {
-  config,
-  lib,
-  options,
-  ...
-}:
-{
-  config = lib.optionalAttrs (options ? programs.nixvim) {
-    programs.nixvim.keymaps =
-      let
-        cfg = config.programs.nixvim.plugins.snacks;
-        enable = cfg.enable && ((cfg.settings.zen.enabled or false) == true);
-        prefix = "<leader>u";
-        mkAction = func: { __raw = "function() Snacks.${func}() end"; };
-      in
-      [
-        {
-          key = prefix + "z";
-          action = mkAction "zen";
-          options.desc = "Toggle Zen Mode";
-        }
-        {
-          key = prefix + "m";
-          action = mkAction "zen.zoom";
-          options.desc = "Toggle Maximize (Zoom)";
-        }
-      ]
-      |> map (m: m // { mode = m.mode or "n"; })
-      |> lib.mkIf enable;
-  };
+  programs.nixvim.keymaps =
+    let
+      cfg = config.programs.nixvim.plugins.snacks;
+      enable = cfg.enable && ((cfg.settings.zen.enabled or false) == true);
+      prefix = "<leader>u";
+      mkAction = func: { __raw = "function() Snacks.${func}() end"; };
+    in
+    [
+      {
+        key = prefix + "z";
+        action = mkAction "zen";
+        options.desc = "Toggle Zen Mode";
+      }
+      {
+        key = prefix + "m";
+        action = mkAction "zen.zoom";
+        options.desc = "Toggle Maximize (Zoom)";
+      }
+    ]
+    |> map (m: m // { mode = m.mode or "n"; })
+    |> lib.mkIf enable;
 }
