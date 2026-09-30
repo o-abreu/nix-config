@@ -1,12 +1,11 @@
 {
   hmConfig,
   persistentPath,
-  username,
   lib,
   ...
 }:
 {
-  preservation.preserveAt.${persistentPath}.users.${username}.files =
+  preservation.preserveAt.${persistentPath}.users.${hmConfig.home.username}.files =
     lib.mkIf (hmConfig ? sops && hmConfig.sops.age.keyFile != null)
       [
         {

@@ -2,11 +2,11 @@
   hmConfig,
   inputs,
   lib,
-  username,
   persistentPath,
   relativeFlakePath,
   ...
 }:
+with hmConfig.home;
 {
 
   imports = [ inputs.home-manager.nixosModules.default ];
@@ -27,7 +27,7 @@
       };
     in
     dirs
-    |> map (dir: lib.nameValuePair "${hmConfig.home.homeDirectory}/${dir}" { d = userPerm; })
+    |> map (dir: lib.nameValuePair "${homeDirectory}/${dir}" { d = userPerm; })
     |> builtins.listToAttrs;
 
   preservation.preserveAt.${persistentPath}.users.${username} = {

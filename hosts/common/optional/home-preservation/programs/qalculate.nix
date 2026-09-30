@@ -1,12 +1,11 @@
 {
   hmConfig,
   persistentPath,
-  username,
   lib,
   ...
 }:
 {
-  preservation.preserveAt.${persistentPath}.users.${username} =
+  preservation.preserveAt.${persistentPath}.users.${hmConfig.home.username} =
     lib.mkIf hmConfig.programs.qalculate.enable
       {
         directories = [ ".local/share/qalculate" ];
