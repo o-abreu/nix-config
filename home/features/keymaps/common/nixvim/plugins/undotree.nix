@@ -1,26 +1,13 @@
+{ config, lib, ... }:
 {
-  config,
-  lib,
-  options,
-  ...
-}:
-{
-  config = lib.optionalAttrs (options ? programs.nixvim) {
 
-    programs.nixvim.keymaps =
-      let
-        cfg = config.programs.nixvim.plugins.undotree;
-      in
-      lib.mkIf cfg.enable [
-        {
-          mode = "n";
-          key = "<leader>uU";
-          action = "<cmd>UndotreeToggle<CR>";
-          options = {
-            silent = true;
-            desc = "Undotree";
-          };
-        }
-      ];
+  programs.nixvim.keymaps = lib.optional config.programs.nixvim.plugins.undotree.enable {
+    mode = "n";
+    key = "<leader>uU";
+    action = "<cmd>UndotreeToggle<CR>";
+    options = {
+      silent = true;
+      desc = "Undotree";
+    };
   };
 }

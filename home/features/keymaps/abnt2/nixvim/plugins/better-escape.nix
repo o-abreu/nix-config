@@ -1,21 +1,16 @@
-{ lib, options, ... }:
 {
-  config = lib.optionalAttrs (options ? programs.nixvim) {
-    programs.nixvim.plugins.better-escape = {
-      settings = {
-        default_mappings = false;
-        mappings = {
-          i = {
-            j = {
-              "ç" = "<Esc>";
-            };
-            "ç" = {
-              j = "<Esc>";
-              "ç" = "<Esc>";
-            };
+  programs.nixvim.plugins.better-escape = {
+    settings = {
+      default_mappings = false;
+      mappings = {
+        i = {
+          j."ç" = "<Esc>";
+          "ç" = {
+            j = "<Esc>";
+            "ç" = "<Esc>";
           };
-          t."ç"."ç" = "<C-\\><C-n>";
         };
+        t."ç"."ç" = "<C-\\><C-n>";
       };
     };
   };

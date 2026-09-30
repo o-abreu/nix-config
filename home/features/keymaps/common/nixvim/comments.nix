@@ -17,20 +17,6 @@ in
       }
 
       {
-        action = prefix;
-        key = "<leader>/";
-        mode = [
-          "n"
-          "x"
-        ];
-        options = {
-          desc = "Toggle comment";
-          remap = true;
-          silent = true;
-        };
-      }
-
-      {
         action = "o<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>";
         key = prefix + "o";
         options = {
