@@ -1,11 +1,5 @@
 {
-  pkgs,
-  ...
-}:
-{
   programs.nixvim = {
-    extraPlugins = [ pkgs.vimPlugins.blink-compat ];
-
     plugins = {
       dap = {
         enable = true;
@@ -20,10 +14,6 @@
           "DapToggleRepl"
           "DapTerminate"
         ];
-      };
-
-      blink-compat = {
-        enable = true;
       };
 
       blink-cmp.settings.sources.providers.dap = {

@@ -21,6 +21,9 @@ in
       pkgs.glab
     ];
     plugins = {
+      # INFO: Required by any `blink.compat.source` provider (dap, vimtex).
+      blink-compat.enable = true;
+
       blink-cmp-git = mkBlinkPlugin { };
       blink-cmp-spell = mkBlinkPlugin { };
       blink-emoji = mkBlinkPlugin { };
