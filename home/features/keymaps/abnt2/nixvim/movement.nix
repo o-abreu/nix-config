@@ -10,14 +10,17 @@
         ];
       in
       {
-        disabled_keys = lib.genAttrs dir (_: [ ]);
+        # Each arrow key restricted in no mode (empty mode list).
+        # `__empty` is required: toLuaObject drops plain empty lists.
+        disabled_keys = lib.genAttrs dir (_: { __empty = true; });
+        # Empty-string mode matches every mode, so arrows are fully restricted.
         restricted_keys = lib.genAttrs dir (_: [ "" ]);
       };
 
     keymaps =
       map
-        (
-          m:
+      (
+        m:
           m
           // {
             mode = [
@@ -26,75 +29,75 @@
               "x"
             ];
           }
-        )
-        [
-          {
-            action = "v:count == 0? 'gj' : 'j'";
-            key = "k";
-            options = {
-              desc = "Move cursor down";
-              expr = true;
-              silent = true;
-            };
-          }
+      )
+      [
+        {
+          action = "v:count == 0? 'gj' : 'j'";
+          key = "k";
+          options = {
+            desc = "Move cursor down";
+            expr = true;
+            silent = true;
+          };
+        }
 
-          {
-            action = "v:count == 0? 'gk' : 'k'";
-            key = "l";
-            options = {
-              desc = "Move cursor up";
-              expr = true;
-              silent = true;
-            };
-          }
+        {
+          action = "v:count == 0? 'gk' : 'k'";
+          key = "l";
+          options = {
+            desc = "Move cursor up";
+            expr = true;
+            silent = true;
+          };
+        }
 
-          {
-            action = "h";
-            key = "j";
-            options = {
-              desc = "Move cursor left";
-              silent = true;
-            };
-          }
+        {
+          action = "h";
+          key = "j";
+          options = {
+            desc = "Move cursor left";
+            silent = true;
+          };
+        }
 
-          {
-            action = "l";
-            key = "ç";
-            options = {
-              desc = "Move cursor right";
-              silent = true;
-            };
-          }
+        {
+          action = "l";
+          key = "ç";
+          options = {
+            desc = "Move cursor right";
+            silent = true;
+          };
+        }
 
-          {
-            action = "gg^";
-            key = "gg";
-            options.desc = "Move cursor to the first character";
-          }
+        {
+          action = "gg^";
+          key = "gg";
+          options.desc = "Move cursor to the first character";
+        }
 
-          {
-            action = "GG$";
-            key = "G";
-            options.desc = "Move cursor to the last character";
-          }
+        {
+          action = "GG$";
+          key = "G";
+          options.desc = "Move cursor to the last character";
+        }
 
-          {
-            action = "g^";
-            key = "^";
-            options.desc = "Move cursor to the first character linewise";
-          }
+        {
+          action = "g^";
+          key = "^";
+          options.desc = "Move cursor to the first character linewise";
+        }
 
-          {
-            action = "g0";
-            key = "0";
-            options.desc = "Move cursor to the beggining of the line";
-          }
+        {
+          action = "g0";
+          key = "0";
+          options.desc = "Move cursor to the beggining of the line";
+        }
 
-          {
-            action = "g$";
-            key = "$";
-            options.desc = "Move cursor to the end of the line";
-          }
-        ];
+        {
+          action = "g$";
+          key = "$";
+          options.desc = "Move cursor to the end of the line";
+        }
+      ];
   };
 }
