@@ -1,42 +1,40 @@
-{ lib, options, ... }:
+{ lib, ... }:
 {
-  config = lib.optionalAttrs (options ? programs.nixvim) {
-    programs.nixvim.keymaps = [
+  programs.nixvim = {
+    keymaps = [
       {
         action = "<cmd>w<cr>";
         key = "<Leader>w";
-        options = {
-          desc = "Save file";
-        };
+        options.desc = "Save file";
         mode = "n";
       }
 
       {
         action = "<cmd>confirm q<cr>";
         key = "<Leader>q";
-        options = {
-          desc = "Close window";
-        };
+        options.desc = "Close window";
         mode = "n";
       }
 
       {
         action = "<cmd>confirm qall<cr>";
         key = "<Leader>Q";
-        options = {
-          desc = "Quit Nixvim";
-        };
+        options.desc = "Quit Nixvim";
         mode = "n";
       }
 
       {
-        # Trailing space opens the command line in edit mode so the user can
-        # name a new file or open an existing one.
-        action = "<cmd>e <cr>";
+        # INFO: Feed `:e ` (without <CR>) so the command line opens in ":" mode
+        # with `:e ` prefilled, letting the user name a new file or open an
+        # existing one. A bare `<cmd>e <cr>` would execute `:e` with an empty
+        # argument (E32) and flash.
+        action.__raw = ''
+          function()
+            vim.api.nvim_feedkeys(":e ", "n", false)
+          end
+        '';
         key = "<Leader>n";
-        options = {
-          desc = "New/Open file";
-        };
+        options.desc = "New/Open file";
         mode = "n";
       }
 
@@ -64,9 +62,7 @@
       {
         key = "<leader>O";
         action = "<cmd>only<CR>";
-        options = {
-          desc = "Close all other windows";
-        };
+        options.desc = "Close all other windows";
         mode = "n";
       }
 
@@ -87,6 +83,21 @@
         '';
         options.desc = "Delete preceding whitespace";
       }
+    ];
+
+    plugins.alpha.dashboardButtons = lib.mkMerge [
+      (lib.mkOrder 100 [
+        {
+          desc = "New/Open file";
+          icon = "";
+        }
+      ])
+      (lib.mkOrder 2000 [
+        {
+          desc = "Quit Nixvim";
+          icon = "󰅙";
+        }
+      ])
     ];
   };
 }

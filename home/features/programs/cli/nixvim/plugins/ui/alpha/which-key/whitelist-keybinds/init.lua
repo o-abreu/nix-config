@@ -33,6 +33,12 @@ function M.lock(buf)
       for _, v in ipairs(el.val) do
         collect(v)
       end
+    elseif el.type == "dash_two_column" and el.val then
+      -- Our custom two-column element: `val` is a flat list of cells, each a
+      -- normal `dashboard.button(...)`.
+      for _, cell in ipairs(el.val) do
+        collect(cell)
+      end
     end
   end
   for _, el in ipairs(conf.layout or {}) do
