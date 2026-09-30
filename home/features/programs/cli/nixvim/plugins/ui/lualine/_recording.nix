@@ -1,7 +1,4 @@
 { config, ... }:
-let
-  icons = import ../_icons.nix;
-in
 {
   programs.nixvim = {
     autoCmd = [
@@ -33,7 +30,7 @@ in
             function()
               local reg = vim.fn.reg_recording()
               if reg == "" then return "" end
-              return "${icons.macroRecording} Recording @" .. reg
+              return " Recording @" .. reg
             end
           '';
 

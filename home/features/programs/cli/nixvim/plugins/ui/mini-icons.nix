@@ -1,24 +1,22 @@
-let
-  icons = import ./_icons.nix;
-in {
+{
   programs.nixvim.plugins = {
     mini = {
       mockDevIcons = true;
 
-      modules.icons = with icons; {
+      modules.icons = {
         file = {
           ".keep" = {
-            glyph = git.default;
+            glyph = "󰊢";
             hl = "MiniIconsGrey";
           };
           "devcontainer.json" = {
-            glyph = container;
+            glyph = "";
             hl = "MiniIconsAzure";
           };
         };
         filetype = {
           dotenv = {
-            glyph = settings;
+            glyph = "";
             hl = "MiniIconsYellow";
           };
         };

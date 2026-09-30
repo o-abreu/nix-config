@@ -1,6 +1,4 @@
-let
-  icons = import ./_icons.nix;
-in {
+{
   programs.nixvim.plugins.nvim-lightbulb = {
     enable = true;
     lazyLoad.settings.event = "DeferredUIEnter";
@@ -21,12 +19,12 @@ in {
 
       sign = {
         enabled = true;
-        text = icons.actionAvailable;
+        text = "󰌶";
       };
 
       status_text = {
         enabled = true;
-        text = icons.actionAvailable;
+        text = "󰌶";
       };
     };
   };

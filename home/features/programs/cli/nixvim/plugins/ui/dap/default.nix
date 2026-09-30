@@ -1,26 +1,24 @@
-let
-  icons = import ./_icons.nix;
-in {
+{
   programs.nixvim = {
-    plugins.dap.settings.signs = with icons.dap; {
+    plugins.dap.settings.signs = {
       dapBreakpoint = {
-        text = breakpoint.default;
+        text = "";
         texthl = "DiagnosticInfo";
       };
       dapBreakpointCondition = {
-        text = breakpoint.condition;
+        text = "";
         texthl = "DiagnosticInfo";
       };
       dapBreakpointRejected = {
-        text = breakpoint.rejected;
+        text = "";
         texthl = "DiagnosticError";
       };
       dapLogPoint = {
-        text = logpoint;
+        text = "󰛿";
         texthl = "DiagnosticInfo";
       };
       dapStopped = {
-        text = stopped;
+        text = "󰁕";
         texthl = "DiagnosticWarn";
         linehl = "DapStoppedLine";
         numhl = "DapStoppedLine";
