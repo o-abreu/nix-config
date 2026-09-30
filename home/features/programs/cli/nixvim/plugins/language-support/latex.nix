@@ -1,12 +1,20 @@
 {
+  pkgs,
+  ...
+}:
+{
   programs.nixvim = {
+    # INFO: nixvim has no `cmp-vimtex` module, so the plugin would never land
+    # on the runtimepath. Add it explicitly; blink loads it as `cmp_vimtex`
+    # (the plugin ships `lua/cmp_vimtex/`, not `lua/cmp-vimtex/`).
+    extraPlugins = [ pkgs.vimPlugins.cmp-vimtex ];
+
     plugins = {
       vimtex = {
         enable = true;
         settings.mappings_prefix = "<localleader>";
       };
       lsp.servers.texlab.enable = true;
-      cmp-vimtex.enable = true;
       blink-cmp-latex.enable = true;
 
       blink-cmp = {
@@ -38,7 +46,7 @@
 
             vimtex = {
               name = "VimTeX";
-              module = "cmp-vimtex";
+              module = "cmp_vimtex";
             }
             // common;
           };
