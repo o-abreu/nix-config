@@ -17,16 +17,19 @@ let
       version = "main";
       src = inputs.${toInput name};
     };
-  names = [
-    "vim-slime-cells"
-    "alpha-ascii.nvim"
-    "presenterm.nvim"
-    "qalc.nvim"
-    "sshfs.nvim"
-  ];
 in
 {
-  vimPlugins = prev.vimPlugins // lib.listToAttrs (
-    map (name: lib.nameValuePair (toInput name) (buildPlugin name)) names
-  );
+  vimPlugins =
+    [
+      "alpha-ascii.nvim"
+      "crazy-coverage.nvim"
+      "markdown-plus.nvim"
+      "presenterm.nvim"
+      "qalc.nvim"
+      "sshfs.nvim"
+      "vim-slime-cells"
+    ]
+    |> map (name: lib.nameValuePair (toInput name) (buildPlugin name))
+    |> lib.listToAttrs
+    |> (plugins: prev.vimPlugins // plugins);
 }

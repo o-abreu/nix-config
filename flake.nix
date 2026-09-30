@@ -52,6 +52,8 @@
     # INFO: Nixvim
     nixvim.url = "github:nix-community/nixvim/nixos-26.05";
 
+    neotest-nix.url = "github:khaneliman/neotest-nix";
+
     alpha-ascii-nvim = {
       url = "github:nhattVim/alpha-ascii.nvim/main";
       flake = false;
@@ -74,6 +76,16 @@
 
     presenterm-nvim = {
       url = "github:Piotr1215/presenterm.nvim";
+      flake = false;
+    };
+
+    crazy-coverage-nvim = {
+      url = "github:mr-u0b0dy/crazy-coverage.nvim/main";
+      flake = false;
+    };
+
+    markdown-plus-nvim = {
+      url = "github:YousefHadder/markdown-plus.nvim/main";
       flake = false;
     };
 
