@@ -1,71 +1,40 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 let
-  isWordsEnabled = lib.any (p: p.__unkeyed-1 == "blink-cmp-words") config.programs.nixvim.plugins.lz-n.plugins;
-  isAvanteEnabled = lib.any (p: p.__unkeyed-1 == "blink-cmp-avante") config.programs.nixvim.plugins.lz-n.plugins;
-  isVimtexEnabled = config.programs.nixvim.plugins.vimtex.enable;
-  isBlinkCmpLatexEnabled = config.programs.nixvim.plugins.blink-cmp-latex.enable;
-  isCmpVimtexEnabled = lib.elem pkgs.vimPlugins.cmp-vimtex config.programs.nixvim.extraPlugins;
+  cfg = config.programs.nixvim.plugins.blink-cmp;
+  extra = cfg.extraSources;
+  toLua = lib.generators.toLua { };
+
+  # Built-in sources are always available; feature modules contribute the rest
+  # through `plugins.blink-cmp.extraSources`.
+  baseSources = [
+    "buffer"
+    "lsp"
+    "path"
+    "snippets"
+  ];
+  defaultSources = baseSources ++ extra.default;
+  commentSources = [ "buffer" ] ++ extra.comment;
+  gitcommitSources = [ "buffer" ] ++ extra.gitcommit;
 in
 {
   programs.nixvim.plugins.blink-cmp.settings.sources = {
+    # The only genuinely dynamic part is the Treesitter comment context; the
+    # source lists themselves are declared by the feature modules.
     default.__raw =
       # lua
       ''
         function(ctx)
-          -- Base sources that are always available
-          local base_sources = { 'buffer', 'lsp', 'path', 'snippets' }
-
-          -- Build common sources list dynamically based on enabled plugins
-          local common_sources = vim.deepcopy(base_sources)
-
-          -- Add optional sources based on plugin availability
-          ${lib.optionalString config.programs.nixvim.plugins.lazydev.enable "table.insert(common_sources, 'lazydev')"}
-          ${lib.optionalString config.programs.nixvim.plugins.blink-copilot.enable "table.insert(common_sources, 'copilot')"}
-          ${lib.optionalString isWordsEnabled "table.insert(common_sources, 'dictionary')"}
-          ${lib.optionalString config.programs.nixvim.plugins.blink-emoji.enable "table.insert(common_sources, 'emoji')"}
-          ${lib.optionalString (lib.elem pkgs.vimPlugins.blink-nerdfont-nvim config.programs.nixvim.extraPlugins) "table.insert(common_sources, 'nerdfont')"}
-          ${lib.optionalString config.programs.nixvim.plugins.blink-cmp-spell.enable "table.insert(common_sources, 'spell')"}
-          ${lib.optionalString (lib.elem pkgs.vimPlugins.blink-cmp-yanky config.programs.nixvim.extraPlugins) "table.insert(common_sources, 'yank')"}
-          ${lib.optionalString config.programs.nixvim.plugins.blink-ripgrep.enable "table.insert(common_sources, 'ripgrep')"}
-          ${lib.optionalString (lib.elem pkgs.vimPlugins.blink-cmp-npm-nvim config.programs.nixvim.extraPlugins) "if vim.fn.expand('%:t') == 'package.json' then table.insert(common_sources, 'npm') end"}
-          ${lib.optionalString isAvanteEnabled "table.insert(common_sources, 'avante')"}
-          ${lib.optionalString isBlinkCmpLatexEnabled "table.insert(common_sources, 'latex')"}
-          ${lib.optionalString isCmpVimtexEnabled "table.insert(common_sources, 'vimtex')"}
-
-          -- Special context handling
           local success, node = pcall(vim.treesitter.get_node)
           if success and node and vim.tbl_contains({ 'comment', 'line_comment', 'block_comment' }, node:type()) then
-            local comment_sources = { 'buffer', 'spell' }
-            ${lib.optionalString (
-              config.programs.nixvim.plugins.blink-cmp-dictionary.enable || isWordsEnabled
-            ) "table.insert(comment_sources, 'dictionary')"}
-            return comment_sources
+            return ${toLua commentSources}
           elseif vim.bo.filetype == 'gitcommit' then
-            local git_sources = { 'buffer', 'spell' }
-            ${lib.optionalString (
-              config.programs.nixvim.plugins.blink-cmp-dictionary.enable || isWordsEnabled
-            ) "table.insert(git_sources, 'dictionary')"}
-            ${lib.optionalString config.programs.nixvim.plugins.blink-cmp-git.enable "table.insert(git_sources, 'git')"}
-            ${lib.optionalString (lib.elem pkgs.vimPlugins.blink-cmp-conventional-commits config.programs.nixvim.extraPlugins) "table.insert(git_sources, 'conventional_commits')"}
-            return git_sources
-          ${lib.optionalString config.programs.nixvim.plugins.easy-dotnet.enable # Lua
-
-            ''
-              elseif vim.bo.filetype == "cs" or vim.bo.filetype == "fsharp" or vim.bo.filetype == "vb" or vim.bo.filetype == "razor" or vim.bo.filetype == "xml" then
-                -- For .NET filetypes, add easy-dotnet to the sources
-                local dotnet_sources = vim.deepcopy(common_sources)
-                table.insert(dotnet_sources, 'easy-dotnet')
-                return dotnet_sources
-            ''
-          }
-          else
-            return common_sources
+            return ${toLua gitcommitSources}
           end
+          return ${toLua defaultSources}
         end
       '';
 
@@ -120,175 +89,6 @@ in
           ''
             function(ctx)
               return ctx.trigger.initial_kind ~= 'trigger_character'
-            end
-          '';
-      };
-
-      conventional_commits =
-        lib.mkIf
-          (lib.elem pkgs.vimPlugins.blink-cmp-conventional-commits config.programs.nixvim.extraPlugins)
-          {
-            name = "Conventional Commits";
-            module = "blink-cmp-conventional-commits";
-            score_offset = 68;
-            enabled.__raw =
-              # lua
-              ''
-                function()
-                  return vim.bo.filetype == 'gitcommit'
-                end
-              '';
-          };
-
-      copilot = lib.mkIf config.programs.nixvim.plugins.blink-copilot.enable {
-        name = "copilot";
-        module = "blink-copilot";
-        async = true;
-        timeout_ms = 1000;
-        max_items = 3;
-        score_offset = 1000;
-      };
-
-      dictionary = lib.mkIf isWordsEnabled {
-        name = "Dict";
-        module = "blink-cmp-words.dictionary";
-        min_keyword_length = 3;
-        max_items = 8;
-        score_offset = 8;
-        opts = {
-          dictionary_search_threshold = 3;
-          definition_pointers = [
-            "!"
-            "&"
-            "^"
-          ];
-        };
-      };
-
-      easy-dotnet = lib.mkIf config.programs.nixvim.plugins.easy-dotnet.enable {
-        module = "easy-dotnet.completion.blink";
-        name = "easy-dotnet";
-        async = true;
-        score_offset = 80;
-        enabled.__raw =
-          # lua
-          ''
-            function()
-              return vim.bo.filetype == "xml"
-            end
-          '';
-      };
-
-      emoji = lib.mkIf config.programs.nixvim.plugins.blink-emoji.enable {
-        name = "Emoji";
-        module = "blink-emoji";
-        score_offset = 0;
-      };
-
-      git = lib.mkIf config.programs.nixvim.plugins.blink-cmp-git.enable {
-        name = "Git";
-        module = "blink-cmp-git";
-        enabled = true;
-        score_offset = 70;
-        should_show_items.__raw =
-          # lua
-          ''
-            function()
-              return vim.o.filetype == 'gitcommit' or vim.o.filetype == 'markdown'
-            end
-          '';
-        opts = {
-          git_centers = {
-            github = {
-              issue = {
-                on_error.__raw = "function(_,_) return true end";
-              };
-            };
-          };
-        };
-      };
-
-      nerdfont =
-        lib.mkIf (lib.elem pkgs.vimPlugins.blink-nerdfont-nvim config.programs.nixvim.extraPlugins)
-          {
-            module = "blink-nerdfont";
-            name = "Nerd Fonts";
-            score_offset = 68;
-            opts.insert = true;
-          };
-
-      npm = lib.mkIf (lib.elem pkgs.vimPlugins.blink-cmp-npm-nvim config.programs.nixvim.extraPlugins) {
-        name = "npm";
-        module = "blink-cmp-npm";
-        async = true;
-        timeout_ms = 2000;
-        score_offset = 70;
-        enabled.__raw =
-          # lua
-          ''
-            function()
-              return vim.fn.expand('%:t') == 'package.json'
-            end
-          '';
-        opts = {
-          ignore = { };
-          only_semantic_versions = true;
-          only_latest_version = false;
-        };
-      };
-
-      ripgrep = lib.mkIf config.programs.nixvim.plugins.blink-ripgrep.enable {
-        name = "Ripgrep";
-        module = "blink-ripgrep";
-        async = true;
-        timeout_ms = 500;
-        max_items = 10;
-        min_keyword_length = 4;
-        score_offset = 5;
-      };
-
-      spell = lib.mkIf config.programs.nixvim.plugins.blink-cmp-spell.enable {
-        name = "Spell";
-        module = "blink-cmp-spell";
-        max_items = 3;
-        score_offset = -10;
-      };
-
-      yank = lib.mkIf (lib.elem pkgs.vimPlugins.blink-cmp-yanky config.programs.nixvim.extraPlugins) {
-        name = "yank";
-        module = "blink-yanky";
-        score_offset = 69;
-        max_items = 3;
-      };
-
-      avante = lib.mkIf isAvanteEnabled {
-        name = "Avante";
-        module = "blink-cmp-avante";
-        score_offset = 50;
-      };
-
-      latex = lib.mkIf isBlinkCmpLatexEnabled {
-        name = "LaTeX";
-        module = "blink-cmp-latex";
-        score_offset = 70;
-        enabled.__raw =
-          # lua
-          ''
-            function()
-              return vim.bo.filetype == 'tex' or vim.bo.filetype == 'latex'
-            end
-          '';
-      };
-
-      vimtex = lib.mkIf isCmpVimtexEnabled {
-        name = "VimTeX";
-        module = "cmp-vimtex";
-        score_offset = 70;
-        enabled.__raw =
-          # lua
-          ''
-            function()
-              return vim.bo.filetype == 'tex' or vim.bo.filetype == 'latex'
             end
           '';
       };
