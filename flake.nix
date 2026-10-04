@@ -3,11 +3,19 @@
 
   inputs = {
     # INFO: Core system inputs
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    # INFO: Stable package set for packages that do not build on unstable yet.
+    # Exposed as `pkgs.stable` via overlays/stable-packages.nix. Every consumer
+    # must link the upstream issue in a comment and drop it once nixpkgs catches
+    # up — see TODO.md.
+    nixpkgs-stable = {
+      url = "github:nixos/nixpkgs/nixos-26.05";
+      flake = false;
+    };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-26.05";
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -37,7 +45,7 @@
       inputs.home-manager.follows = "home-manager";
     };
 
-    stylix.url = "github:nix-community/stylix/release-26.05";
+    stylix.url = "github:nix-community/stylix/master";
 
     # INFO: System and hardware
     systems.url = "github:nix-systems/default-linux";
@@ -50,7 +58,7 @@
     };
 
     # INFO: Nixvim
-    nixvim.url = "github:nix-community/nixvim/nixos-26.05";
+    nixvim.url = "github:nix-community/nixvim/main";
 
     neotest-nix.url = "github:khaneliman/neotest-nix";
 
@@ -155,17 +163,6 @@
 
     vortriz-nur = {
       url = "github:Vortriz/nur-packages";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # INFO: Noctalia
-    noctalia = {
-      url = "github:noctalia-dev/noctalia";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    noctalia-greeter = {
-      url = "github:noctalia-dev/noctalia-greeter";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
