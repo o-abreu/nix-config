@@ -4,46 +4,31 @@
       {
         __unkeyed-1 = "y";
         __unkeyed-2 = "<Plug>(YankyYank)";
-        mode = [
-          "n"
-          "x"
-        ];
+        mode = [ "n" "x" ];
         desc = "Yank text";
       }
       {
         __unkeyed-1 = "p";
         __unkeyed-2 = "<Plug>(YankyPutAfter)";
-        mode = [
-          "n"
-          "x"
-        ];
+        mode = [ "n" "x" ];
         desc = "Put yanked text after cursor";
       }
       {
         __unkeyed-1 = "P";
         __unkeyed-2 = "<Plug>(YankyPutBefore)";
-        mode = [
-          "n"
-          "x"
-        ];
+        mode = [ "n" "x" ];
         desc = "Put yanked text before cursor";
       }
       {
         __unkeyed-1 = "gp";
         __unkeyed-2 = "<Plug>(YankyGPutAfter)";
-        mode = [
-          "n"
-          "x"
-        ];
+        mode = [ "n" "x" ];
         desc = "Put yanked text after cursor and leave cursor after";
       }
       {
         __unkeyed-1 = "gP";
         __unkeyed-2 = "<Plug>(YankyGPutBefore)";
-        mode = [
-          "n"
-          "x"
-        ];
+        mode = [ "n" "x" ];
         desc = "Put yanked text before cursor and leave cursor after";
       }
       {

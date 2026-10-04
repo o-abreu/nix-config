@@ -4,10 +4,7 @@
       bindings = {
         input.keys."<C-p>" = {
           __unkeyed-1 = "toggle_focus";
-          mode = [
-            "n"
-            "i"
-          ];
+          mode = [ "n" "i" ];
         };
         list.keys."<C-p>" = "toggle_focus";
       };

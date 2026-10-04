@@ -7,40 +7,28 @@ in
     (bind {
       key = prefix + "b";
       plug = "Bold";
-      mode = [
-        "n"
-        "x"
-      ];
+      mode = [ "n" "x" ];
       desc = "Toggle bold formatting";
     })
 
     (bind {
       key = prefix + "i";
       plug = "Italic";
-      mode = [
-        "n"
-        "x"
-      ];
+      mode = [ "n" "x" ];
       desc = "Toggle italic formatting";
     })
 
     (bind {
       key = prefix + "S";
       plug = "Strikethrough";
-      mode = [
-        "n"
-        "x"
-      ];
+      mode = [ "n" "x" ];
       desc = "Toggle strikethrough formatting";
     })
 
     (bind {
       key = prefix + "=";
       plug = "Highlight";
-      mode = [
-        "n"
-        "x"
-      ];
+      mode = [ "n" "x" ];
       desc = "Toggle highlight formatting";
     })
 
@@ -81,20 +69,14 @@ in
       key = prefix + "q";
       plug = "ToggleQuote";
       desc = "Toggle blockquote";
-      mode = [
-        "n"
-        "x"
-      ];
+      mode = [ "n" "x" ];
     })
 
     (bind {
       key = "x";
       plug = "ToggleCheckbox";
       desc = "Toggle checkbox";
-      mode = [
-        "n"
-        "x"
-      ];
+      mode = [ "n" "x" ];
     })
   ];
 }

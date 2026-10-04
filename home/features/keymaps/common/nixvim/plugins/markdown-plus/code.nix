@@ -8,10 +8,7 @@
         (bind {
           key = prefix + "`";
           plug = "Code";
-          mode = [
-            "n"
-            "x"
-          ];
+          mode = [ "n" "x" ];
           desc = "Toggle inline code formatting";
         })
 

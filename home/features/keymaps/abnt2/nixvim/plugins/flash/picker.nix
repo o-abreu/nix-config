@@ -14,10 +14,7 @@
           list.keys = {
             "h" = {
               __unkeyed-1 = "flash";
-              mode = [
-                "n"
-                "x"
-              ];
+              mode = [ "n" "x" ];
             };
           };
         };

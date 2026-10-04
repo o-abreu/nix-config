@@ -54,10 +54,7 @@
       (bind {
         key = prefix + "L";
         plug = "compile-selected";
-        mode = [
-          "n"
-          "x"
-        ];
+        mode = [ "n" "x" ];
         desc = "Compile Selection";
       })
 

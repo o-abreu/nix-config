@@ -1,35 +1,22 @@
-{ lib, ... }: {
+{lib, ...}: {
   programs.nixvim = {
-    plugins.hardtime.settings =
-      let
-        dir = [
-          "<Up>"
-          "<Down>"
-          "<Left>"
-          "<Right>"
-        ];
-      in
-      {
-        # Each arrow key restricted in no mode (empty mode list).
-        # `__empty` is required: toLuaObject drops plain empty lists.
-        disabled_keys = lib.genAttrs dir (_: { __empty = true; });
-        # Empty-string mode matches every mode, so arrows are fully restricted.
-        restricted_keys = lib.genAttrs dir (_: [ "" ]);
-      };
+    plugins.hardtime.settings = let
+      dir = [
+        "<Up>"
+        "<Down>"
+        "<Left>"
+        "<Right>"
+      ];
+    in {
+      # Each arrow key restricted in no mode (empty mode list).
+      # `__empty` is required: toLuaObject drops plain empty lists.
+      disabled_keys = lib.genAttrs dir (_: {__empty = true;});
+      # Empty-string mode matches every mode, so arrows are fully restricted.
+      restricted_keys = lib.genAttrs dir (_: [""]);
+    };
 
     keymaps =
-      map
-      (
-        m:
-          m
-          // {
-            mode = [
-              "n"
-              "o"
-              "x"
-            ];
-          }
-      )
+      map (m: m // {mode = ["n" "o" "x"];})
       [
         {
           action = "v:count == 0? 'gj' : 'j'";

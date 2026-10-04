@@ -12,10 +12,7 @@
       plugins.which-key.settings.spec = lib.mkIf enable [
         {
           __unkeyed-1 = prefix;
-          mode = [
-            "n"
-            "x"
-          ];
+          mode = [ "n" "x" ];
           group = "Search";
         }
       ];
@@ -51,10 +48,7 @@
             action = mkAction "grep_word";
             key = prefix + "w";
             options.desc = "Visual selection or word";
-            mode = [
-              "n"
-              "x"
-            ];
+            mode = [ "n" "x" ];
           }
           {
             action = mkAction "commands";

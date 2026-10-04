@@ -58,11 +58,7 @@ in
                 end
               end
             '';
-          mode = [
-            "n"
-            "i"
-            "t"
-          ];
+          mode = [ "n" "i" "t" ];
           options.desc = "Toggle last terminal";
         }
       ]

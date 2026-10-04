@@ -5,10 +5,7 @@
       {
         __unkeyed-1 = "gx";
         __unkeyed-2 = "<cmd>Browse<cr>";
-        mode = [
-          "n"
-          "x"
-        ];
+        mode = [ "n" "x" ];
         silent = true;
         desc = "Open filepath or URI under cursor";
       }

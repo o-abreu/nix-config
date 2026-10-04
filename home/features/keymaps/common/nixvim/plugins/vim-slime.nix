@@ -24,10 +24,7 @@
         which-key.settings.spec = [
           {
             __unkeyed-1 = prefix;
-            mode = [
-              "n"
-              "x"
-            ];
+            mode = [ "n" "x" ];
             group = "REPL";
             icon = "⚡";
           }
@@ -40,11 +37,7 @@
               {
                 __unkeyed-1 = prefix + "r";
                 __unkeyed-2 = "<Plug>SlimeMotionSend";
-                mode = [
-                  "n"
-                  "x"
-                  "o"
-                ];
+                mode = [ "n" "x" "o" ];
                 desc = "Send motion";
               }
 

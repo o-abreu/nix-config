@@ -25,10 +25,7 @@
       (bind {
         key = prefix + "f";
         plug = "cmd-toggle-frac";
-        mode = [
-          "n"
-          "x"
-        ];
+        mode = [ "n" "x" ];
         desc = "Toggle a/b vs \\frac{a}{b}";
       })
 
@@ -53,20 +50,14 @@
       (bind {
         key = prefix + "d";
         plug = "delim-toggle-modifier";
-        mode = [
-          "n"
-          "x"
-        ];
+        mode = [ "n" "x" ];
         desc = "Cycle (), \\left(\\right) [, ...]";
       })
 
       (bind {
         key = prefix + "D";
         plug = "delim-toggle-modifier-reverse";
-        mode = [
-          "n"
-          "x"
-        ];
+        mode = [ "n" "x" ];
         desc = "Reverse cycle (), \\left(\\right) [, ...]";
       })
     ];

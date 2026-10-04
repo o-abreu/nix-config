@@ -66,10 +66,7 @@ in
       __unkeyed-1 = prefix;
       group = "LSP";
       icon = " ";
-      mode = [
-        "n"
-        "v"
-      ];
+      mode = [ "n" "v" ];
     };
   };
 }

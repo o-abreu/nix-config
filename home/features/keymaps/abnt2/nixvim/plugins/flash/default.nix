@@ -8,22 +8,14 @@
         {
           __unkeyed-1 = "h";
           __unkeyed-2 = mkAction "jump";
-          mode = [
-            "n"
-            "x"
-            "o"
-          ];
+          mode = [ "n" "x" "o" ];
           desc = "Flash";
         }
 
         {
           __unkeyed-1 = "H";
           __unkeyed-2 = mkAction "treesitter";
-          mode = [
-            "n"
-            "x"
-            "o"
-          ];
+          mode = [ "n" "x" "o" ];
           desc = "Flash Treesitter";
         }
 
@@ -37,10 +29,7 @@
         {
           __unkeyed-1 = "R";
           __unkeyed-2 = mkAction "treesitter_search";
-          mode = [
-            "o"
-            "x"
-          ];
+          mode = [ "o" "x" ];
           desc = "Treesitter Search";
         }
 
@@ -59,11 +48,7 @@
                 end
               '';
           };
-          mode = [
-            "n"
-            "x"
-            "o"
-          ];
+          mode = [ "n" "x" "o" ];
           desc = "Flash Line";
         }
       ];

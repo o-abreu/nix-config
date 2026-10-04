@@ -10,10 +10,7 @@
       plugins.which-key.settings.spec = lib.mkIf cfg.enable [
         {
           __unkeyed-1 = prefix;
-          mode = [
-            "n"
-            "x"
-          ];
+          mode = [ "n" "x" ];
           group = "AI";
         }
       ];
@@ -29,30 +26,21 @@
         {
           key = prefix + "a";
           action.__raw = "function() require('opencode').ask('@this: ') end";
-          mode = [
-            "n"
-            "x"
-          ];
+          mode = [ "n" "x" ];
           options.desc = "Ask";
         }
 
         {
           key = prefix + "s";
           action.__raw = "function() require('opencode').select() end";
-          mode = [
-            "n"
-            "x"
-          ];
+          mode = [ "n" "x" ];
           options.desc = "Select Prompt";
         }
 
         {
           key = "go";
           action.__raw = "function() return require('opencode').operator('@this') end";
-          mode = [
-            "n"
-            "x"
-          ];
+          mode = [ "n" "x" ];
           options = {
             desc = "Add range to opencode";
             expr = true;
@@ -72,20 +60,14 @@
         {
           key = "<M-u>";
           action.__raw = "function() require('opencode').command('session.half.page.up') end";
-          mode = [
-            "n"
-            "t"
-          ];
+          mode = [ "n" "t" ];
           options.desc = "Scroll opencode up";
         }
 
         {
           key = "<M-d>";
           action.__raw = "function() require('opencode').command('session.half.page.down') end";
-          mode = [
-            "n"
-            "t"
-          ];
+          mode = [ "n" "t" ];
           options.desc = "Scroll opencode down";
         }
 
@@ -120,10 +102,7 @@
         {
           key = prefix + "e";
           action.__raw = "function() require('opencode').prompt('Explain @this and its context') end";
-          mode = [
-            "n"
-            "x"
-          ];
+          mode = [ "n" "x" ];
           options.desc = "Explain this code";
         }
 
