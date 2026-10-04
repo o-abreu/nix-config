@@ -6,6 +6,7 @@
 {
   config = lib.mkIf config.programs.wezterm.enable {
     stylix.targets.wezterm.enable = false;
+
     programs.wezterm.extraConfig."appearance" =
       with config.lib.stylix.colors;
       with config.stylix.fonts;

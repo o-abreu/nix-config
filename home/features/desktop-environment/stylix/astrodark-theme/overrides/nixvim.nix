@@ -1,8 +1,7 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   stylix.targets.neovim.enable = false; # Managed by astrotheme
   programs.nixvim = {
-    extraPlugins = [ pkgs.vimPlugins.astrotheme ];
+    extraPlugins = [pkgs.vimPlugins.astrotheme];
     extraConfigLua =
       # lua
       ''
@@ -13,6 +12,7 @@
               modify_hl_groups = function(hl, c)
                 hl.BufferLineError = { fg = c.ui.red }
                 hl.BufferLineErrorDiagnostic = { fg = c.ui.red }
+                hl.DapStoppedLine = { bg = c.base02 }
               end,
             },
           },

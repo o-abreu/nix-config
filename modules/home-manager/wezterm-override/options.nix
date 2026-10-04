@@ -5,6 +5,9 @@
   ...
 }:
 with lib;
+let
+  cfg = config.programs.wezterm;
+in
 {
   meta.maintainers = [
     hm.maintainers.blmhemu
@@ -17,6 +20,26 @@ with lib;
     enable = mkEnableOption "wezterm";
 
     package = lib.mkPackageOption pkgs "wezterm" { };
+
+    # This module replaces HM's `programs/wezterm` wholesale, so it does not
+    # implement `settings`. Stylix (master) still writes the wezterm target
+    # through that option, and stylix's `mkTarget` discovers it by *touching*
+    # `config ? programs.wezterm.settings` — which happens whenever the target
+    # is defined, regardless of `stylix.targets.wezterm.enable = false`. That
+    # turns the missing option into a hard eval error even for a disabled
+    # target.
+    #
+    # Declaring an inert placeholder satisfies that existence check without
+    # reintroducing the upstream module: nothing writes to this option, so the
+    # generated `wezterm.lua` is unaffected.
+    settings = mkOption {
+      type = attrsOf anything;
+      default = { };
+      description = ''
+        Placeholder only, to keep stylix's wezterm target evaluable. This
+        module writes its Lua modules through `extraConfig` instead.
+      '';
+    };
 
     # CHANGED: Now accepts an attribute set of paths or strings
     extraConfig = mkOption {
@@ -97,5 +120,25 @@ with lib;
 
     enableBashIntegration = lib.hm.shell.mkBashIntegrationOption { inherit config; };
     enableZshIntegration = lib.hm.shell.mkZshIntegrationOption { inherit config; };
+  };
+
+  config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = !config.stylix.targets.wezterm.enable;
+        message = ''
+          stylix.targets.wezterm.enable is true, but `programs.wezterm.settings`
+          is only an inert placeholder in this configuration (see the note on
+          the option above). Stylix would write its colors there and they would
+          be silently dropped: this module generates `wezterm.lua` from
+          `extraConfig` and `colorSchemes` only.
+
+          Either keep the target disabled — see
+          `home/features/desktop-environment/stylix/astrodark-theme/overrides/wezterm.nix`,
+          which themes wezterm from `config.lib.stylix.colors` instead — or
+          migrate the theme to write through `programs.wezterm.extraConfig`.
+        '';
+      }
+    ];
   };
 }
