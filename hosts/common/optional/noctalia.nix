@@ -1,12 +1,9 @@
-{
-  config,
-  ...
-}:
-{
+{config, ...}: {
   programs = {
     noctalia = {
       enable = true;
       recommendedServices.enable = true;
+      systemd.enable = true;
     };
     hyprland = {
       enable = true;
@@ -19,6 +16,12 @@
       withUWSM = true;
     };
   };
+
+  # The noctalia-greeter compositor runs on the GPU, and the noctalia module in
+  # nixpkgs no longer enables `hardware.graphics` for us (the noctalia flake used
+  # to do it with `hardware.graphics.enable = mkDefault true`). Keep it explicit so
+  # the AMD drivers stay configured.
+  hardware.graphics.enable = true;
 
   # The greeter user (auto-created by greetd) runs the noctalia-greeter
   # compositor, which needs access to the GPU/DRM devices.

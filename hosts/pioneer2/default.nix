@@ -15,8 +15,6 @@
       sops-nix.nixosModules.sops # Secrets management module
       preservation.nixosModules.default # Impermanence module
       nix-index-database.nixosModules.nix-index # Access to "comma" tool
-      noctalia.nixosModules.default # Desktop Environment
-      noctalia-greeter.nixosModules.default # Login manager
 
       (import-tree [
         ./features
