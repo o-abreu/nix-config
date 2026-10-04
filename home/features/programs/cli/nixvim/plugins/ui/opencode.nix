@@ -19,7 +19,7 @@ in
 
     plugins = lib.mkIf opencode.enable {
       opencode = {
-        package = pkgs.unstable.vimPlugins.opencode-nvim;
+        package = pkgs.vimPlugins.opencode-nvim;
         enable = true;
         lazyLoad.settings.lazy = true;
 
