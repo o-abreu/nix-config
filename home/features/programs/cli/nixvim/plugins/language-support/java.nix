@@ -45,13 +45,39 @@
             };
           };
 
+          # INFO: `__raw` in a *table value* position must be a single Lua
+          # expression, so this whole block is wrapped in an IIFE. Emitting the
+          # bare statements instead produces `bundles = local bundles = {}`,
+          # which is a syntax error and fails the build in stylua — not in
+          # `nix flake check`, which only evaluates and never builds.
           init_options.bundles.__raw =
             let
-              java-debug = pkgs.vscode-extensions.vscjava.vscode-java-debug;
+              inherit (pkgs.vscode-extensions.vscjava) vscode-java-debug vscode-java-test;
+              server = id: pkg: "${pkg}/share/vscode/extensions/${id}/server/*.jar";
             in
             # lua
             ''
-              vim.split(vim.fn.glob("${java-debug}/share/vscode/extensions/vscjava.vscode-java-debug/server/*.jar"), "\n")
+              (function()
+                local bundles = {}
+
+                local function add(glob, excluded)
+                  excluded = excluded or {}
+                  for _, jar in ipairs(vim.fn.glob(glob, 1, 1)) do
+                    if not vim.tbl_contains(excluded, vim.fn.fnamemodify(jar, ":t")) then
+                      table.insert(bundles, jar)
+                    end
+                  end
+                end
+
+                add("${server "vscjava.vscode-java-debug" vscode-java-debug}")
+                -- INFO: the test runner and the coverage agent are not OSGi bundles
+                add("${server "vscjava.vscode-java-test" vscode-java-test}", {
+                  "com.microsoft.java.test.runner-jar-with-dependencies.jar",
+                  "jacocoagent.jar",
+                })
+
+                return bundles
+              end)()
             '';
         };
       };
