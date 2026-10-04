@@ -21,7 +21,7 @@
     [
       {
         key = "\\";
-        action = splitWindow "vplit";
+        action = splitWindow "vsplit";
         options.desc = "Vertical split";
       }
       {

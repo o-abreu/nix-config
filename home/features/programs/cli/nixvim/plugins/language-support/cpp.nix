@@ -2,11 +2,10 @@
   pkgs,
   lib,
   ...
-}:
-let
+}: let
   inherit (lib) getExe';
-in
-{
+  lazyLoad.settings.ft = ["c" "cpp"];
+in {
   programs.nixvim = {
     lsp.servers = {
       cmake.enable = true;
@@ -48,82 +47,71 @@ in
       }
     ];
 
-    plugins = {
-      conform-nvim.settings = {
-        formatters_by_ft = {
-          cpp = [ "clang-format" ];
-          cmake = [ "cmake_format" ];
-        };
-
-        formatters = {
-          clang-format.command = lib.getExe' pkgs.clang-tools "clang-format";
-          cmake_format.command = lib.getExe' pkgs.cmake-format "cmake-format";
-        };
-      };
-
-      lint = {
-        lintersByFt = {
-          cpp = [ "clangtidy" ];
-          cmake = [ "cmakelint" ];
-        };
-
-        linters = {
-          clangtidy.cmd = getExe' pkgs.clang-tools "clang-tidy";
-          cmakelint.cmd = getExe' pkgs.cmake-format "cmake-lint";
-        };
-      };
-
-      clangd-extensions = {
-        enable = true;
-        settings = {
-          inlay_hints = {
-            inline = false;
+    plugins =
+      {
+        conform-nvim.settings = {
+          formatters_by_ft = {
+            cpp = ["clang-format"];
+            cmake = ["cmake_format"];
           };
-          codelens.enable = true;
 
-          ast = {
-            roleIcons = {
-              type = "";
-              declaration = "";
-              expression = "";
-              specifier = "";
-              statement = "";
-              templateArgument = "";
-            };
-            kindIcons = {
-              compound = "";
-              recovery = "";
-              translationUnit = "";
-              packExpansion = "";
-              templateTypeParm = "";
-              templateTemplateParm = "";
-              templateParamObject = "";
-            };
+          formatters = {
+            clang-format.command = getExe' pkgs.clang-tools "clang-format";
+            cmake_format.command = getExe' pkgs.cmake-format "cmake-format";
           };
         };
-      };
 
-      dap = {
-        adapters.executables.lldb.command = getExe' pkgs.lldb "lldb-vscode";
+        lint = {
+          lintersByFt = {
+            cpp = ["clangtidy"];
+            cmake = ["cmakelint"];
+          };
 
-        configurations.cpp = [
-          {
-            name = "C++";
-            type = "lldb";
-            request = "launch";
-            cwd = "\${workspaceFolder}";
-            program.__raw =
-              # lua
-              ''
-                function()
-                  return vim.fn.input('Executable path: ', vim.fn.getcwd() .. '/', 'file')
-                end
-              '';
-          }
-        ];
-      };
-    };
-    files = lib.genAttrs [ "ftplugin/c.nix" "ftplugin/cpp.nix" ] (_: {
+          linters = {
+            clangtidy.cmd = getExe' pkgs.clang-tools "clang-tidy";
+            cmakelint.cmd = getExe' pkgs.cmake-format "cmake-lint";
+          };
+        };
+
+        clangd-extensions = {
+          enable = true;
+          settings = {
+            inlay_hints = {
+              inline = false;
+            };
+            codelens.enable = true;
+
+            ast = {
+              roleIcons = {
+                type = "";
+                declaration = "";
+                expression = "";
+                specifier = "";
+                statement = "";
+                templateArgument = "";
+              };
+              kindIcons = {
+                compound = "";
+                recovery = "";
+                translationUnit = "";
+                packExpansion = "";
+                templateTypeParm = "";
+                templateTemplateParm = "";
+                templateParamObject = "";
+              };
+            };
+          };
+        };
+
+        dap-lldb = {
+          enable = true;
+          settings.codelldb_path = getExe' pkgs.vscode-extensions.vadimcn.vscode-lldb.adapter "codelldb";
+          inherit lazyLoad;
+        };
+      }
+      // (lib.genAttrs ["dap" "dap-ui" "dap-virtual-text"] (_: {inherit lazyLoad;}));
+
+    files = lib.genAttrs ["ftplugin/c.nix" "ftplugin/cpp.nix"] (_: {
       opts.tabstop = 4;
     });
   };

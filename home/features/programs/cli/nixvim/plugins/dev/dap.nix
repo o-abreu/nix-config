@@ -1,20 +1,7 @@
 {
   programs.nixvim = {
     plugins = {
-      dap = {
-        enable = true;
-
-        # Load when any of these Neovim commands are executed
-        lazyLoad.settings.cmd = [
-          "DapContinue"
-          "DapStepOver"
-          "DapStepInto"
-          "DapStepOut"
-          "DapToggleBreakpoint"
-          "DapToggleRepl"
-          "DapTerminate"
-        ];
-      };
+      dap.enable = true;
 
       blink-cmp.settings.sources.providers.dap = {
         name = "dap";
