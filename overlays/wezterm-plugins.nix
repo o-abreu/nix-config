@@ -11,6 +11,15 @@
 # URL, so no forge-specific restriction is applied here.
 #
 # Adding a plugin: declare the input in flake.nix, then add its name here.
+#
+# Every entry carries `name`, so a consumer can hand the whole record to
+# `programs.wezterm.plugins` without repeating the name:
+#
+#     plugins = with pkgs.weztermPlugins; [ tabline-wez ];
+#
+# and the module still knows to install it as `plugins/tabline-wez/`, which is
+# what `require("plugins.tabline-wez")` resolves. So a plugin must appear both
+# here (to be catalogued) and in some module's `plugins` (to be registered).
 { inputs, lib, ... }:
 _final: _prev:
 let
@@ -56,6 +65,9 @@ in
     |> map (
       name:
       lib.nameValuePair name {
+        # INFO: `name` makes the entry self-describing, so `programs.wezterm.plugins`
+        # can take a bare list of entries and still key each one correctly.
+        inherit name;
         url = pluginUrl name;
         src = inputs.${name};
       }

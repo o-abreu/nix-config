@@ -3,16 +3,14 @@
   pkgs,
   lib,
   ...
-}:
-let
+}: let
   cfg = config.programs.nixvim.plugins.smart-splits;
   bind = key: action: desc: {
     inherit key;
     action.__raw = "function() require('smart-splits').${action}() end";
-    options = { inherit desc; };
+    options = {inherit desc;};
   };
-in
-{
+in {
   programs = {
     nixvim.keymaps =
       [
@@ -20,14 +18,14 @@ in
         ./_resize-window.nix
         ./_swap-buffers.nix
       ]
-      |> map (m: import m { inherit bind; })
+      |> map (m: import m {inherit bind;})
       |> lib.concatLists
       |> lib.mkIf cfg.enable;
 
     # WezTerm integration
     wezterm = lib.mkIf cfg.enable {
       extraConfig."keybinds.smart-splits" = ./smart-splits.lua;
-      plugins = { inherit (pkgs.weztermPlugins) smart-splits-nvim; };
+      plugins = [pkgs.weztermPlugins.smart-splits-nvim];
     };
   };
 }

@@ -1,7 +1,10 @@
 # INFO: Java language support using nvim-jdtls
 # DAP bundles are extracted from vscode extensions.
-{ lib, pkgs, ... }:
 {
+  lib,
+  pkgs,
+  ...
+}: {
   programs.nixvim = {
     plugins = {
       jdtls = {
@@ -45,16 +48,10 @@
             };
           };
 
-          # INFO: `__raw` in a *table value* position must be a single Lua
-          # expression, so this whole block is wrapped in an IIFE. Emitting the
-          # bare statements instead produces `bundles = local bundles = {}`,
-          # which is a syntax error and fails the build in stylua — not in
-          # `nix flake check`, which only evaluates and never builds.
-          init_options.bundles.__raw =
-            let
-              inherit (pkgs.vscode-extensions.vscjava) vscode-java-debug vscode-java-test;
-              server = id: pkg: "${pkg}/share/vscode/extensions/${id}/server/*.jar";
-            in
+          init_options.bundles.__raw = let
+            inherit (pkgs.vscode-extensions.vscjava) vscode-java-debug vscode-java-test;
+            server = id: pkg: "${pkg}/share/vscode/extensions/${id}/server/*.jar";
+          in
             # lua
             ''
               (function()
@@ -83,7 +80,7 @@
       };
 
       conform-nvim.settings = {
-        formatters_by_ft.java = [ "google-java-format" ];
+        formatters_by_ft.java = ["google-java-format"];
         formatters.google-java-format = {
           command = lib.getExe pkgs.google-java-format;
           timeout = 10000;

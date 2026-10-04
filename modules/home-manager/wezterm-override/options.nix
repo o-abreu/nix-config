@@ -79,42 +79,75 @@ in
     };
 
     plugins = mkOption {
+      # Either form is accepted:
+      #   * an attribute set, where the key *is* the plugin name;
+      #   * a list, where each entry carries its own `name`, so a catalog entry
+      #     can be passed straight through without restating the name.
       # `attrs` (not `submodule`) so `{ url, src }` values and bare
       # path-coercible attrsets are accepted without forced interpolation.
-      type = attrsOf (either path attrs);
+      # Strings are allowed only in the list form, as shorthand for a catalog
+      # lookup.
+      type = either (attrsOf (either path attrs)) (listOf (either path (either str attrs)));
       default = { };
       example = literalExpression ''
         {
-          # Catalog entry built from a flake input (see overlays/wezterm-plugins.nix);
-          # registered in wezterm.plugin.list()
-          tabline-wez = pkgs.weztermPlugins.tabline-wez;
-          # Manual override for sources not in the catalog
-          my-plugin = {
+          # Catalog entries, keyed by their own name
+          plugins = with pkgs.weztermPlugins; [
+            tabline-wez
+            smart-splits-nvim
+          ];
+
+          # Bare names work too, as shorthand for the same lookup
+          plugins = [ "wezterm-unicode-input" ];
+
+          # Anything outside the catalog, under a name of our choosing
+          plugins.my-plugin = {
             url = "https://github.com/user/my-plugin";
             src = inputs.my-plugin;
           };
         }
       '';
       description = ''
-        Attribute set mapping plugin names to their sources. Each source must
-        contain a {file}`plugin/init.lua` file. The module will symlink each
-        plugin into {file}`$XDG_CONFIG_HOME/wezterm/plugins/`, making it
-        accessible via {lua}`require("plugins.<name>")`.
+        The wezterm plugins to install. Each plugin must contain a
+        {file}`plugin/init.lua` file. The module symlinks each one into
+        {file}`$XDG_CONFIG_HOME/wezterm/plugins/<name>/`, making it accessible via
+        {lua}`require("plugins.<name>")`.
 
-        Plugins supplied as an attribute set with `url` and `src` — such as
-        entries from {file}`pkgs.weztermPlugins` (see
-        {file}`overlays/wezterm-plugins.nix`) or explicit `{ url, src; }`
-        values — are additionally installed using wezterm's official
-        URL-encoded directory layout and registered in
-        {lua}`wezterm.plugin.list()` via a generated shim. This makes plugins
-        that assume installation through wezterm's built-in plugin manager
-        (e.g. by indexing {lua}`wezterm.plugin.list()[1]` at load time) work
-        unpatched. Sources without a `url` (paths or bare flake inputs) are
-        installed in the plain `require("plugins.<name>")` layout only.
+        **List form.** Give a list of entries from {file}`pkgs.weztermPlugins`
+        (see {file}`overlays/wezterm-plugins.nix`) and each is keyed by its own
+        `name`, so the name is never restated:
 
-        Only use this for plugins loaded exclusively via
-        {lua}`require("plugins.<name>")`: a plugin that is also cloned by
-        wezterm's plugin manager would appear twice in the list.
+        ```nix
+        plugins = with pkgs.weztermPlugins; [ tabline-wez ];
+        ```
+
+        A bare string is accepted as shorthand for the same catalog lookup, and a
+        hand-written `{ name, url, src; }` record works too. Lists merge by
+        concatenation, so each feature module contributes its own entries; a name
+        listed twice is an error rather than a silent last-one-wins.
+
+        **Attribute-set form.** Use this to register a plugin under a name *other*
+        than its own, or a source that is not in the catalog at all. Pick one form
+        per configuration: Nixvim rejects an option that is an attribute set in one
+        module and a list in another.
+
+        **Registry layout.** Entries supplied with `url` and `src` — catalog
+        entries, or explicit `{ url, src; }` values — are additionally installed
+        using wezterm's official URL-encoded directory layout and registered in
+        {lua}`wezterm.plugin.list()` via a generated shim. This makes plugins that
+        assume installation through wezterm's built-in plugin manager (e.g. by
+        indexing {lua}`wezterm.plugin.list()[1]` at load time) work unpatched.
+        Sources without a `url` (paths or bare flake inputs) get the plain
+        {lua}`require("plugins.<name>")` layout only.
+
+        Only install plugins that are loaded exclusively via
+        {lua}`require("plugins.<name>")`: a plugin that is also cloned by wezterm's
+        plugin manager would appear twice in the list.
+
+        The name is a Lua module path segment: hyphens are fine, but a `.`
+        silently breaks {lua}`require("plugins.<name>")`, because Lua expands `.`
+        to `/` and would look for `plugins/my/plugin.lua` while the directory is
+        literally `my.plugin`.
       '';
     };
 

@@ -1,6 +1,7 @@
 {
   cfg,
   lib,
+  pkgs,
 }:
 with lib;
 let
@@ -23,9 +24,51 @@ let
     else
       null;
 
-  registeredPlugins = cfg.plugins |> mapAttrs (_: registeredPlugin) |> filterAttrs (_: r: r != null);
+  # INFO: A list element is keyed by its own `name` attribute, so a catalog entry
+  # can be passed straight through — `plugins = with pkgs.weztermPlugins; [
+  # tabline-wez ];` — without restating the name. A bare string is accepted as a
+  # shorthand for the same catalog lookup. The attribute-set form keeps the key
+  # explicit, for sources outside the catalog or for registering a plugin under
+  # a different require() name.
+  #
+  # Both consumers below go through `pluginName`, so a malformed entry produces
+  # the readable message rather than a bare `attribute 'name' missing`.
+  pluginName =
+    entry:
+    if isString entry then
+      assert lib.assertMsg
+        (pkgs.weztermPlugins ? ${entry})
+        "programs.wezterm.plugins: no entry '${entry}' in pkgs.weztermPlugins (known: ${concatStringsSep ", " (builtins.attrNames pkgs.weztermPlugins)})";
+      entry
+    else
+      assert lib.assertMsg
+        (entry ? name)
+        "programs.wezterm.plugins: a list entry needs a `name` attribute to be keyed by (${builtins.toJSON entry})";
+      entry.name;
 
-  plainPlugins = filterAttrs (_: v: registeredPlugin v == null) cfg.plugins;
+  fromList = entry: nameValuePair (pluginName entry) (if isString entry then pkgs.weztermPlugins.${entry} else entry);
+
+  allPlugins =
+    if isList cfg.plugins then
+      map fromList cfg.plugins |> listToAttrs
+    else
+      cfg.plugins;
+
+  # INFO: Two modules listing the same plugin concatenate into one list, and
+  # `listToAttrs` would keep the last entry silently. Report it instead. Not a
+  # concern for the attribute-set form: Nix dedupes keys by construction.
+  duplicateNames =
+    if isList cfg.plugins then
+      let
+        names = map pluginName cfg.plugins;
+      in
+      filter (name: 1 < length (filter (n: n == name) names)) (unique names)
+    else
+      [ ];
+
+  registeredPlugins = allPlugins |> mapAttrs (_: registeredPlugin) |> filterAttrs (_: r: r != null);
+
+  plainPlugins = filterAttrs (_: v: registeredPlugin v == null) allPlugins;
 
   # INFO: Lua shim making require()-loaded plugins visible to
   # wezterm.plugin.list(), for plugins that assume installation via
@@ -54,5 +97,5 @@ let
     );
 in
 {
-  inherit plainPlugins pluginListShim registeredPlugins;
+  inherit plainPlugins pluginListShim registeredPlugins duplicateNames;
 }

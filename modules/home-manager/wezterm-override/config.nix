@@ -8,15 +8,27 @@ with lib;
 let
   cfg = config.programs.wezterm;
 
-  inherit (import ./_plugins.nix { inherit cfg lib; })
+  inherit (import ./_plugins.nix { inherit cfg lib pkgs; })
     plainPlugins
     pluginListShim
     registeredPlugins
+    duplicateNames
     ;
 in
 {
   config = mkIf cfg.enable {
     home.packages = [ cfg.package ];
+
+    assertions = [
+      {
+        assertion = duplicateNames == [ ];
+        message = ''
+          programs.wezterm.plugins: ${concatStringsSep ", " duplicateNames} listed
+          more than once. Lists merge by concatenation and `listToAttrs` would keep
+          the last entry silently, so drop the duplicate.
+        '';
+      }
+    ];
 
     xdg.configFile =
       let
