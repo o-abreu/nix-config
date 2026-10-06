@@ -7,6 +7,10 @@
   lazyLoad.settings.ft = ["c" "cpp"];
 in {
   programs.nixvim = {
+    # INFO: `ctest` is not auto-provisioned by nixvim, unlike `jdtls`, which
+    # ships its own language server. neotest-ctest shells out to it by name.
+    extraPackages = [pkgs.cmake];
+
     lsp.servers = {
       cmake.enable = true;
 
@@ -49,6 +53,29 @@ in {
 
     plugins =
       {
+        neotest.adapters.ctest = {
+          enable = true;
+          settings = {
+            cmd = [(getExe' pkgs.cmake "ctest")];
+            # INFO: Matches the dap-lldb adapter name wired in below, so
+            # `<leader>Td` debugs tests without any extra dap configuration.
+            dap_adapter = "codelldb";
+            # INFO: Upstream only matches `*_test.{cpp,cc,cxx}`. Widen to `.c`
+            # and `test_*` so C test files are considered at all.
+            is_test_file.__raw = ''
+              function(file_path)
+                local name, ext = unpack(vim.split(vim.fs.basename(file_path), ".", { plain = true }))
+                return vim.tbl_contains({ "c", "cc", "cpp", "cxx" }, ext)
+                  and (vim.endswith(name, "_test") or vim.startswith(name, "test_"))
+              end
+            '';
+            # INFO: `unity` is a local module, not a nixpkgs one. neotest-ctest
+            # resolves framework modules through the Lua loader, so any runtimepath
+            # entry works; see `util/lua/neotest-ctest/framework/unity.lua`.
+            frameworks = ["unity" "gtest" "catch2" "doctest" "cpputest"];
+          };
+        };
+
         conform-nvim.settings = {
           formatters_by_ft = {
             cpp = ["clang-format"];

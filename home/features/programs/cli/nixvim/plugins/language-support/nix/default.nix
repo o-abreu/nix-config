@@ -30,7 +30,20 @@ in
       };
 
       neotest.settings.adapters = [
-        "require('neotest-nix')"
+        # INFO: `discover_eval_checks` evaluates the flake so checks produced by
+        # functions (and therefore invisible in the source) also appear in the
+        # summary tree. It is off upstream because it shells out to `nix eval`.
+        # `vm_interactive` stays false: VM tests keep the headless streaming
+        # strategy, which is what produces the per-line `testScript` diagnostics.
+        # `nix`, `nix-unit`, and `namaka` are all already on PATH via
+        # `extraPackages` above and the system profile.
+        ''
+          require('neotest-nix')({
+            discover_eval_checks = true,
+            vm_interactive = false,
+            non_flake_roots = true,
+          })
+        ''
       ];
 
       direnv.enable = pkgs.stdenv.hostPlatform.isLinux;

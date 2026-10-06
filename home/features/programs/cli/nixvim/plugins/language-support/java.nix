@@ -86,6 +86,41 @@
           timeout = 10000;
         };
       };
+
+      # INFO: No JDK goes on Neovim's PATH. neotest-java resolves `java` and
+      # `javap` at runtime by asking jdtls for `org.eclipse.jdt.ls.core.vm.location`,
+      # and nixpkgs' jdt-language-server is built against openjdk-21. Classpaths
+      # likewise come from jdtls via `java.project.getClasspaths`, so Maven and
+      # Gradle binaries are unnecessary too. The build tool is auto-detected from
+      # `pom.xml`/`mvnw` vs `*.gradle`/`gradlew` markers.
+      neotest.adapters.java = {
+        enable = true;
+        settings = {
+          # INFO: Supply the JUnit Platform Console Standalone jar from the Nix
+          # store instead of letting the adapter fetch it on `:NeotestJava setup`.
+          # The adapter only stats this path before running, so a read-only store
+          # path is enough, and the digest matches the one it hardcodes. Bump
+          # `pkgs/junit-platform-console-standalone` to move to a newer JUnit;
+          # `nix flake update` will not, which is the same contract as every other
+          # pinned source here.
+          junit_jar = "${pkgs.junit-platform-console-standalone}/junit-platform-console-standalone-6.0.3.jar";
+
+          incremental_build = true;
+
+          # INFO: Usually redundant, since the notification only fires for a jar
+          # found in `stdpath("data")/neotest-java` and nothing is downloaded there
+          # any more. It still matters for a machine that ran `:NeotestJava setup`
+          # before this config: that leaves a jar behind, and once a future
+          # neotest-java pins a newer version, the notice would tell the user to
+          # upgrade a file that `junit_jar` above overrides anyway.
+          disable_update_notifications = true;
+          test_classname_patterns = [
+            "^.*Tests?$"
+            "^.*IT$"
+            "^.*Spec$"
+          ];
+        };
+      };
     };
 
     autoCmd = [

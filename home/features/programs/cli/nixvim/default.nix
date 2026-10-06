@@ -20,5 +20,16 @@
       imports = builtins.attrValues outputs.nixvimModules;
     };
   };
-  xdg.configFile."nvim/util/dot.lua".source = ./util/dot/init.lua;
+  xdg.configFile = {
+    "nvim/util/dot.lua".source = ./util/dot/init.lua;
+
+    # INFO: Loaded by neotest-ctest through the Lua loader, which searches every
+    # runtimepath entry. This is what makes the `unity` framework name in
+    # `plugins.neotest.adapters.ctest.settings.frameworks` resolve without
+    # patching the nixpkgs package. See
+    # `util/lua/neotest-ctest/framework/unity.lua` and the matching
+    # `unity-check.lua`, which asserts the treesitter queries against a fixture.
+    "nvim/lua/neotest-ctest/framework/unity.lua".source = ./util/lua/neotest-ctest/framework/unity.lua;
+    "nvim/lua/neotest-ctest/framework/unity-check.lua".source = ./util/lua/neotest-ctest/framework/unity-check.lua;
+  };
 }
