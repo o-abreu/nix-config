@@ -6,22 +6,19 @@
 }: let
   inherit (lib) optional optionals;
 
-  # Zotero's data dir, as set in
-  # home/features/programs/gui/office/zotero.nix. `directories` entries are
-  # interpreted relative to $HOME, hence the removePrefix.
-  zoteroDataDir = lib.removePrefix "${hmConfig.home.homeDirectory}/"
-    hmConfig.xdg.userDirs.documents + "/Zotero";
+  # INFO: `programs.gpg.homedir` is absolute while preservation entries are
+  #       interpreted relative to $HOME, so the prefix is stripped here.
+  gpgHomedir = lib.removePrefix "${hmConfig.home.homeDirectory}/" hmConfig.programs.gpg.homedir;
 in {
   preservation.preserveAt.${persistentPath}.users.${hmConfig.home.username} = with hmConfig.programs; {
     directories =
       optional bat.enable ".cache/bat"
       ++ optional fish.enable ".cache/fish"
       ++ optional gpg.enable {
-        directory = ".gnupg";
+        directory = gpgHomedir;
         mode = "0700";
       }
       ++ optional (nixvim.plugins.vim-slime.enable or false) ".local/share/jupyter"
-      ++ optional lazygit.enable ".local/state/lazygit/state.yml"
       ++ optionals librewolf.enable [
         ".librewolf"
         ".cache/librewolf"
@@ -45,15 +42,21 @@ in {
         ".local/share/wezterm"
         ".cache/wezterm"
       ]
+      ++ optional wfrc.enable wfrc.settings.folder
       ++ optionals zathura.enable [
         ".local/share/zathura"
         ".cache/zathura"
       ]
-      ++ optional zotero.enable {
-        directory = zoteroDataDir;
-        mode = "0700";
-      }
+      ++ optionals (zotero.enable && (zotero.settings ? dataDir)) [
+        {
+          directory = zotero.settings.dataDir;
+          mode = "0700";
+        }
+        ".zotero/zotero"
+      ]
       ++ optional zoxide.enable ".local/share/zoxide";
-    files = optional qalculate.enable ".config/qalculate/qalc.cnf";
+    files =
+      optional lazygit.enable ".local/state/lazygit/state.yml"
+      ++ optional qalculate.enable ".config/qalculate/qalc.cnf";
   };
 }
