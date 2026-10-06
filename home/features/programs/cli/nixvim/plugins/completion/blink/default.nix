@@ -47,7 +47,7 @@
             '';
 
           draw = {
-            treesitter = [ "lsp" ];
+            treesitter = ["lsp"];
             columns.__raw =
               # lua
               ''
@@ -79,7 +79,19 @@
       fuzzy = {
         implementation = "prefer_rust";
         prebuilt_binaries.download = false;
-        sorts = [
+        sorts = let
+          lspFirst.__raw =
+            # lua
+            ''
+              function(a, b)
+                local a_lsp = a.source_id == 'lsp'
+                local b_lsp = b.source_id == 'lsp'
+                if a_lsp == b_lsp then return nil end
+                return a_lsp
+              end
+            '';
+        in [
+          lspFirst
           "exact"
           "score"
           "sort_text"
