@@ -1,27 +1,29 @@
-{ config, lib, ... }:
 {
+  config,
+  lib,
+  ...
+}: {
   programs.nixvim.files =
-    let
-      cfg = config.programs.nixvim.plugins.img-clip;
-      filetypes = [
-        "markdown"
-        "tex"
-        "typst"
-        "quarto"
-      ];
-      keybind = {
-        key = "<localleader>P";
-        action = "<cmd>PasteImage<cr>";
-        mode = "n";
-        options = {
-          buffer = true;
-          silent = true;
-          desc = "Paste image from system clipboard";
-        };
-      };
-    in
-    map (elem: "ftplugin/${elem}.lua") filetypes
+    [
+      "markdown"
+      "tex"
+      "typst"
+      "quarto"
+    ]
+    |> map (elem: "ftplugin/${elem}.lua")
     |> lib.flip lib.genAttrs (_: {
-      keymaps = lib.optional cfg.enable keybind;
-    });
+      keymaps = [
+        {
+          key = "<localleader>I";
+          action = "<cmd>PasteImage<cr>";
+          mode = "n";
+          options = {
+            buffer = true;
+            silent = true;
+            desc = "Paste image from system clipboard";
+          };
+        }
+      ];
+    })
+    |> lib.mkIf config.programs.nixvim.plugins.img-clip.enable;
 }
