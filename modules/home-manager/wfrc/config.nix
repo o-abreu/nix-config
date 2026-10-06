@@ -25,7 +25,7 @@ let
         envVars =
           with cfg.settings;
           {
-            WFRC_FOLDER = folder;
+            WFRC_FOLDER = "${config.home.homeDirectory}/${folder}";
             SCRIPT_NAME = scriptName;
             WFRC_ICON = icon;
             WFRC_NOTIFY = notify;

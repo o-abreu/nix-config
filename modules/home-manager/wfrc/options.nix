@@ -26,9 +26,9 @@ with lib;
       type = submodule {
         options = {
           folder = mkOption {
-            type = nullOr str;
-            default = null;
-            description = "Directory where recordings are stored (WFRC_FOLDER).";
+            type = str;
+            default = "Videos/screen-recordings";
+            description = "Directory where recordings are stored, relative to $HOME (WFRC_FOLDER).";
           };
 
           scriptName = mkOption {
