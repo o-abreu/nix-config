@@ -2,43 +2,41 @@
   lib,
   pkgs,
   ...
-}:
-let
+}: let
   languages = [
     "julia"
     "python"
     "r"
   ];
-in
-{
-  _module.args.quarto = { inherit languages; };
-
+in {
   imports = [
-    ./_jupytext.nix
+    (import ./_jupytext.nix {inherit languages lib;})
+    ./_conform.nix
     ./_img-clip.nix
     ./_vim-slime.nix
   ];
 
   programs.nixvim = {
-    extraPackages = [ pkgs.quarto ];
+    extraPackages = [pkgs.quarto];
 
     plugins = {
       quarto = {
         enable = true;
-        lazyLoad.settings.ft = [ "quarto" ];
+        lazyLoad.settings.ft = ["quarto"];
         settings = {
-          lspFeatures = { inherit languages; };
+          lspFeatures = {inherit languages;};
           codeRunner = {
             enabled = true;
             default_method = "slime";
-            never_run = [ "yaml" ];
+            never_run = ["yaml"];
           };
         };
       };
 
+      markdown-plus.settings.filetypes = ["quarto"];
       render-markdown = {
-        enable = lib.mkDefault true;
-        settings.file_types = [ "quarto" ];
+        lazyLoad.settings.ft = ["quarto"];
+        settings.file_types = ["quarto"];
       };
 
       snacks = {
@@ -46,12 +44,11 @@ in
         settings.terminal.enable = lib.mkDefault true;
       };
 
-      conform-nvim.settings.formatters_by_ft.quarto = [ "deno_fmt" ];
       lint = {
-        lintersByFt.quarto = [ "markdownlint" ];
+        lintersByFt.quarto = ["markdownlint"];
         linters.markdownlint.cmd = lib.getExe pkgs.markdownlint-cli;
       };
-      lsp.servers.marksman.filetypes = [ "quarto" ];
+      lsp.servers.marksman.filetypes = ["quarto"];
     };
   };
 }

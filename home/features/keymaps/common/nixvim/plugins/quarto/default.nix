@@ -1,57 +1,45 @@
-{ config, lib, ... }:
 {
-  programs.nixvim.files =
-    let
-      enabled = with config.programs.nixvim.plugins; quarto.enable && otter.enable;
-      prefix = "<localleader>";
-    in
-    lib.mkIf enabled {
-      "ftplugin/quarto.lua".keymaps = [
-        {
-          key = prefix + "p";
-          action.__raw = "function() require('quarto').quartoPreview() end";
-          options = {
-            buffer = true;
-            desc = "Preview";
-          };
-        }
+  config,
+  lib,
+  ...
+}: let
+  inherit (config.programs.nixvim.plugins) quarto;
+  prefix = "<localleader>";
+  bind = attr:
+    lib.recursiveUpdate {
+      mode = "n";
+      options.buffer = true;
+    }
+    attr;
+in {
+  _module.args.quarto = {
+    inherit (quarto) enable;
+    inherit prefix bind;
+  };
 
-        {
-          key = prefix + "c";
-          action.__raw = "function() require('quarto').quartoClosePreview() end";
-          options = {
-            buffer = true;
-            desc = "Close preview";
-          };
-        }
+  programs.nixvim.files."ftplugin/quarto.lua".keymaps = let
+    inherit (config.programs.nixvim.plugins) quarto;
+  in
+    lib.optionals quarto.enable [
+      (bind {
+        key = prefix + "p";
+        action.__raw = "function() require('quarto').quartoPreview() end";
+        options.desc = "Preview";
+      })
 
-        {
-          key = prefix + "h";
-          action = ":QuartoHelp";
-          options = {
-            buffer = true;
-            silent = true;
-            desc = "Help";
-          };
-        }
+      (bind {
+        key = prefix + "P";
+        action.__raw = "function() require('quarto').quartoClosePreview() end";
+        options.desc = "Close preview";
+      })
 
-        {
-          key = prefix + "e";
-          action.__raw = "function() require('otter').export() end";
-          options = {
-            buffer = true;
-            desc = "Export";
-          };
-        }
-
-        {
-          key = prefix + "E";
-          action.__raw = "function() require('otter').export(true) end";
-          options = {
-            buffer = true;
-            desc = "Export overwrite";
-          };
-        }
-      ];
-    };
+      (bind {
+        key = prefix + "H";
+        action = ":QuartoHelp";
+        options = {
+          silent = true;
+          desc = "Help";
+        };
+      })
+    ];
 }
