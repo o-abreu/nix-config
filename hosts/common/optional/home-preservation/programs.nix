@@ -5,6 +5,12 @@
   ...
 }: let
   inherit (lib) optional optionals;
+
+  # Zotero's data dir, as set in
+  # home/features/programs/gui/office/zotero.nix. `directories` entries are
+  # interpreted relative to $HOME, hence the removePrefix.
+  zoteroDataDir = lib.removePrefix "${hmConfig.home.homeDirectory}/"
+    hmConfig.xdg.userDirs.documents + "/Zotero";
 in {
   preservation.preserveAt.${persistentPath}.users.${hmConfig.home.username} = with hmConfig.programs; {
     directories =
@@ -43,6 +49,10 @@ in {
         ".local/share/zathura"
         ".cache/zathura"
       ]
+      ++ optional zotero.enable {
+        directory = zoteroDataDir;
+        mode = "0700";
+      }
       ++ optional zoxide.enable ".local/share/zoxide";
     files = optional qalculate.enable ".config/qalculate/qalc.cnf";
   };
