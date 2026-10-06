@@ -11,4 +11,5 @@ in
   stylix_presenterm = tree [ ./stylix/presenterm ];
   wezterm-override = tree [ ./wezterm-override ];
   wfrc = tree [ ./wfrc ];
+  zotero = tree [ ./zotero ];
 }
