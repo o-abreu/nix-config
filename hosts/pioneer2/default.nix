@@ -29,6 +29,25 @@
   networking = {
     hostName = "pioneer2";
     networkmanager.enable = true;
+
+    # INFO: `auth0.allenai.org` resolves to two Cloudflare anycast IPv6
+    # addresses, and one of them (2a06:98c1:310d::6812:2bb6) is intermittently
+    # unreachable from this network while the other -- and general IPv6 to
+    # Google/Cloudflare -- works. Clients that don't retry across resolved
+    # addresses (Python's httpx, used by `asta`) then fail with a bare
+    # "Network error". Prefer IPv4 in getaddrinfo(3) so they take the healthy
+    # IPv4 anycast path. The full RFC 3484 table is required because providing
+    # any precedence disables glibc's default table.
+    getaddrinfo = {
+      enable = true;
+      precedence = {
+        "::1/128" = 50;
+        "::/0" = 40;
+        "2002::/16" = 30;
+        "::/96" = 20;
+        "::ffff:0:0/96" = 100;
+      };
+    };
   };
 
   boot = {
