@@ -113,6 +113,41 @@
       flake = false;
     };
 
+    # INFO: Asta (research skills + `asta` CLI). Keep this tag equal to the
+    # PLUGIN_VERSION embedded in the plugin's skills, otherwise the `asta-cli`
+    # skill tries to `uv tool install` at runtime. See TODO.md.
+    asta-plugins = {
+      url = "github:allenai/asta-plugins/v0.106.0";
+      flake = false;
+    };
+
+    # INFO: Zotero MCP / zotero-cli (github:54yyyu/zotero-mcp). `flake = false`;
+    # pkgs/zotero-mcp builds the CLI via uv2nix and tools/zotero vendors the
+    # bundled skill. Keep the tag in sync with pkgs/zotero-mcp/uv.lock (TODO.md).
+    zotero-mcp = {
+      url = "github:54yyyu/zotero-mcp/v0.13.3";
+      flake = false;
+    };
+
+    # INFO: Python packaging for the `asta` CLI (pkgs/asta).
+    pyproject-nix = {
+      url = "github:pyproject-nix/pyproject.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    uv2nix = {
+      url = "github:pyproject-nix/uv2nix";
+      inputs.pyproject-nix.follows = "pyproject-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    pyproject-build-systems = {
+      url = "github:pyproject-nix/build-system-pkgs";
+      inputs.pyproject-nix.follows = "pyproject-nix";
+      inputs.uv2nix.follows = "uv2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # INFO: Yazi
     nix-yazi-plugins = {
       url = "github:lordkekz/nix-yazi-plugins";
