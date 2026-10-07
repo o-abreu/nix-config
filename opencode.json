@@ -6,7 +6,7 @@
       "~/.config/**": "allow",
       "~/.local/**": "allow",
       "~/.cache/**": "allow",
-      "/tmp": "allow",
+      "/tmp/**": "allow",
     },
     "edit": {
      "/nix/store/**": "deny",
