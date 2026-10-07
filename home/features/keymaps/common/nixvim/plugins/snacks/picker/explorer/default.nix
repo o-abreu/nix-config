@@ -49,6 +49,10 @@ in
 
         sources.explorer.win = {
           input.keys = {
+            # INFO: Defer to the global "Toggle last terminal" <C-t> keymap
+            # instead of the explorer's built-in horizontal-terminal action.
+            "<C-t>" = false;
+
             "<C-y>" = {
               __unkeyed-1 = "explorer_yank";
               mode = "i";
@@ -66,7 +70,10 @@ in
               mode = "i";
             };
           };
-          list.keys."<Esc>" = false;
+          list.keys = {
+            "<C-t>" = false;
+            "<Esc>" = false;
+          };
         };
       };
     };
