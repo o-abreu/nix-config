@@ -11,14 +11,18 @@
 }: {
   home.packages = [pkgs.zotero-mcp];
 
-  # Local mode: read from the running Zotero (7+) local API. Writes need a
-  # one-time `zotero-mcp authorize-local` + "Always Allow" click in the Zotero UI.
-  programs.opencode.env.vars.ZOTERO_LOCAL = true;
+  programs = {
+    opencode = {
+      env.vars.ZOTERO_LOCAL = true;
 
-  programs.opencode.settings.permission = {
-    skill."zotero-cli" = "deny";
-    bash."zotero-cli *" = "deny";
-    bash."zotero-mcp *" = "deny";
+      settings.permission = {
+        skill."zotero-cli" = "deny";
+        bash."zotero-cli *" = "deny";
+        bash."zotero-mcp *" = "deny";
+      };
+    };
+
+    zotero.settings.httpServer.localAPI.enabled = true;
   };
 
   # Bundled skill ships in the pinned input under src/zotero_mcp/skills/.
