@@ -40,6 +40,12 @@
           action = oneShot "step_out";
           desc = "Step Out (S-F11)";
         })
+
+        (bind {
+          key = prefix + "r";
+          action = oneShot "restart_frame";
+          desc = "Restart Frame";
+        })
       ];
     })
     |> lib.mkIf dap.enable;
