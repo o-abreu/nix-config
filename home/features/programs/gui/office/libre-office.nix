@@ -1,3 +1,3 @@
 {pkgs, ...}: {
-  home.packages = with pkgs; [libreoffice-still];
+  home.packages = [pkgs.libreoffice];
 }
