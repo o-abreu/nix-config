@@ -5,17 +5,14 @@
   ...
 }: let
   inherit (lib) optional optionals;
-
-  # INFO: `programs.gpg.homedir` is absolute while preservation entries are
-  #       interpreted relative to $HOME, so the prefix is stripped here.
-  gpgHomedir = lib.removePrefix "${hmConfig.home.homeDirectory}/" hmConfig.programs.gpg.homedir;
+  prefix = hmConfig.home.homeDirectory + "/";
 in {
   preservation.preserveAt.${persistentPath}.users.${hmConfig.home.username} = with hmConfig.programs; {
     directories =
       optional bat.enable ".cache/bat"
       ++ optional fish.enable ".cache/fish"
       ++ optional gpg.enable {
-        directory = gpgHomedir;
+        directory = lib.removePrefix prefix gpg.homedir;
         mode = "0700";
       }
       ++ optional (nixvim.plugins.vim-slime.enable or false) ".local/share/jupyter"
@@ -34,6 +31,12 @@ in {
         ".local/share/opencode"
         ".local/state/opencode"
         ".cache/opencode"
+        # Asta CLI OAuth token store (tokens.json); survives reboots so the
+        # rotating refresh token can auto-refresh. See pkgs/asta.
+        {
+          directory = ".config/asta-cli";
+          mode = "0700";
+        }
       ]
       ++ optional qalculate.enable ".local/share/qalculate"
       ++ optional tealdeer.enable ".cache/tealdeer"
