@@ -36,8 +36,6 @@
     };
   };
 
-  sops.secrets."zotero/apiKey" = {};
-
   # Browser extensions
   programs = {
     chromium.extensions = [{id = "ekhagklcjbdpajgpjgmbionohlpdbjgc";}];
