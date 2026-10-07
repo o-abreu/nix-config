@@ -944,6 +944,23 @@
         "type": "github"
       }
     },
+    "nvim-prose": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1770470709,
+        "narHash": "sha256-CZxw1WhmpunXIG2JWKOV5faUNoOI0x9P9FlDSyvol2M=",
+        "owner": "skwee357",
+        "repo": "nvim-prose",
+        "rev": "578726400fe67b60715dbdcc5633eaf9ca89c497",
+        "type": "github"
+      },
+      "original": {
+        "owner": "skwee357",
+        "ref": "main",
+        "repo": "nvim-prose",
+        "type": "github"
+      }
+    },
     "presenterm-nvim": {
       "flake": false,
       "locked": {
@@ -1060,6 +1077,7 @@
         "nixpkgs": "nixpkgs_5",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixvim": "nixvim",
+        "nvim-prose": "nvim-prose",
         "presenterm-nvim": "presenterm-nvim",
         "preservation": "preservation",
         "pyproject-build-systems": "pyproject-build-systems",

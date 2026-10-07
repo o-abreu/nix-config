@@ -97,6 +97,11 @@
       flake = false;
     };
 
+    nvim-prose = {
+      url = "github:skwee357/nvim-prose/main";
+      flake = false;
+    };
+
     # INFO: OpenCode
     anthropics-skills = {
       url = "github:anthropics/skills";

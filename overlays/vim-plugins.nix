@@ -24,6 +24,7 @@ in
       "alpha-ascii.nvim"
       "crazy-coverage.nvim"
       "markdown-plus.nvim"
+      "nvim-prose"
       "presenterm.nvim"
       "qalc.nvim"
       "sshfs.nvim"
