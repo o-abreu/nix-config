@@ -21,7 +21,7 @@ in
   nixvimModules = import ./modules/nixvim { inherit inputs; };
   overlays = import ./overlays { inherit inputs; };
 
-  packages = forEachSystem (pkgs: import ./pkgs { inherit pkgs; });
+  packages = forEachSystem (pkgs: import ./pkgs { inherit pkgs inputs; });
   devShells = forEachSystem (pkgs: import ./shell.nix { inherit pkgs experimentalFeatures; });
 
   nixosConfigurations.pioneer2 = lib.nixosSystem {

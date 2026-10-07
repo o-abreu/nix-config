@@ -1,7 +1,7 @@
 {inputs, ...}: let
   lib = inputs.nixpkgs.lib;
 in {
-  additions = import ./additions.nix;
+  additions = import ./additions.nix {inherit inputs;};
   stable-packages = import ./stable-packages.nix {inherit inputs;};
   firefox-addons = import ./firefox-addons.nix {inherit inputs;};
   wezterm-plugins = import ./wezterm-plugins.nix {inherit inputs lib;};
