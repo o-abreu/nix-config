@@ -22,7 +22,6 @@ in {
 
       dap-python = {
         enable = true;
-        settings.console = "internalConsole";
         inherit lazyLoad;
       };
     }
