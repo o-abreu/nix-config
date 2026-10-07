@@ -4,6 +4,7 @@ let
 in
 {
   cheatsheet = tree [ ./cheatsheet ];
+  librewolf-extensions = tree [ ./librewolf-extensions ];
   mutability = tree [ ./mutability ];
   opencode = tree [ ./opencode ];
   presenterm = tree [ ./presenterm ];
