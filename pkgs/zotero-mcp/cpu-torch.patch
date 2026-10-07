@@ -1,0 +1,24 @@
+diff --git a/pyproject.toml b/pyproject.toml
+index 54c9de3..61d0dd2 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -19,6 +19,7 @@ classifiers = [
+     "Operating System :: OS Independent",
+ ]
+ dependencies = [
++    "torch",
+     # 1.14.0 for local API write support: authorize_local(), the
+     # server_id/local_api_key constructor args, and the Zotero._write()
+     # dispatcher that attaches the headers a local write requires.
+@@ -124,3 +125,11 @@ testpaths = ["tests"]
+ filterwarnings = [
+     "ignore::DeprecationWarning",
+ ]
++
++[tool.uv.sources]
++torch = { index = "pytorch-cpu" }
++
++[[tool.uv.index]]
++name = "pytorch-cpu"
++url = "https://download.pytorch.org/whl/cpu"
++explicit = true

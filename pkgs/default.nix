@@ -14,4 +14,7 @@ with pkgs;
   # INFO: `asta` CLI from github:allenai/asta-plugins, built via uv2nix so the
   # plugin's `asta-cli` skill finds it on PATH and skips its `uv tool install`.
   asta = callPackage ./asta { inherit inputs; };
+  # INFO: `zotero-cli` + `zotero-mcp` from github:54yyyu/zotero-mcp (uv2nix).
+  # The bundled `zotero-cli` skill is vendored by tools/zotero.
+  zotero-mcp = callPackage ./zotero-mcp { inherit inputs; };
 }
