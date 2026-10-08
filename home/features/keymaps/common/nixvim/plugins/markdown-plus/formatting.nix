@@ -12,49 +12,49 @@
           (bind {
             key = prefix + "b";
             plug = "Bold";
-            mode = [ "n" "x" ];
+            mode = ["n" "x"];
             desc = "Toggle bold formatting";
           })
 
           (bind {
             key = prefix + "i";
             plug = "Italic";
-            mode = [ "n" "x" ];
+            mode = ["n" "x"];
             desc = "Toggle italic formatting";
           })
 
           (bind {
             key = prefix + "S";
             plug = "Strikethrough";
-            mode = [ "n" "x" ];
+            mode = ["n" "x"];
             desc = "Toggle strikethrough formatting";
           })
 
           (bind {
             key = prefix + "=";
             plug = "Highlight";
-            mode = [ "n" "x" ];
+            mode = ["n" "x"];
             desc = "Toggle highlight formatting";
           })
 
           (bind {
             key = prefix + "u";
             plug = "Underline";
-            mode = [ "x" ];
+            mode = ["x"];
             desc = "Toggle underline formatting";
           })
 
           (bind {
             key = prefix + "F";
             plug = "ClearFormatting";
-            mode = [ "x" ];
+            mode = ["x"];
             desc = "Clear all formatting";
           })
 
           (bind {
             key = prefix + "e";
             plug = "EscapeSelection";
-            mode = [ "x" ];
+            mode = ["x"];
             desc = "Escape/unescape markdown punctuation in selection";
           })
 
@@ -74,14 +74,14 @@
             key = prefix + "q";
             plug = "ToggleQuote";
             desc = "Toggle blockquote";
-            mode = [ "n" "x" ];
+            mode = ["n" "x"];
           })
 
           (bind {
-            key = "x";
+            key = prefix + "x";
             plug = "ToggleCheckbox";
             desc = "Toggle checkbox";
-            mode = [ "n" "x" ];
+            mode = ["n" "x"];
           })
         ];
       });
