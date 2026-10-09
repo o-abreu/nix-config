@@ -18,4 +18,5 @@
   markdown-plus = import ./markdown-plus.nix;
   blink-cmp = import ./blink-cmp.nix;
   alpha-dashboard = import ./alpha-dashboard.nix;
+  snacks-zotero = import ./snacks-zotero.nix;
 }

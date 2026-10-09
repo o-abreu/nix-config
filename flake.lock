@@ -1085,6 +1085,7 @@
         "qalc-nvim": "qalc-nvim",
         "smart-arrow": "smart-arrow",
         "smart-splits-nvim": "smart-splits-nvim",
+        "snacks-zotero-nvim": "snacks-zotero-nvim",
         "sops-nix": "sops-nix",
         "sshfs-nvim": "sshfs-nvim",
         "stylix": "stylix",
@@ -1147,6 +1148,22 @@
       "original": {
         "owner": "mrjones2014",
         "repo": "smart-splits.nvim",
+        "type": "github"
+      }
+    },
+    "snacks-zotero-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1788500356,
+        "narHash": "sha256-G4ARyHrYPQqOdBaqEMta2ykV1S3dO0P3Iag+PeHv4gc=",
+        "owner": "Chiarandini",
+        "repo": "snacks-zotero.nvim",
+        "rev": "258852a9896af128f2505c4113c3e85607530428",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Chiarandini",
+        "repo": "snacks-zotero.nvim",
         "type": "github"
       }
     },

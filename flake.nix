@@ -102,6 +102,14 @@
       flake = false;
     };
 
+    # INFO: Zotero citation picker for snacks.nvim (snacks.picker port of
+    # jmbuhr/telescope-zotero.nvim). Reads the local Zotero sqlite DB and appends
+    # picked entries to the project bibliography.
+    snacks-zotero-nvim = {
+      url = "github:Chiarandini/snacks-zotero.nvim";
+      flake = false;
+    };
+
     # INFO: OpenCode
     anthropics-skills = {
       url = "github:anthropics/skills";
