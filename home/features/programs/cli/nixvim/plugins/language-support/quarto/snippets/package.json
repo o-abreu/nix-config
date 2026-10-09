@@ -1,0 +1,15 @@
+{
+  "name": "quarto-refs",
+  "contributes": {
+    "snippets": [
+      {
+        "language": "quarto",
+        "path": "./quarto.json"
+      },
+      {
+        "language": "markdown",
+        "path": "./quarto.json"
+      }
+    ]
+  }
+}

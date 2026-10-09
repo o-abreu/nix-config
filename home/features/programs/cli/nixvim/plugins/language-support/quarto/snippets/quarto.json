@@ -1,0 +1,22 @@
+{
+  "Figure reference": {
+    "prefix": ["figref"],
+    "body": ["@fig-$1"],
+    "description": "Quarto cross-reference to a figure label"
+  },
+  "Table reference": {
+    "prefix": ["tblref"],
+    "body": ["@tbl-$1"],
+    "description": "Quarto cross-reference to a table label"
+  },
+  "Equation reference": {
+    "prefix": ["eqnref"],
+    "body": ["@eq-$1"],
+    "description": "Quarto cross-reference to an equation label"
+  },
+  "Section reference": {
+    "prefix": ["secref"],
+    "body": ["@sec-$1"],
+    "description": "Quarto cross-reference to a section label"
+  }
+}

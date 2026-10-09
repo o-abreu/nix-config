@@ -49,6 +49,7 @@ in {
         linters.markdownlint.cmd = lib.getExe pkgs.markdownlint-cli;
       };
       lsp.servers.marksman.filetypes = ["quarto"];
+      luasnip.fromVscode = [{paths = [./snippets];}];
     };
   };
 }
