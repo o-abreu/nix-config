@@ -3,7 +3,6 @@
     luasnip = {
       enable = true;
       lazyLoad.settings.event = "InsertEnter";
-      fromVscode = [{}];
 
       settings = {
         history = true;
