@@ -8,7 +8,8 @@
 
     blink-cmp = {
       extraSources = {
-        default = [ "spell" ];
+        prose = [ "spell" ];
+        comment = [ "spell" ];
         gitcommit = [ "spell" ];
       };
 

@@ -1,11 +1,15 @@
-{ lib, pkgs, ... }:
+{ pkgs, ... }:
 {
   programs.nixvim = {
     extraPlugins = [ pkgs.vimPlugins.blink-cmp-words ];
     extraPackages = [ pkgs.wordnet ];
 
     plugins.blink-cmp = {
-      extraSources = lib.genAttrs [ "default" "comment" "gitcommit" ] (_: [ "dictionary" ]);
+      extraSources = {
+        prose = [ "dictionary" ];
+        comment = [ "dictionary" ];
+        gitcommit = [ "dictionary" ];
+      };
 
       settings.sources.providers.dictionary = {
         name = "Dict";

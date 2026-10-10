@@ -17,13 +17,25 @@ let
     "snippets"
   ];
   defaultSources = baseSources ++ extra.default;
+  # INFO: Prose-only sources (spell, dictionary, emoji, pandoc references) are
+  # gated to these filetypes; elsewhere they remain available through the
+  # `comment` context.
+  proseFiletypes = [
+    "markdown"
+    "quarto"
+    "rmd"
+    "pandoc"
+    "typst"
+    "tex"
+  ];
+  proseSources = defaultSources ++ extra.prose;
   commentSources = [ "buffer" ] ++ extra.comment;
   gitcommitSources = [ "buffer" ] ++ extra.gitcommit;
 in
 {
   programs.nixvim.plugins.blink-cmp.settings.sources = {
-    # The only genuinely dynamic part is the Treesitter comment context; the
-    # source lists themselves are declared by the feature modules.
+    # The dynamic parts are the Treesitter comment context and the prose
+    # filetypes; the source lists themselves are declared by the feature modules.
     default.__raw =
       # lua
       ''
@@ -33,6 +45,8 @@ in
             return ${toLua commentSources}
           elseif vim.bo.filetype == 'gitcommit' then
             return ${toLua gitcommitSources}
+          elseif vim.tbl_contains(${toLua proseFiletypes}, vim.bo.filetype) then
+            return ${toLua proseSources}
           end
           return ${toLua defaultSources}
         end

@@ -31,6 +31,16 @@ in
           description = "Source ids appended to the default source list.";
         };
 
+        prose = mkOption {
+          type = types.listOf types.str;
+          default = [ ];
+          description = ''
+            Source ids appended to the default source list in prose filetypes
+            (`markdown`, `tex`, `typst`, `quarto`). Outside those filetypes the
+            sources are still available inside comments via `comment`.
+          '';
+        };
+
         comment = mkOption {
           type = types.listOf types.str;
           default = [ ];

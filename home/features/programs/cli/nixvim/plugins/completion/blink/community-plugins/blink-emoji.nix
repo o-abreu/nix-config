@@ -7,7 +7,11 @@
     blink-emoji.enable = true;
 
     blink-cmp = {
-      extraSources.default = [ "emoji" ];
+      extraSources = {
+        prose = [ "emoji" ];
+        comment = [ "emoji" ];
+        gitcommit = [ "emoji" ];
+      };
 
       settings.sources.providers.emoji =
         lib.mkIf config.programs.nixvim.plugins.blink-emoji.enable {
