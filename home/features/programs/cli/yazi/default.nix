@@ -29,5 +29,6 @@
       };
     };
   };
+  xdg.mimeApps.defaultApplications."inode/directory" = "yazi.desktop";
   home.sessionVariables.FILEBROWSER = "${lib.getExe config.programs.yazi.package}";
 }
