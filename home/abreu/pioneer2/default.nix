@@ -3,15 +3,13 @@
   outputs,
   config,
   ...
-}:
-{
-  imports =
-    with inputs;
+}: {
+  imports = with inputs;
     [
       sops-nix.homeModules.sops
       vortriz-nur.homeModules.zotero
 
-      (import-tree [ ../../features ])
+      (import-tree [../../features])
       ../_git.nix
     ]
     # Custom modules

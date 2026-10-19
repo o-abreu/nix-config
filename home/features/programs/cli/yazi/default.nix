@@ -5,8 +5,7 @@
   pkgs,
   system,
   ...
-}:
-{
+}: {
   imports = [
     (inputs.nix-yazi-plugins.legacyPackages.${system}.homeManagerModules.default)
   ];

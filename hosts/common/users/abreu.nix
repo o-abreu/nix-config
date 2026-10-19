@@ -5,14 +5,11 @@
   outputs,
   pkgs,
   ...
-}:
-let
+}: let
   username = "abreu";
   relativeFlakePath = ".config/nix-config";
   flakePath = "/home/${username}/${relativeFlakePath}";
-in
-{
-
+in {
   _module.args = {
     inherit relativeFlakePath;
     hmConfig = config.home-manager.users.${username};
@@ -55,7 +52,7 @@ in
     # Even though it should not be used for system updates in a NixOS settings,
     # it is still useful to read documentation (`man home-configuration.nix`) and
     # the inspection of the current generation.
-    packages = [ pkgs.sops ];
+    packages = [pkgs.sops];
     hashedPasswordFile = config.sops.secrets.rootPassword.path;
   };
 
@@ -73,8 +70,7 @@ in
     };
     sharedModules = [
       (
-        { osConfig, ... }:
-        {
+        {osConfig, ...}: {
           nixpkgs.overlays = lib.mkOrder 900 osConfig.nixpkgs.overlays;
         }
       )
