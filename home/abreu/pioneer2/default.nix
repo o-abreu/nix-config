@@ -21,7 +21,10 @@
     stateVersion = "25.05";
   };
 
-  xdg.userDirs.setSessionVariables = false;
+  xdg = {
+    mimeApps.enable = true;
+    userDirs.setSessionVariables = false;
+  };
 
   sops = {
     age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
