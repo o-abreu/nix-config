@@ -30,7 +30,10 @@ in {
     };
     fish = {
       enable = true;
-      shellAbbrs.nos = "sudo -v && nh os switch -- --show-trace";
+      shellAbbrs = {
+        nos = "sudo -v && nh os switch -- --show-trace";
+        nu = "sudo -v && nix flake update";
+      };
     };
   };
 
