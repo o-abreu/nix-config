@@ -1,9 +1,5 @@
-{
-  pkgs,
-  ...
-}:
-{
-  imports = [ ../common.nix ];
+{pkgs, ...}: {
+  imports = [../common.nix];
 
   stylix = with pkgs; {
     enable = true;
@@ -36,8 +32,14 @@
 
     cursor = {
       name = "Bibata-Modern-Ice";
-      package = pkgs.bibata-cursors;
+      package = bibata-cursors;
       size = 24;
+    };
+
+    icons = {
+      enable = true;
+      package = flat-remix-icon-theme;
+      dark = "Flat-Remix-Blue-Dark";
     };
   };
 }
