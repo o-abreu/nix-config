@@ -20,4 +20,9 @@
     sessionVariables.TERMINAL = lib.getExe config.programs.wezterm.package;
     packages = [pkgs.wezterm-floating];
   };
+
+  xdg.terminal-exec = {
+    enable = true;
+    settings.default = ["org.wezfurlong.wezterm.desktop"];
+  };
 }
