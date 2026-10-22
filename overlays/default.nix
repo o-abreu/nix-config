@@ -11,6 +11,6 @@ in {
     (import ./yazi.nix)
     (import ./snacks.nix)
     (import ./vim-plugins.nix {inherit inputs lib;})
-    (import ./quarto.nix)
+    (import ./tuxedo-drivers.nix)
   ];
 }

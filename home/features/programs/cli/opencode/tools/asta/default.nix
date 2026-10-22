@@ -31,7 +31,7 @@ in {
       jq # result browsing and hook scripts
       uv # `uv run --with pyyaml|playwright ...`
       python3 # pdf-download Phase 1, chunking scripts
-      quarto # workspace / literature-report rendering (overlays/quarto.nix)
+      quarto # workspace / literature-report rendering
     ];
 
     settings.permission = {
