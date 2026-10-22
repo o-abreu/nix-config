@@ -203,7 +203,11 @@
     };
 
     smart-splits-nvim = {
-      url = "github:mrjones2014/smart-splits.nvim";
+      # INFO: Pinned to v2.1.1-final (last release shipping the built-in
+      # WezTerm plugin). The v3 rework removed the terminal integration from
+      # this repo entirely, which broke `require("plugins.smart-splits-nvim")`
+      # at WezTerm startup. Pin until pane navigation moves to herdr.
+      url = "github:mrjones2014/smart-splits.nvim?ref=v2.1.1-final";
       flake = false;
     };
 
