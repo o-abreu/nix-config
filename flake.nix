@@ -111,6 +111,15 @@
     };
 
     # INFO: OpenCode
+    # nixpkgs' vimPlugins.opencode-nvim is v1.0.2, which only supports opencode
+    # v1 (`--port` + pgrep/lsof discovery). Upstream v2 support (daemon
+    # discovery via ~/.local/state/opencode/service.json) exists only on
+    # `main` — no v2-compatible release tag has been published yet.
+    opencode-nvim = {
+      url = "github:nickjvandyke/opencode.nvim/main";
+      flake = false;
+    };
+
     anthropics-skills = {
       url = "github:anthropics/skills";
       flake = false;

@@ -33,6 +33,7 @@ in
       "crazy-coverage.nvim"
       "markdown-plus.nvim"
       "nvim-prose"
+      "opencode.nvim"
       "presenterm.nvim"
       "qalc.nvim"
       "snacks-zotero.nvim"
