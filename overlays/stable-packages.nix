@@ -10,8 +10,9 @@ final: _prev: {
   # fail to evaluate.
   #
   # Every `pkgs.stable.*` consumer must cite the upstream issue that forces the
-  # pin, and must be reverted once that issue is resolved. Current users:
-  #   - `zotero` (NixOS/nixpkgs#568692)
+  # pin, and must be reverted once that issue is resolved. Current users: none
+  # (`zotero` was reverted with NixOS/nixpkgs#572466's fix; see
+  # home/features/programs/gui/office/zotero.nix).
   stable = import inputs.nixpkgs-stable {
     system = final.stdenv.hostPlatform.system;
   };
