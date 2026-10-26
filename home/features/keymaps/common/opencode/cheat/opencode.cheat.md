@@ -102,11 +102,11 @@ echo "Page_Up"
 # Page down — PageDown / Ctrl+Alt+F
 echo "Page_Down"
 
-# Scroll up half — Ctrl+Alt+U
-echo "C-A-u"
+# Scroll up half — Alt+Up / Ctrl+Alt+U
+echo "A-Up"
 
-# Scroll down half — Ctrl+Alt+D
-echo "C-A-d"
+# Scroll down half — Alt+Down / Ctrl+Alt+D
+echo "A-Down"
 
 # Scroll up one line — Ctrl+Alt+Y
 echo "C-A-y"
@@ -119,6 +119,12 @@ echo "C-g"
 
 # Last message — Ctrl+Alt+G / End
 echo "C-A-g"
+
+# Previous session tab — Alt+Left / Ctrl+Shift+Tab
+echo "A-Left"
+
+# Next session tab — Alt+Right / Ctrl+Tab
+echo "A-Right"
 
 # Subagent cycle forward — Right
 echo "Right"
