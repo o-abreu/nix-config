@@ -1,8 +1,5 @@
-{ persistentPath, ... }: {
-  boot = {
-    initrd.systemd.enable = true;
-    tmp.cleanOnBoot = true;
-  };
+{persistentPath, ...}: {
+  boot.tmp.cleanOnBoot = true;
 
   preservation = {
     enable = true;
