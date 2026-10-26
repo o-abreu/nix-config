@@ -17,4 +17,7 @@ with pkgs;
   # INFO: `zotero-cli` + `zotero-mcp` from github:54yyyu/zotero-mcp (uv2nix).
   # The bundled `zotero-cli` skill is vendored by tools/zotero.
   zotero-mcp = callPackage ./zotero-mcp { inherit inputs; };
+  # INFO: OpenCode MCP shim around `devenv mcp`, silent outside devenv
+  # projects. See the package header for the rationale.
+  devenv-mcp = callPackage ./devenv-mcp { };
 }
