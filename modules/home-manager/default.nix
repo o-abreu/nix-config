@@ -9,7 +9,7 @@ in
   opencode = tree [ ./opencode ];
   presenterm = tree [ ./presenterm ];
   ssh-agent = tree [ ./ssh-agent ];
-  stylix_presenterm = tree [ ./stylix/presenterm ];
+  stylix = tree [ ./stylix ];
   wezterm-override = tree [ ./wezterm-override ];
   wfrc = tree [ ./wfrc ];
   zotero = tree [ ./zotero ];
