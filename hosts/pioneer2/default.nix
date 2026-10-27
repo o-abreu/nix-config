@@ -71,6 +71,10 @@
       mirrorToggle.main = "eDP-1";
       touchpadToggle.name = "HTIX5288:00 36B6:C001 Touchpad";
     };
+    touchpadReset = {
+      device = "i2c-HTIX5288:00";
+      hidId = "0018:36B6:C001";
+    };
     kanata = {
       devices = [ "/dev/input/by-path/platform-i8042-serio-0-event-kbd" ];
       addBinaryToPath = true;

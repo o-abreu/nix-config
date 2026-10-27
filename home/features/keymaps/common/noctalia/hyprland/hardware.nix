@@ -65,6 +65,13 @@
       }
       {
         _args = [
+          "ALT_L + XF86TouchpadToggle"
+          (exec "${osConfig.programs.touchpadReset.package}")
+          ({ description = "Reset the touchpad driver"; } // common)
+        ];
+      }
+      {
+        _args = [
           "XF86AudioMute"
           (exec "noctalia msg volume-mute")
           ({ description = "Mute audio"; } // common)
