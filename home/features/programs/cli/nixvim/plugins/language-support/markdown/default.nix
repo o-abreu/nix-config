@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   pkgs,
   ...
@@ -16,6 +17,9 @@
       markdown-preview = {
         enable = true;
         lazyLoad.settings.ft = ["markdown"];
+        # INFO: `g:mkdp_browser`; the plugin spawns this binary for the
+        # preview URL. Librewolf stays the system default.
+        settings.browser = lib.getExe config.programs.chromium.finalPackage;
       };
 
       render-markdown = {
