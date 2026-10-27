@@ -1,13 +1,10 @@
-{ inputs, ... }:
-let
+{inputs, ...}: let
   tree = inputs.import-tree;
-in
-{
+in {
   # virtualization = import ./virtualization.nix;
-  adjust-kbd-backlight = tree [ ./adjust-kbd-backlight ];
   avahi = import ./avahi.nix;
-  kanata = tree [ ./kanata ];
-  mirror-toggle = tree [ ./mirror-toggle ];
-  openfortivpn = tree [ ./openfortivpn ];
-  touchpad-toggle = tree [ ./touchpad-toggle ];
+  mirror-toggle = tree [./mirror-toggle];
+  openfortivpn = tree [./openfortivpn];
+  touchpad-utils = tree [./touchpad-utils];
+  keyboard-utils = tree [./keyboard-utils];
 }
