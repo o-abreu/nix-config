@@ -37,6 +37,13 @@ in {
     ];
 
     keymaps = let
+      # INFO: OpenCode v2 submits prompts over HTTP to the daemon targeting the
+      # most recent session for Neovim's directory, so the old v1 TUI IPC
+      # commands (`session.half.page.up/down`, `session.first/last`,
+      # `session.interrupt`, `session.new`) are gone: scrolling, navigation and
+      # interrupt/new-session are TUI-local now, and the server only executes
+      # registered commands (user/plugin-supplied). Session management is done
+      # inside the open TUI with its own keybinds.
       mkAction = cmd: {__raw = "function() vim.g.save_buffer() require('opencode').${cmd} end";};
       mkExpr = cmd: {__raw = "function() vim.g.save_buffer() return require('opencode').${cmd} end";};
     in
