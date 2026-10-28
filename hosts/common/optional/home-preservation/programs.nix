@@ -37,6 +37,14 @@ in {
           directory = ".config/asta-cli";
           mode = "0700";
         }
+        # zotero-mcp (installed by the opencode tools module): `authorize-local`
+        # persists a Zotero-granted local API key to config.json (0600), and
+        # `update-db` keeps a chroma DB beside it. $HOME is tmpfs, so preserve
+        # the whole directory; otherwise the key must be re-granted each boot.
+        {
+          directory = ".config/zotero-mcp";
+          mode = "0700";
+        }
       ]
       ++ optional qalculate.enable ".local/share/qalculate"
       ++ optional tealdeer.enable ".cache/tealdeer"
