@@ -23,7 +23,10 @@ in {
     lib.optionals quarto.enable [
       (bind {
         key = prefix + "p";
-        action.__raw = "function() require('quarto').quartoPreview() end";
+        # INFO: goes through `quarto-preview` so the preview opens in chromium
+        # even when a project shadows `quarto` on PATH (see
+        # language-support/quarto/_preview-browser.nix).
+        action.__raw = "function() require('quarto-preview').preview() end";
         options.desc = "Preview";
       })
 

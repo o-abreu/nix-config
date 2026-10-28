@@ -1,5 +1,4 @@
 {
-  config,
   lib,
   pkgs,
   ...
@@ -9,37 +8,23 @@
     "python"
     "r"
   ];
-
-  # INFO: Quarto resolves `xdg-open` from PATH (src/core/shell.ts) and ignores
-  # $BROWSER, so previews use the system default browser (librewolf via
-  # xdg.mimeApps). Shadow only the shell spawned by nvim's `quarto` wrapper
-  # with a Chromium-backed `xdg-open`; the rest of the session, including
-  # gx/vim.ui.open, keeps the system default.
-  xdgOpenChromium = pkgs.writeShellScriptBin "xdg-open" ''
-    exec ${lib.getExe config.programs.chromium.finalPackage} "$@"
-  '';
-
-  quartoChromium = pkgs.writeShellApplication {
-    name = "quarto";
-    runtimeInputs = [pkgs.quarto];
-    text = ''
-      export PATH="${xdgOpenChromium}/bin:$PATH"
-      exec quarto "$@"
-    '';
-  };
 in {
   imports = [
     (import ./_jupytext.nix {inherit languages lib;})
     ./_conform.nix
     ./_img-clip.nix
+    ./_preview-browser.nix
     ./_vim-slime.nix
   ];
 
   programs.nixvim = {
-    # INFO: Only the wrapper: it already carries `pkgs.quarto` as a runtime
-    # input, and listing the real CLI too would shadow the wrapper depending on
-    # nixvim's PATH-insertion order.
-    extraPackages = [quartoChromium];
+    # INFO: The real CLI only. The preview browser is picked by the
+    # `quarto-preview` helper (see _preview-browser.nix), which prepends a
+    # chromium-backed `xdg-open` around the preview spawn. Wrapping this binary
+    # instead made the choice depend on PATH order, so a project-provided
+    # quarto (devenv, direnv, an exrc) silently reverted previews to the system
+    # default browser.
+    extraPackages = [pkgs.quarto];
 
     plugins = {
       quarto = {
