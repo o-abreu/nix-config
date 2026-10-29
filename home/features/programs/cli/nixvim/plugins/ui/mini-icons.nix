@@ -13,6 +13,10 @@
             glyph = "";
             hl = "MiniIconsAzure";
           };
+          fish = {
+            glyph = "";
+            hl = "MiniIconsAzure";
+          };
         };
         filetype = {
           dotenv = {
