@@ -642,6 +642,23 @@
         "type": "github"
       }
     },
+    "neurofoo-agent-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1768827571,
+        "narHash": "sha256-d8xIRtsnCM202Os6dUJexubqoX8RpXiD8Bs8tDCNegA=",
+        "owner": "neurofoo",
+        "repo": "agent-skills",
+        "rev": "0e7ac2aa4d094352a082ebeedf1dbb4c52b77782",
+        "type": "github"
+      },
+      "original": {
+        "owner": "neurofoo",
+        "repo": "agent-skills",
+        "rev": "0e7ac2aa4d094352a082ebeedf1dbb4c52b77782",
+        "type": "github"
+      }
+    },
     "nix-index-database": {
       "inputs": {
         "nixpkgs": [
@@ -978,6 +995,23 @@
         "type": "github"
       }
     },
+    "patricio-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1768180442,
+        "narHash": "sha256-KHG90vO1DqLi2qmXY/OV/W8E3yvGBBFlLUwTP+grC+g=",
+        "owner": "patricio0312rev",
+        "repo": "skills",
+        "rev": "79ea6af485698b31060b63f0066f712560757b29",
+        "type": "github"
+      },
+      "original": {
+        "owner": "patricio0312rev",
+        "repo": "skills",
+        "rev": "79ea6af485698b31060b63f0066f712560757b29",
+        "type": "github"
+      }
+    },
     "presenterm-nvim": {
       "flake": false,
       "locked": {
@@ -1088,6 +1122,7 @@
         "import-tree": "import-tree",
         "markdown-plus-nvim": "markdown-plus-nvim",
         "neotest-nix": "neotest-nix",
+        "neurofoo-agent-skills": "neurofoo-agent-skills",
         "nix-index-database": "nix-index-database_2",
         "nix-yazi-plugins": "nix-yazi-plugins",
         "nixos-hardware": "nixos-hardware_2",
@@ -1096,6 +1131,7 @@
         "nixvim": "nixvim",
         "nvim-prose": "nvim-prose",
         "opencode-nvim": "opencode-nvim",
+        "patricio-skills": "patricio-skills",
         "presenterm-nvim": "presenterm-nvim",
         "preservation": "preservation",
         "pyproject-build-systems": "pyproject-build-systems",

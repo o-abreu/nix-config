@@ -125,6 +125,19 @@
       flake = false;
     };
 
+    # INFO: Pedagogical skills for the `learn` agent (tools/learn-skills.nix).
+    # MIT licensed. Pinned by rev rather than branch: these are prompts, so an
+    # upstream edit changes agent behaviour and must be a deliberate bump.
+    neurofoo-agent-skills = {
+      url = "github:neurofoo/agent-skills/0e7ac2aa4d094352a082ebeedf1dbb4c52b77782";
+      flake = false;
+    };
+
+    patricio-skills = {
+      url = "github:patricio0312rev/skills/79ea6af485698b31060b63f0066f712560757b29";
+      flake = false;
+    };
+
     upstash-context7 = {
       url = "github:upstash/context7";
       flake = false;
