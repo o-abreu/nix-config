@@ -17,6 +17,10 @@
 # This complements, and does not replace, the pinned inputs in `../pdf.nix` and
 # `../asta/default.nix`: discovery is disposable, promotion to a flake input is
 # the reviewed path.
+#
+# Discovery is reserved for the `plan` primary agent: the permissions below deny
+# the tools, the `skills` CLI and the `find-skills` skill globally, and
+# `../../agents/primary/plan/default.nix` re-allows them for that agent only.
 {pkgs, ...}: let
   # Upstream's own `find-skills` skill, vendored from the source nixpkgs pins for
   # the CLI rather than copied into this repo. Same version, so the instructions
@@ -45,12 +49,15 @@ in {
   programs.opencode = {
     extraPackages = [pkgs.skills];
 
-    # Discovery is read-only; staging and removal change what the agent can load,
-    # so both prompt first.
+    # Denied globally; the `plan` agent re-allows them (see the header). `skills`
+    # is on PATH through `extraPackages`, so the CLI is denied too — otherwise
+    # `skills add` would be the same capability as `skills_install`.
     settings.permission = {
-      skills_discover = "allow";
-      skills_install = "ask";
-      skills_remove = "ask";
+      skills_discover = "deny";
+      skills_install = "deny";
+      skills_remove = "deny";
+      skill."find-skills" = "deny";
+      bash."skills *" = "deny";
     };
   };
 
