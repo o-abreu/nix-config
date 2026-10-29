@@ -51,7 +51,7 @@
   # Stable, readable buffer name. Neovim auto-names terminal buffers
   # `term://<cwd>//<pid>:<cmd>`, which is unreadable as a bufferline tab and
   # never matches the mini.icons filename entries (`file.fish`,
-  # `file.opencode`, ...). The name is applied as `term://<name>`:
+  # `file.Opencode`, ...). The name is applied as `term://<name>`:
   # bufferline shows the basename, and keeping the `term://` scheme stops
   # Neovim from resolving the buffer to a real file under the cwd.
   # Only use this on terminals that exist once per Neovim instance, since the
@@ -123,7 +123,7 @@ in {
         --
         -- When `name` is set, bufferline displays the basename (`opencode`,
         -- `fish`, ...) and the same basename is what the mini.icons `file`
-        -- category matches, so `file.opencode` / `file.fish` provide the glyph.
+        -- category matches, so `file.Opencode` / `file.fish` provide the glyph.
         -- Keep the `term://` scheme: a scheme-less name would be resolved by
         -- Neovim to a real file path under the cwd. Names must be unique per
         -- Neovim instance; a collision (two project trees sharing the same

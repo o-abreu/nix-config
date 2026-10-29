@@ -20,14 +20,14 @@ in {
       inherit action;
       key = opencode.prefix + "t";
       mode = "n";
-      options.desc = "Toggle buffer";
+      options.desc = "Toggle Opencode buffer";
     }
 
     {
       inherit action;
       key = "<C-.>";
       mode = ["n" "t"];
-      options.desc = "Toggle opencode buffer";
+      options.desc = "Toggle Opencode buffer";
     }
   ];
 }
