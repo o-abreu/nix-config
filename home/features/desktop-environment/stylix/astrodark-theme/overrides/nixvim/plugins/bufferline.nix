@@ -45,7 +45,10 @@
         # lua
         ''
           function(buf)
-            return buf.name:match('^term://Opencode')
+            -- `buf.name` is bufferline's display name (the basename:
+            -- "Opencode"), so the term:// scheme only exists on `buf.path`
+            -- (the raw buffer name set by the terminal factory).
+            return buf.path:match('^term://Opencode')
           end
         '';
     }
