@@ -8,7 +8,7 @@
         options.desc = "Open Yazi at the current file";
       }
       {
-        key = "<leader>tw";
+        key = "<leader>tc";
         action = "<cmd>Yazi cwd<cr>";
         options.desc = "Open Yazi at nvim's cwd";
       }
@@ -23,7 +23,7 @@
       m
       // {
         mode = "n";
-        options.silent = true;
+        options = (m.options or {}) // {silent = true;};
       }
     )
     |> lib.mkIf config.programs.nixvim.plugins.yazi.enable;
