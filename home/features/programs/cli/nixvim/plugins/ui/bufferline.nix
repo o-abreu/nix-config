@@ -5,11 +5,12 @@
       lazyLoad.settings.event = [
         "BufReadPre"
         "BufNewFile"
+        "TermOpen"
       ];
       settings.options = {
         diagnostics = "nvim_lsp";
         diagnostics_indicator =
-                    # lua
+          # lua
           ''
             function(count, level, diagnostics_dict, context)
               local s = ""
@@ -24,45 +25,7 @@
             end
           '';
 
-        groups = {
-          options.toggle_hidden_on_enter = true;
-
-          items = [
-            {
-              name = "Tests";
-              highlight = {
-                underline = true;
-                fg = "#a6da95";
-                sp = "#494d64";
-              };
-              priority = 2;
-              matcher.__raw =
-                # lua
-                ''
-                  function(buf)
-                    return buf.name:match('%test') or buf.name:match('%.spec')
-                  end
-                '';
-            }
-            {
-              name = "Docs";
-              highlight = {
-                undercurl = true;
-                fg = "#ffffff";
-                sp = "#494d64";
-              };
-              auto_close = false;
-              matcher.__raw =
-                # lua
-                ''
-                  function(buf)
-                    return buf.name:match('%.md') or buf.name:match('%.txt')
-                  end
-                '';
-            }
-          ];
-        };
-
+        groups.options.toggle_hidden_on_enter = true;
         show_buffer_close_icons = false;
         show_buffer_icons = true;
         show_close_icon = false;
@@ -70,8 +33,8 @@
       };
     };
     faster.settings.behaviours = {
-      bigfile.features_disabled = [ "bufferline" ];
-      bigfile_hugefiles.features_disabled = [ "bufferline" ];
+      bigfile.features_disabled = ["bufferline"];
+      bigfile_hugefiles.features_disabled = ["bufferline"];
     };
   };
 }
