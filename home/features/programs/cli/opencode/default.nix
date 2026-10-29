@@ -21,6 +21,18 @@
         autoupdate = false;
         default_agent = "plan";
         lsp = true;
+        policies = [
+          {
+            action = "tool.use";
+            resource = "read:*.lic";
+            effect = "deny";
+          }
+          {
+            action = "tool.use";
+            resource = "edit:*.lic";
+            effect = "deny";
+          }
+        ];
         permission = {
           bash."sudo *" = "deny";
           external_directory."/tmp/**" = "allow";
