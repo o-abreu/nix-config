@@ -1,14 +1,12 @@
 {
   config,
   lib,
+  snacksTerminal,
   ...
 }: let
-  inherit (config.programs.nixvim.plugins) snacks;
-  enable = snacks.enable && (snacks.settings.terminal.enabled or false);
-
+  inherit (snacksTerminal) toggleTerm;
   prefix = "<leader>t";
-
-  toggleTerm = import ./_toggle-term.nix {inherit config lib;};
+  replPrefix = "<localleader>R";
   allLayouts = import ./_layouts.nix {inherit lib toggleTerm;};
 
   defaultTerm = toggleTerm {
@@ -23,16 +21,18 @@
     count = 3;
   };
 in {
-  # INFO: Share the terminal factories with the integration modules under
-  # `integrations/`. They cannot receive arguments directly, so expose them as
-  # module args instead of duplicating the toggle/layout logic in every file.
-  _module.args.snacksTerminal = {
-    inherit enable prefix toggleTerm allLayouts shellTerminals;
-    replPrefix = "<localleader>R";
+  # INFO: Keybind-only terminal conventions. The factory (`snacksTerminal`) is
+  # shared with the non-keymap integrations under `programs/`, so the prefixes
+  # are exposed separately. `allLayouts`, `shellTerminals` and `defaultTerm`
+  # stay local: they are only consumed by this file and by `vim-slime`, which
+  # imports `_layouts.nix` directly.
+  _module.args.snacksTerminalKeys = {
+    inherit (snacksTerminal) enable;
+    inherit prefix replPrefix;
   };
 
   programs.nixvim = {
-    plugins.which-key.settings.spec = lib.mkIf enable [
+    plugins.which-key.settings.spec = lib.mkIf snacksTerminal.enable [
       {
         __unkeyed-1 = prefix;
         group = "Terminal";
@@ -40,7 +40,7 @@ in {
       }
     ];
 
-    keymaps =
+    keymaps = with config.programs;
       [
         {
           key = "<C-t>";
@@ -59,6 +59,24 @@ in {
           options.desc = "Toggle last terminal";
         }
       ]
+      ++ lib.optional btop.enable {
+        key = prefix + "b";
+        action = toggleTerm {
+          cmd = lib.getExe btop.package;
+          opts.count = 2;
+        };
+        mode = "n";
+        options.desc = "Btop";
+      }
+      ++ lib.optional lazygit.enable {
+        key = prefix + "l";
+        action = toggleTerm {
+          cmd = lib.getExe lazygit.package;
+          opts.count = 1;
+        };
+        mode = "n";
+        options.desc = "Lazygit";
+      }
       ++ shellTerminals
       |> lib.map (m: m // {mode = m.mode or "n";});
   };

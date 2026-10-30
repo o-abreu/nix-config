@@ -1,5 +1,5 @@
-{ lib, snacksTerminal, ... }:
-with snacksTerminal;
+{ lib, snacksTerminalKeys, ... }:
+with snacksTerminalKeys;
 let
   # INFO: Drop the terminal prefixes from the picker so the global terminal
   # keymaps keep working while a picker is focused.

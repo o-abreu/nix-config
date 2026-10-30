@@ -2,12 +2,19 @@
   config,
   lib,
   snacksTerminal,
+  snacksTerminalKeys,
   ...
 }: let
   inherit (config.programs.nixvim.plugins) vim-slime which-key;
-  prefix = snacksTerminal.replPrefix;
+  prefix = snacksTerminalKeys.replPrefix;
+  # Imported rather than taken from `_module.args`: layout expansion is a
+  # keybind concern and this is its only consumer besides the terminal keymaps.
+  allLayouts = import ../../_layouts.nix {
+    inherit lib;
+    inherit (snacksTerminal) toggleTerm;
+  };
   replMaps = ft:
-    snacksTerminal.allLayouts {
+    allLayouts {
       inherit prefix;
       bindSlime = true;
       label = "REPL";

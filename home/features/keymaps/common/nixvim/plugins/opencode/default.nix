@@ -1,17 +1,12 @@
 {
-  config,
   lib,
+  opencodeNvim,
+  snacksTerminal,
   ...
 }: let
-  inherit (config.programs.nixvim.plugins) opencode;
   prefix = "<leader>a";
-  cmd = lib.getExe config.programs.opencode.package;
+  action = snacksTerminal.toggleTerm opencodeNvim.opts;
 in {
-  _module.args.opencode = {
-    inherit (opencode) enable;
-    inherit prefix cmd;
-  };
-
   programs.nixvim = {
     # INFO: opencode reads files from disk, so unsaved edits in the buffer are
     # invisible to the model. Every opencode keymap below flushes the current
@@ -19,7 +14,7 @@ in {
     # (format-on-save, linters, ...) never fire: they could mutate the buffer
     # or stall the request, and what gets sent is exactly the buffer text.
     globals.save_buffer.__raw =
-      lib.mkIf opencode.enable
+      lib.mkIf opencodeNvim.enable
       ''
         function()
           if vim.bo.modified and vim.bo.buftype == "" and vim.api.nvim_buf_get_name(0) ~= "" then
@@ -28,7 +23,7 @@ in {
         end
       '';
 
-    plugins.which-key.settings.spec = lib.mkIf opencode.enable [
+    plugins.which-key.settings.spec = lib.mkIf opencodeNvim.enable [
       {
         __unkeyed-1 = prefix;
         mode = ["n" "x"];
@@ -47,7 +42,7 @@ in {
       mkAction = cmd: {__raw = "function() vim.g.save_buffer() require('opencode').${cmd} end";};
       mkExpr = cmd: {__raw = "function() vim.g.save_buffer() return require('opencode').${cmd} end";};
     in
-      lib.mkIf opencode.enable [
+      [
         {
           key = prefix + "a";
           action = mkAction "ask('@this: ')";
@@ -95,6 +90,22 @@ in {
           mode = ["n" "x"];
           options.desc = "Explain this code";
         }
-      ];
+      ]
+      ++ lib.optionals snacksTerminal.enable [
+        {
+          inherit action;
+          key = prefix + "t";
+          mode = "n";
+          options.desc = "Toggle Opencode buffer";
+        }
+
+        {
+          inherit action;
+          key = "<C-.>";
+          mode = ["n" "t"];
+          options.desc = "Toggle Opencode buffer";
+        }
+      ]
+      |> lib.mkIf opencodeNvim.enable;
   };
 }

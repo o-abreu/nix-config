@@ -2,8 +2,7 @@
   config,
   lib,
   ...
-}:
-{
+}: {
   programs.nixvim.plugins = {
     snacks = {
       enable = true;
@@ -19,18 +18,17 @@
           "rename"
           "scroll"
           "statuscolumn"
-          "terminal"
           "toggle"
           "zen"
         ]
         ++ lib.optional config.programs.git.enable "gitbrowse"
         |> (
           l:
-          lib.genAttrs l (_: {
-            enabled = true;
-          })
+            lib.genAttrs l (_: {
+              enabled = true;
+            })
         );
     };
-    faster.settings.behaviours.bigfile.features_disabled = [ "snacks" ];
+    faster.settings.behaviours.bigfile.features_disabled = ["snacks"];
   };
 }
