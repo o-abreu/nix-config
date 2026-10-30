@@ -57,6 +57,10 @@
   # Only use this on terminals that exist once per Neovim instance, since the
   # name must be unique (a collision makes the rename a no-op; see the Lua).
   name ? null,
+  # Whether this terminal participates in `<C-t>` ("toggle last terminal").
+  # Set to false for terminals toggled by their own key that should not be
+  # replayed from every buffer, e.g. the opencode buffer.
+  remember ? true,
   # Alternatively to `cmd`: a Lua *expression string* evaluated at keypress
   # time that must return `{ cmd = ..., count = ..., name? = ... }` or nil to
   # abort. Used by the REPL integrations, which pick the interpreter from the
@@ -99,6 +103,7 @@ in {
         local position = ${lib.attrByPath ["win" "position"] null opts |> toLuaObject}
         local bind_slime = ${toLuaObject bindSlime}
         local listed = ${toLuaObject listed}
+        local remember = ${toLuaObject remember}
         local cwd_override = ${if cwd == null then "nil" else cwd}
         if cwd_override == "" then
           cwd_override = nil
@@ -147,8 +152,9 @@ in {
           end
         end
 
-        -- Freeze the resolved target so <C-t> replays this exact
-        -- terminal, regardless of the buffer focused at the time.
+        -- Resolve the target now, then (unless `remember` is false) freeze it as
+        -- `<C-t>`'s replay target, so the key finds this exact terminal
+        -- regardless of which buffer is focused when it is pressed.
         local function open(cwd, bind)
           local replay = {
             count = count,
@@ -170,7 +176,7 @@ in {
             end
           end
 
-          _G.__last_term = function()
+          local function toggle()
             if not listed then
               -- Unlisted terminals are overlay windows: plain snacks toggle
               -- (spawn it if hidden, hide it if shown in place). `toggle`
@@ -228,7 +234,10 @@ in {
               end
             end
           end
-          _G.__last_term()
+          if remember then
+            _G.__last_term = toggle
+          end
+          toggle()
 
           if bind and bind_slime then
             attach_slime(terminal.get(cmd, replay))

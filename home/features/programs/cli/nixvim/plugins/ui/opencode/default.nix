@@ -18,6 +18,10 @@ in {
       # opencode runs in, so a file in a subdirectory would otherwise scope them
       # there. Falls back to Neovim's cwd outside a repository.
       cwd = "vim.fs.root(0, '.git') or vim.fn.getcwd()";
+      # INFO: Toggled by <leader>at / <C-.> only. Keeping it out of
+      # `_G.__last_term` means <C-t> still targets shells/REPLs, so it can be
+      # pressed from inside the opencode buffer to float a shell over it.
+      remember = false;
       opts = {
         # Distinct snacks slot: lazygit 1, btop 2, float/splits 3, REPLs 4-6.
         count = 8;
