@@ -12,6 +12,12 @@ in {
       cmd = lib.getExe package;
       listed = true;
       name = "Opencode";
+      # INFO: Always start the TUI at the project root (the repository root when
+      # the buffer lives in one), not the initiating buffer's directory: the
+      # session, skill and `AGENTS.md` discovery all resolve from the directory
+      # opencode runs in, so a file in a subdirectory would otherwise scope them
+      # there. Falls back to Neovim's cwd outside a repository.
+      cwd = "vim.fs.root(0, '.git') or vim.fn.getcwd()";
       opts = {
         # Distinct snacks slot: lazygit 1, btop 2, float/splits 3, REPLs 4-6.
         count = 8;

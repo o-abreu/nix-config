@@ -62,6 +62,12 @@
   # abort. Used by the REPL integrations, which pick the interpreter from the
   # buffer's language. When set, `cmd`/`opts.count` are ignored.
   resolve ? null,
+  # Alternatively to the buffer-derived default: a Lua *expression string*
+  # evaluated at keypress time that returns the directory the terminal starts
+  # in, e.g. a project root. Terminal reuse then keys on that directory, so
+  # every buffer in the project shares one terminal. Defaults to the initiating
+  # buffer's directory (Neovim's cwd for plain windows).
+  cwd ? null,
 }: let
   lua = config.lib.nixvim.lua;
   # The two parameters resolved at keypress time (`cmd`, `count`) are bound
@@ -93,10 +99,16 @@ in {
         local position = ${lib.attrByPath ["win" "position"] null opts |> toLuaObject}
         local bind_slime = ${toLuaObject bindSlime}
         local listed = ${toLuaObject listed}
+        local cwd_override = ${if cwd == null then "nil" else cwd}
+        if cwd_override == "" then
+          cwd_override = nil
+        elseif cwd_override then
+          cwd_override = vim.fs.normalize(cwd_override)
+        end
 
         -- Capture the buffer that initiated the launch: it is both the buffer
         -- vim-slime should send from and the buffer whose directory seeds a
-        -- new terminal's working directory (step 3 below).
+        -- new terminal's working directory (step 2 below).
         local source_buf = vim.api.nvim_get_current_buf()
         local terminal = require("snacks.terminal")
 
@@ -233,13 +245,17 @@ in {
           return
         end
 
-        -- 2. Seed the working directory from the current buffer,
-        --    so REPLs (ipython, ...) start next to the file. Plain windows
-        --    (dashboards, :terminal, ...) keep Neovim's cwd instead.
-        local buf_path = vim.api.nvim_buf_get_name(0)
-        local seed = vim.fn.getcwd()
-        if vim.bo.buftype == "" and buf_path ~= "" then
-          seed = vim.fs.normalize(vim.fn.fnamemodify(buf_path, ":p:h"))
+        -- 2. Seed the working directory: a caller-pinned `cwd` wins (e.g. the
+        --    opencode TUI always starts at the project root); otherwise use the
+        --    current buffer, so REPLs (ipython, ...) start next to the file.
+        --    Plain windows (dashboards, :terminal, ...) keep Neovim's cwd.
+        local seed = cwd_override
+        if not seed then
+          local buf_path = vim.api.nvim_buf_get_name(0)
+          seed = vim.fn.getcwd()
+          if vim.bo.buftype == "" and buf_path ~= "" then
+            seed = vim.fs.normalize(vim.fn.fnamemodify(buf_path, ":p:h"))
+          end
         end
 
         -- 3. One terminal per project tree: reuse a terminal in the
