@@ -27,6 +27,18 @@ in {
         ---@param args string|nil extra arguments forwarded to `quarto preview`
         function M.preview(args)
           local path = vim.env.PATH
+
+          -- INFO: quarto.nvim builds the preview tab from two buffers: `tabnew`
+          -- allocates an unnamed buffer, then the terminal is placed in a second,
+          -- freshly created buffer and the first one is never deleted. It lingers
+          -- as an empty entry in bufferline next to the preview log, so drop the
+          -- buffers this call created that stayed unnamed and unmodified (the
+          -- terminal buffer is `buftype == "terminal"` and is left alone).
+          local before = {}
+          for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+            before[buf] = true
+          end
+
           -- INFO: `vim.env` writes through to the real environment and `termopen`
           -- spawns synchronously, so the job inherits the shim and PATH can be
           -- restored before control returns.
@@ -35,6 +47,17 @@ in {
           vim.env.PATH = path
           if not ok then
             error(err)
+          end
+
+          for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+            if
+              not before[buf]
+              and vim.api.nvim_buf_get_name(buf) == ""
+              and vim.api.nvim_get_option_value("buftype", {buf = buf}) == ""
+              and not vim.api.nvim_get_option_value("modified", {buf = buf})
+            then
+              pcall(vim.api.nvim_buf_delete, buf, {force = true})
+            end
           end
         end
 
