@@ -10,6 +10,7 @@ in {
   preservation.preserveAt.${persistentPath}.users.${hmConfig.home.username} = with hmConfig.programs; {
     directories =
       optional bat.enable ".cache/bat"
+      ++ optional direnv.enable ".local/share/direnv"
       ++ optional fish.enable ".cache/fish"
       ++ optional gpg.enable {
         directory = lib.removePrefix prefix gpg.homedir;
@@ -31,16 +32,10 @@ in {
         ".local/share/opencode"
         ".local/state/opencode"
         ".cache/opencode"
-        # Asta CLI OAuth token store (tokens.json); survives reboots so the
-        # rotating refresh token can auto-refresh. See pkgs/asta.
         {
           directory = ".config/asta-cli";
           mode = "0700";
         }
-        # zotero-mcp (installed by the opencode tools module): `authorize-local`
-        # persists a Zotero-granted local API key to config.json (0600), and
-        # `update-db` keeps a chroma DB beside it. $HOME is tmpfs, so preserve
-        # the whole directory; otherwise the key must be re-granted each boot.
         {
           directory = ".config/zotero-mcp";
           mode = "0700";
