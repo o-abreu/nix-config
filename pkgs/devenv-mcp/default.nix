@@ -5,25 +5,26 @@
 # then connects cleanly everywhere and still becomes the real `devenv mcp`
 # inside a devenv project. Drop the shim once `devenv mcp` exits quietly
 # outside a project or OpenCode can suppress failed-MCP alerts (see TODO.md).
-{
-  pkgs,
-  ...
-}:
+{pkgs, ...}:
 pkgs.writeShellApplication {
   name = "devenv-mcp";
   runtimeInputs = [pkgs.devenv pkgs.python3];
   text = ''
-    # devenv exports DEVENV_ROOT inside its shell; otherwise mirror devenv's
-    # own root discovery (devenv.nix / devenv.yaml in the cwd or any parent).
-    if [ -n "''${DEVENV_ROOT:-}" ]; then
-      exec devenv mcp "$@"
-    fi
-
+    # INFO: Discovery keys on the cwd, not on DEVENV_ROOT. devenv exports
+    # DEVENV_ROOT (with DEVENV_PROFILE/STATE/DOTFILE) to every child of an
+    # activated shell, and `devenv mcp` reads its project from the cwd rather
+    # than from that variable. A long-lived process started in one project --
+    # OpenCode opens one MCP connection per session directory -- therefore
+    # carries the variable into unrelated directories, where trusting it ran
+    # `devenv mcp` in a non-project and exited 1 with "File devenv.nix does not
+    # exist", producing OpenCode's "MCP server failed: devenv" toast.
+    root=
     dir=$PWD
     while :; do
       for marker in devenv.nix devenv.yaml devenv.yml devenv.lock; do
         if [ -e "$dir/$marker" ]; then
-          exec devenv mcp "$@"
+          root=$dir
+          break 2
         fi
       done
       if [ "$dir" = "/" ]; then
@@ -35,7 +36,30 @@ pkgs.writeShellApplication {
       fi
     done
 
+    # Keep an activated environment whose markers are absent from the project
+    # (a root reached with `devenv --from`), but only when the cwd is really
+    # inside it.
+    if [ -z "$root" ] && [ -n "''${DEVENV_ROOT:-}" ]; then
+      devenv_root=''${DEVENV_ROOT%/}
+      case "$PWD" in
+        "$devenv_root" | "$devenv_root"/*) root=$devenv_root ;;
+      esac
+    fi
+
     # Not a devenv project: stay connected and silent with no tools.
-    exec python3 ${./empty-mcp-server.py}
+    if [ -z "$root" ]; then
+      exec python3 ${./empty-mcp-server.py}
+    fi
+
+    # Vars inherited from a different project's shell would make the cwd's
+    # project evaluate against the wrong dotfile/state directory and a profile
+    # built for someone else. `devenv mcp` rediscovers everything on its own.
+    if [ "''${DEVENV_ROOT:-}" != "$root" ]; then
+      for name in "''${!DEVENV_@}"; do
+        unset "$name"
+      done
+    fi
+
+    exec devenv mcp "$@"
   '';
 }
