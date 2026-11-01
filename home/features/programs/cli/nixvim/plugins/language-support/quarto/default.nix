@@ -9,17 +9,11 @@
     "r"
   ];
 in {
-  imports = [
-    (import ./_jupytext.nix {inherit languages lib;})
-    ./_conform.nix
-    ./_img-clip.nix
-    ./_preview-browser.nix
-    ./_vim-slime.nix
-  ];
+  imports = [(import ./integrations/_jupytext.nix {inherit languages lib;})];
 
   programs.nixvim = {
     # INFO: The real CLI only. The preview browser is picked by the
-    # `quarto-preview` helper (see _preview-browser.nix), which prepends a
+    # `quarto-preview` helper (see integrations/chromium.nix), which prepends a
     # chromium-backed `xdg-open` around the preview spawn. Wrapping this binary
     # instead made the choice depend on PATH order, so a project-provided
     # quarto (devenv, direnv, an exrc) silently reverted previews to the system
