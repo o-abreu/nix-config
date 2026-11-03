@@ -2,20 +2,13 @@
   description = "A NixOS configuration with impermanence";
 
   inputs = {
-    # INFO: Core system inputs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    # INFO: Flake module framework. `nixpkgs-lib` follows our nixpkgs so the
-    # lock file does not carry a second copy of nixpkgs just for its lib.
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
 
-    # INFO: Stable package set for packages that do not build on unstable yet.
-    # Exposed as `pkgs.stable` via overlays/stable-packages.nix. Every consumer
-    # must link the upstream issue in a comment and drop it once nixpkgs catches
-    # up — see TODO.md.
     nixpkgs-stable = {
       url = "github:nixos/nixpkgs/nixos-26.05";
       flake = false;
@@ -248,5 +241,5 @@
     };
   };
   outputs = inputs:
-    inputs.flake-parts.lib.mkFlake { inherit inputs; } (import ./outputs.nix);
+    inputs.flake-parts.lib.mkFlake {inherit inputs;} (import ./outputs.nix);
 }
