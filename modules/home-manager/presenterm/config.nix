@@ -1,14 +1,14 @@
 {
   config,
   lib,
-  inputs,
   pkgs,
+  wrappers ? throw "programs.presenterm: missing the `wrappers` module argument (import flake.modules.homeManager.wrappers)",
   ...
 }:
 with lib;
 let
   cfg = config.programs.presenterm;
-  presenterm-wrapped = inputs.wrappers.lib.wrapPackage {
+  presenterm-wrapped = wrappers.wrapPackage {
     inherit pkgs;
     package = cfg.package;
     runtimeInputs =

@@ -13,7 +13,7 @@
       ../_git.nix
     ]
     # Custom modules
-    ++ (builtins.attrValues outputs.homeModules);
+    ++ (builtins.attrValues outputs.modules.homeManager);
 
   home = {
     username = "abreu";

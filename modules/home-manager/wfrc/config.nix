@@ -1,8 +1,8 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
+  wrappers ? throw "programs.wfrc: missing the `wrappers` module argument (import flake.modules.homeManager.wrappers)",
   ...
 }:
 with lib;
@@ -16,7 +16,7 @@ let
       "programs.wfrc.recorder: package must have pname \"wf-recorder\" or \"wl-screenrec\", got \"${name}\"";
     name;
 
-  wfrc-wrapped = inputs.wrappers.lib.wrapPackage {
+  wfrc-wrapped = wrappers.wrapPackage {
     inherit pkgs;
     package = cfg.package;
     runtimeInputs = [ cfg.recorder ];

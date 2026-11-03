@@ -1,8 +1,8 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
+  wrappers ? throw "programs.opencode: missing the `wrappers` module argument (import flake.modules.homeManager.wrappers)",
   ...
 }:
 with lib;
@@ -10,7 +10,7 @@ with lib;
   config =
     let
       cfg = config.programs.opencode;
-      opencode-wrapped = inputs.wrappers.lib.wrapPackage {
+      opencode-wrapped = wrappers.wrapPackage {
         inherit pkgs;
         package = pkgs.opencode;
         preHook =

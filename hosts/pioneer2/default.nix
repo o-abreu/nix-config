@@ -22,9 +22,15 @@
       ])
     ]
     # Custom modules
-    ++ (lib.attrValues outputs.nixosModules);
+    ++ (lib.attrValues outputs.modules.nixos);
 
-  nixpkgs.overlays = lib.attrValues outputs.overlays;
+  # INFO: `default` is easyOverlay's package overlay. easyOverlay evaluates the
+  # per-system packages against the overlays applied *before* it, so it has to
+  # come last to see `stable-packages`, `firefox-addons`, `wezterm-plugins`,
+  # etc. (attr-name sorting would otherwise put it first).
+  nixpkgs.overlays =
+    lib.attrValues (builtins.removeAttrs outputs.overlays [ "default" ])
+    ++ [ outputs.overlays.default ];
 
   networking = {
     hostName = "pioneer2";
