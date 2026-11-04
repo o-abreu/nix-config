@@ -20,6 +20,7 @@ in {
       permission = {
         "kaggle_*" = "allow";
         "context7_*" = "allow";
+        "libgen_*" = "allow";
         bash."asta *" = "allow";
         bash."zotero-cli *" = "allow";
         bash."zotero-mcp *" = "allow";

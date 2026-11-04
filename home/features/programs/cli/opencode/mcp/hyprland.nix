@@ -4,11 +4,9 @@
   osConfig,
   pkgs,
   ...
-}:
-let
+}: let
   hyprmcp = inputs.hyprmcp;
-in
-{
+in {
   programs.mcp.servers.hyprmcp = lib.mkIf osConfig.programs.hyprland.enable {
     disabled = true;
     command = lib.getExe pkgs.uv;
