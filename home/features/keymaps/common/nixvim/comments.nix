@@ -1,14 +1,16 @@
-{ lib, options, ... }:
-let
-  prefix = "gc";
-in
 {
+  lib,
+  options,
+  ...
+}: let
+  prefix = "gc";
+in {
   config = lib.optionalAttrs (options ? programs.nixvim) {
     programs.nixvim.keymaps = [
       {
         action = prefix + "c";
         key = "<leader>/";
-        mode = "n";
+        mode = ["n" "v"];
         options = {
           desc = "Toggle comment line";
           remap = true;
