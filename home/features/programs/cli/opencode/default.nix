@@ -3,11 +3,6 @@
     fish.shellAbbrs.op = "opencode";
     opencode = {
       enable = true;
-      # INFO: TUI-client preferences previously owned by the app-side
-      # `~/.config/opencode/cli.json` (written by the TUI's "Open settings"),
-      # migrated declaratively when Home Manager took over cli.json (see
-      # stylix/astrodark-theme/overrides/opencode.nix for the tui.json ->
-      # cli.json migration). Server-side settings below stay in opencode.json.
       cli = {
         animations = true;
         diffs.wrap = "word";
@@ -20,6 +15,7 @@
       settings = {
         autoupdate = false;
         default_agent = "plan";
+        experimental.todo = true;
         lsp = true;
         policies = [
           {
@@ -38,7 +34,6 @@
           external_directory."/tmp/**" = "allow";
         };
       };
-      env.vars.OPENCODE_EXPERIMENTAL = true;
     };
   };
 }

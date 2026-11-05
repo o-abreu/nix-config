@@ -1,6 +1,5 @@
 {lib, ...}: {
   programs.opencode.settings.agent.learn.permission = {
-    # A tutor proposes changes; it does not apply them.
     edit = "deny";
     webfetch = "allow";
     "nixos_*" = "allow";
