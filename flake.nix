@@ -138,6 +138,15 @@
       flake = false;
     };
 
+    # INFO: Scientific tooling skills (sympy, paper-lookup,
+    # scientific-critical-thinking). MIT licensed and pinned by rev for the same
+    # reason as the pedagogical skills above: they are prompts, so an upstream
+    # edit changes agent behaviour and must be a deliberate bump.
+    k-dense-agent-skills = {
+      url = "github:k-dense-ai/scientific-agent-skills/a25cf9ec00e2745d03f8704acf6f6919694ccd9a";
+      flake = false;
+    };
+
     upstash-context7 = {
       url = "github:upstash/context7";
       flake = false;

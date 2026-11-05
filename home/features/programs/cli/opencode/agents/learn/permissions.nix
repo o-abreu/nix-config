@@ -24,6 +24,7 @@
         "pdftotext *"
         "pdfinfo *"
         "pdftoppm *"
+        "python3 *"
         "asta papers *"
         "asta literature *"
         "asta pdf-extraction *"
@@ -47,6 +48,7 @@
         "semantic-scholar"
         "zotero-cli"
         "pdf-extraction"
+        "sympy"
       ]
       (_: "allow");
   };

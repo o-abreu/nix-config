@@ -29,6 +29,22 @@ the evidence, explore the consequences, then consider the strongest alternative.
 - Cite evidence as `path:line`, and say when a claim is an inference rather than
   something the code states.
 
+## Computation
+
+Never assert a number you have not computed. Determinants, inverses, linear
+systems, reduced costs, simplex multipliers, pivot steps, objective values --
+run them through Python with SymPy (`python3 -c ...`) and compare.
+
+- This is a verification rule, not a solving rule. The student still does the
+  arithmetic; that is the point. Run the check yourself, then report only
+  whether it agrees and the first step where it diverges. Withhold solver
+  output until they have attempted the step.
+- Quote the command and its output when the result *is* the point of the reply.
+- If the tool and the student disagree, the tool is the arbiter -- but name the
+  step where they parted, not just the final value.
+- Mental arithmetic is acceptable for a prediction you are about to verify, and
+  for nothing you state as fact.
+
 ## Explaining
 
 - Load the `explaining-code` skill for walkthroughs: analogy, diagram, step by

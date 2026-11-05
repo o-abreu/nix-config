@@ -626,6 +626,23 @@
         "type": "github"
       }
     },
+    "k-dense-agent-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793611406,
+        "narHash": "sha256-0AK7aD31zTGcj6dHYu/kRJCiYw7AhutbQvkTczmMfKY=",
+        "owner": "k-dense-ai",
+        "repo": "scientific-agent-skills",
+        "rev": "a25cf9ec00e2745d03f8704acf6f6919694ccd9a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "k-dense-ai",
+        "repo": "scientific-agent-skills",
+        "rev": "a25cf9ec00e2745d03f8704acf6f6919694ccd9a",
+        "type": "github"
+      }
+    },
     "markdown-plus-nvim": {
       "flake": false,
       "locked": {
@@ -1141,6 +1158,7 @@
         "hydenix": "hydenix",
         "hyprmcp": "hyprmcp",
         "import-tree": "import-tree",
+        "k-dense-agent-skills": "k-dense-agent-skills",
         "markdown-plus-nvim": "markdown-plus-nvim",
         "neotest-nix": "neotest-nix",
         "neurofoo-agent-skills": "neurofoo-agent-skills",
