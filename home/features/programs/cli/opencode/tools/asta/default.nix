@@ -2,10 +2,6 @@
 # ships Claude-Code manifests and hooks that opencode does not understand, so
 # only the `skills/` trees are vendored -- same pattern as
 # `../tools/pdf/default.nix`. The `asta` CLI itself is `pkgs.asta` (pkgs/asta).
-#
-# Asta is reserved for the `research` primary agent: the permissions below
-# deny every vendored skill and the `asta` CLI globally, and
-# `../../agents/primary/research.nix` re-allows them for that agent only.
 {
   pkgs,
   inputs,
@@ -30,9 +26,10 @@ in {
     extraPackages = with pkgs; [
       jq # result browsing and hook scripts
       uv # `uv run --with pyyaml|playwright ...`
-      python3 # pdf-download Phase 1, chunking scripts
       quarto # workspace / literature-report rendering
     ];
+
+    python.enable = lib.mkDefault true;
 
     settings.permission = {
       skill = skills |> map (s: s.name) |> lib.flip lib.genAttrs (_: "deny");
