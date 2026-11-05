@@ -20,31 +20,30 @@
 #
 # Discovery is reserved for the `plan` primary agent: the permissions below deny
 # the tools, the `skills` CLI and the `find-skills` skill globally, and
-# `../../agents/primary/plan/default.nix` re-allows them for that agent only.
+# `../../agents/plan/default.nix` re-allows them for that agent only.
 {pkgs, ...}: let
   # Upstream's own `find-skills` skill, vendored from the source nixpkgs pins for
   # the CLI rather than copied into this repo. Same version, so the instructions
   # can never describe flags a different `skills` binary does not have.
-  find-skills =
-    pkgs.runCommand "find-skills" {} ''
-      mkdir -p $out
-      cp -r ${pkgs.skills.src}/skills/find-skills/. $out/
-      chmod -R u+w $out
+  find-skills = pkgs.runCommand "find-skills" {} ''
+    mkdir -p $out
+    cp -r ${pkgs.skills.src}/skills/find-skills/. $out/
+    chmod -R u+w $out
 
-      # Upstream documents `npx skills`; the CLI is already in extraPackages.
-      substituteInPlace $out/SKILL.md --replace-fail 'npx skills' 'skills'
+    # Upstream documents `npx skills`; the CLI is already in extraPackages.
+    substituteInPlace $out/SKILL.md --replace-fail 'npx skills' 'skills'
 
-      # Its headline install example uses `-g`, which writes to
-      # `~/.agents/skills` and bypasses review. This must run after the
-      # substitution above, which is what turns `npx skills` into `skills`.
-      substituteInPlace $out/SKILL.md \
-        --replace-fail 'skills add <owner/repo@skill> -g -y' \
-        'skills add <owner/repo@skill>'
+    # Its headline install example uses `-g`, which writes to
+    # `~/.agents/skills` and bypasses review. This must run after the
+    # substitution above, which is what turns `npx skills` into `skills`.
+    substituteInPlace $out/SKILL.md \
+      --replace-fail 'skills add <owner/repo@skill> -g -y' \
+      'skills add <owner/repo@skill>'
 
-      substituteInPlace $out/SKILL.md \
-        --replace-fail 'The `-g` flag installs globally (user-level) and `-y` skips confirmation prompts.' \
-        'The `-y` flag skips confirmation prompts.'
-    '';
+    substituteInPlace $out/SKILL.md \
+      --replace-fail 'The `-g` flag installs globally (user-level) and `-y` skips confirmation prompts.' \
+      'The `-y` flag skips confirmation prompts.'
+  '';
 in {
   programs.opencode = {
     extraPackages = [pkgs.skills];
