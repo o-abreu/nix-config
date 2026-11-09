@@ -39,6 +39,15 @@ function module.apply_to_config(config)
     table.insert(config.keys, m)
   end
 
+  -- INFO: Send "CTRL-A" to the terminal when pressing CTRL-A, CTRL-A,
+  -- restoring the readline/Emacs "beginning of line" (and GNU screen prefix)
+  -- that shadows as leader.
+  table.insert(config.keys, {
+    key = "a",
+    mods = "LEADER|CTRL",
+    action = act.SendKey { key = "a", mods = "CTRL" },
+  })
+
   -- Switch active tab by its index
   local function activate_tab(index)
     return wezterm.action_callback(function(window, pane)
