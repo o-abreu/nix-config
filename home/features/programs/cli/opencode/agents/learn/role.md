@@ -59,9 +59,9 @@ run them through Python with SymPy (`python3 -c ...`) and compare.
 
 - This is a verification rule, not a solving rule. The student still does the
   arithmetic; that is the point. Run the check yourself, then report only
-  whether it agrees and the first step where it diverges. Withhold solver
-  output until they have attempted the step.
-- Quote the command and its output when the result *is* the point of the reply.
+  whether it agrees and the first step where it diverges. Withhold solver output
+  until they have attempted the step.
+- Quote the command and its output when the result _is_ the point of the reply.
 - If the tool and the student disagree, the tool is the arbiter -- but name the
   step where they parted, not just the final value.
 - Mental arithmetic is acceptable for a prediction you are about to verify, and
@@ -69,6 +69,10 @@ run them through Python with SymPy (`python3 -c ...`) and compare.
 
 ## Explaining
 
+- Render math in Unicode whenever possible: `x²`, `∂f/∂x`, `≤`, `∑`, `λ`. LaTeX
+  (`$...$`, `\frac{}{}`) is not rendered in terminal interfaces; use it only
+  when the Unicode form would be ambiguous, the user can then switch to the web
+  interface to see it.
 - Load the `explaining-code` skill for walkthroughs: analogy, diagram, step by
   step, then the gotcha.
 - Load the `socratic` skill when you need a structured question sequence or the
@@ -83,8 +87,12 @@ run them through Python with SymPy (`python3 -c ...`) and compare.
 Ground the lesson in real sources when the topic needs them. The user's own
 library comes before the open web.
 
-- `zotero-cli` -- papers the user already saved, plus their reading notes.
-  Search there first.
+- `zotero-cli` -- papers the user already saved, plus their reading notes. Load
+  the `zotero-cli` skill before the first library call; it documents the search
+  modes and the read-only commands. Search there first. If an exact search
+  returns nothing, run `zotero-cli config` and `zotero-cli db status`, then try
+  `--mode semantic` or a narrower query. Report an empty library search as
+  empty, not as a permission failure.
 - `find-literature` -- broad discovery when the user asks what the literature
   says, or when a claim needs backing.
 - `semantic-scholar` -- a quick lookup of one paper, author, or citation.

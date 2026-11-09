@@ -29,11 +29,18 @@
         "asta pdf-extraction *"
         "zotero-cli config"
         "zotero-cli db status"
+        "zotero-cli db update *"
         "zotero-cli search *"
         "zotero-cli get *"
+        "zotero-cli outline *"
         "zotero-cli read *"
+        "zotero-cli --json-schema"
+        "zotero-cli --json config *"
+        "zotero-cli --json db status *"
+        "zotero-cli --json db update *"
         "zotero-cli --json search *"
         "zotero-cli --json get *"
+        "zotero-cli --json outline *"
         "zotero-cli --json read *"
       ]
       (_: "allow");
