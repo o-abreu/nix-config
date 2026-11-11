@@ -43,21 +43,32 @@ function(bufnr)
     vim.cmd "startinsert"
   end
 
-  -- INFO: All presenterm keys live under the `,P` prefix instead of the bare
-  -- `,` (which markdown-plus now owns for formatting/lists/code). The `,p`
-  -- leaf was also let go: markdown-plus uses it for Smart Paste.
-  nmap(bind "Pn", dot.wrap "Presenterm new", "New slide after current")
-  nmap(bind "PN", new_slide_before, "New slide before current")
-  nmap(bind "Ps", cmd "split", "Split slide")
-  nmap(bind "Pd", cmd "delete", "Delete slide")
-  nmap(bind "Py", cmd "yank", "Yank slide")
-  nmap(bind "Pv", cmd "select", "Select slide")
-  nmap(bind "Pk", dot.wrap "Presenterm move-down", "Move slide down")
-  nmap(bind "Pl", dot.wrap "Presenterm move-up", "Move slide up")
-  nmap(bind "PR", cmd "reorder", "Reorder slides")
-  nmap(bind "PL", cmd "list", "List slides")
-  nmap(bind "Pc", cmd "layout", "Select column layout")
-  nmap(bind "PPi", cmd "partial include", "Include partial file")
-  nmap(bind "PPe", cmd "partial edit", "Edit partial file")
-  nmap(bind "PPl", cmd "partial list", "List all partials")
+  -- INFO: Slide keys live on the bare `,` namespace (the letters markdown-plus
+  -- leaves free: `,l` is Lists, `,L` is Links, `,c` is code block insert, `,p`
+  -- is markdown preview). Move down/up use vim's j/k semantics instead of the
+  -- plugin's inverted k/l defaults.
+  -- INFO: `nmap` prepends `<localleader>` itself, so keys are passed raw here.
+  nmap("n", dot.wrap "Presenterm new", "New slide after current")
+  nmap("N", new_slide_before, "New slide before current")
+  nmap("s", cmd "split", "Split slide")
+  nmap("d", cmd "delete", "Delete slide")
+  nmap("y", cmd "yank", "Yank slide")
+  nmap("v", cmd "select", "Select slide")
+  nmap("j", dot.wrap "Presenterm move-down", "Move slide down")
+  nmap("k", dot.wrap "Presenterm move-up", "Move slide up")
+  nmap("R", cmd "reorder", "Reorder slides")
+  nmap("O", cmd "list", "Outline")
+  nmap("A", cmd "layout", "Arrange column layout")
+
+  -- INFO: In-editor live preview in a terminal vsplit (spawns a fresh split
+  -- each time, close the terminal buffer to dismiss) and the buffer <->
+  -- preview slide sync switch.
+  nmap("V", cmd "preview", "Spawn presenterm preview")
+  nmap("Y", cmd "toggle-sync", "Toggle preview sync")
+
+  -- INFO: `,P` stays a group, but as "Partials" (lowercase `,p` is markdown
+  -- preview; uppercase `,P` is free in markdown buffers).
+  nmap("Pi", cmd "partial include", "Include partial file")
+  nmap("Pe", cmd "partial edit", "Edit partial file")
+  nmap("Pl", cmd "partial list", "List all partials")
 end

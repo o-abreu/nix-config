@@ -1,0 +1,11 @@
+{
+  "name": "presenterm-snippets",
+  "contributes": {
+    "snippets": [
+      {
+        "language": "markdown",
+        "path": "./presenterm.json"
+      }
+    ]
+  }
+}

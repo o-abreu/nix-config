@@ -1,0 +1,138 @@
+{
+  "Pause": {
+    "prefix": "pause",
+    "body": "<!-- pause -->",
+    "description": "presenterm: split the slide so content after this only shows on advance"
+  },
+  "End slide": {
+    "prefix": "endslide",
+    "body": "<!-- end_slide -->",
+    "description": "presenterm: end the current slide and start a new one"
+  },
+  "Explicit new line": {
+    "prefix": "newline",
+    "body": "<!-- new_line -->",
+    "description": "presenterm: force one new line (markdown collapses blank lines)"
+  },
+  "Explicit new lines": {
+    "prefix": "newlines",
+    "body": "<!-- new_lines: ${1:2} -->",
+    "description": "presenterm: force N new lines for vertical spacing"
+  },
+  "Jump to middle": {
+    "prefix": "jumpmid",
+    "body": "<!-- jump_to_middle -->",
+    "description": "presenterm: jump to the vertical middle of the slide (separator slides)"
+  },
+  "Column layout": {
+    "prefix": "collayout",
+    "body": "<!-- column_layout: [${1:2}, ${2:1}] -->",
+    "description": "presenterm: define a column layout with N columns of relative widths"
+  },
+  "Enter column": {
+    "prefix": "col",
+    "body": "<!-- column: ${1:0} -->",
+    "description": "presenterm: place following content in column N of the layout"
+  },
+  "Reset column layout": {
+    "prefix": "colreset",
+    "body": "<!-- reset_layout -->",
+    "description": "presenterm: leave the columns and place content below all of them"
+  },
+  "Incremental lists": {
+    "prefix": "incremental",
+    "body": "<!-- incremental_lists: ${1|true,false|} -->",
+    "description": "presenterm: reveal list bullets one at a time until turned off for the slide"
+  },
+  "No footer": {
+    "prefix": "nofooter",
+    "body": "<!-- no_footer -->",
+    "description": "presenterm: hide the footer on the current slide"
+  },
+  "Font size": {
+    "prefix": "fontsize",
+    "body": "<!-- font_size: ${1|1,2,3,4,5,6,7|} -->",
+    "description": "presenterm: font size for the remainder of the slide (kitty terminal only)"
+  },
+  "Text alignment": {
+    "prefix": "align",
+    "body": "<!-- alignment: ${1|left,center,right|} -->",
+    "description": "presenterm: alignment for the remainder of the slide"
+  },
+  "Skip slide": {
+    "prefix": "skip",
+    "body": "<!-- skip_slide -->",
+    "description": "presenterm: exclude the current slide from the presentation"
+  },
+  "List item spacing": {
+    "prefix": "listgap",
+    "body": "<!-- list_item_newlines: ${1:2} -->",
+    "description": "presenterm: number of new lines between list items for the remainder of the slide"
+  },
+  "Include markdown file": {
+    "prefix": "include",
+    "body": "<!-- include: ${1:file.md} -->",
+    "description": "presenterm: inline an external markdown file at this point"
+  },
+  "Speaker note": {
+    "prefix": "speaknote",
+    "body": "<!-- speaker_note: ${1:Your note here} -->",
+    "description": "presenterm: speaker note attached to the slide"
+  },
+  "Snippet output": {
+    "prefix": "snippetout",
+    "body": "<!-- snippet_output: ${1:identifier} -->",
+    "description": "presenterm: show the output of the exec snippet with the given +id here"
+  },
+  "User comment": {
+    "prefix": "usercomment",
+    "body": "<!-- // ${1:note} -->",
+    "description": "presenterm: personal note/TODO that is never rendered"
+  },
+  "Presentation front matter": {
+    "prefix": "frontmatter",
+    "body": [
+      "---",
+      "title: \"${1:Title}\"",
+      "sub_title: ${2:Sub title}",
+      "author: ${3:Author}",
+      "---",
+      "$0"
+    ],
+    "description": "presenterm: introduction slide metadata (must be at the top of the file)"
+  },
+  "Theme by name": {
+    "prefix": "themename",
+    "body": [
+      "---",
+      "theme:",
+      "  name: ${1|catppuccin-latte,catppuccin-frappe,catppuccin-macchiato,catppuccin-mocha,dark,gruvbox-dark,light,terminal-dark,terminal-light,tokyonight-day,tokyonight-moon,tokyonight-night,tokyonight-storm|}",
+      "---",
+      "$0"
+    ],
+    "description": "presenterm: pick a built-in theme for the presentation"
+  },
+  "Theme light/dark pair": {
+    "prefix": "themepair",
+    "body": [
+      "---",
+      "theme:",
+      "  light: ${1:light-theme}",
+      "  dark: ${2:dark-theme}",
+      "---",
+      "$0"
+    ],
+    "description": "presenterm: pick a theme based on the terminal's light/dark colors"
+  },
+  "Theme by path": {
+    "prefix": "themepath",
+    "body": [
+      "---",
+      "theme:",
+      "  path: ${1:./theme.yaml}",
+      "---",
+      "$0"
+    ],
+    "description": "presenterm: use a custom theme file for the presentation"
+  }
+}
