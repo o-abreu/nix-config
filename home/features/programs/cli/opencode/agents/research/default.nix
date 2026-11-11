@@ -68,7 +68,17 @@ in {
         skill = lib.genAttrs skills (_: "allow");
 
         # Subagents do not inherit permissions; this only grants launch.
-        subagent.paper-extractor = "allow";
+        subagent = {
+          paper-extractor = "allow";
+          # ARS roles (subagents/ars/): the separations that matter are context
+          # boundaries. Their role files read the vendored ARS agent specs,
+          # which do not exist until the ARS vendoring lands -- a launch before
+          # that fails cleanly as "unreadable".
+          peer-reviewer = "allow";
+          citation-audit = "allow";
+          integrity-audit = "allow";
+          screener-reviewer = "allow";
+        };
       };
     };
 
