@@ -11,8 +11,13 @@ pkgs.writeShellApplication {
   name = name;
   runtimeInputs = with pkgs; [
     coreutils
+    grim
     grimblast
+    hyprland
+    jq
     libnotify
+    slurp
+    wl-clipboard
     xdg-user-dirs
   ];
   text = readFile ./screenshot.sh;
