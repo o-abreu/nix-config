@@ -21,7 +21,7 @@
     };
   };
   xdg.configFile = {
-    "nvim/util/dot.lua".source = ./util/dot/init.lua;
+    "nvim/lua/util/dot.lua".source = ./util/dot/init.lua;
 
     # INFO: Loaded by neotest-ctest through the Lua loader, which searches every
     # runtimepath entry. This is what makes the `unity` framework name in
