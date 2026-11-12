@@ -50,6 +50,14 @@ in {
           options.desc = "Ask";
         }
 
+        # INFO: Insert-mode counterpart of `<leader>aa`
+        {
+          key = "<M-a>";
+          action = mkAction "ask('@this: ')";
+          mode = ["i"];
+          options.desc = "Ask opencode about this line";
+        }
+
         {
           key = prefix + "s";
           action = mkAction "select()";
