@@ -1,20 +1,22 @@
-{ config, lib, ... }:
-let
-  inherit (lib) mkEnableOption mkIf;
-
-  cfg = config.stylix.targets.presenterm;
-  inherit (config.stylix) polarity;
-in
 {
+  inputs,
+  config,
+  lib,
+  ...
+}: {
   options.stylix.targets.presenterm = {
-    enable = mkEnableOption "presenterm theming" // {
-      default = config.programs.presenterm.enable;
-      defaultText = lib.literalExpression "config.programs.presenterm.enable";
-    };
+    enable =
+      lib.mkEnableOption "presenterm theming"
+      // {
+        default = config.programs.presenterm.enable;
+        defaultText = lib.literalExpression "config.programs.presenterm.enable";
+      };
   };
 
-  config = mkIf cfg.enable {
-    programs.presenterm.themes.stylix = with config.lib.stylix.colors; {
+  config = lib.mkIf config.stylix.targets.presenterm.enable {
+    programs.presenterm.themes.stylix = with config.lib.stylix.colors; let
+      inherit (config.stylix) polarity;
+    in {
       extends = polarity;
 
       default = {
@@ -26,10 +28,11 @@ in
       };
 
       slide_title = {
-        alignment = "center";
+        prefix = "█";
+        alignment = "left";
         padding_bottom = 1;
         padding_top = 1;
-        colors.foreground = base0E;
+        colors.foreground = base08;
         bold = true;
         font_size = 2;
       };
@@ -84,27 +87,27 @@ in
       headings = {
         h1 = {
           prefix = "██";
-          colors.foreground = base08;
+          colors.foreground = base09;
         };
         h2 = {
           prefix = "▓▓▓";
-          colors.foreground = base09;
+          colors.foreground = base0B;
         };
         h3 = {
           prefix = "▒▒▒▒";
-          colors.foreground = base0B;
+          colors.foreground = base0C;
         };
         h4 = {
           prefix = "░░░░░";
-          colors.foreground = base0C;
+          colors.foreground = base0D;
         };
         h5 = {
           prefix = "░░░░░░";
-          colors.foreground = base0D;
+          colors.foreground = base0E;
         };
         h6 = {
           prefix = "░░░░░░░";
-          colors.foreground = base0E;
+          colors.foreground = base0F;
         };
       };
 
@@ -136,7 +139,13 @@ in
         background = base01;
       };
 
-      footer.style = "empty";
+      footer = {
+        style = "template";
+        left = "{author}";
+        center = "{event}";
+        right = "{current_slide} / {total_slides}";
+        colors.foreground = base04;
+      };
 
       modals.selection_colors.foreground = base09;
 
@@ -145,17 +154,21 @@ in
         theme = polarity;
       };
 
-      d2.theme = if polarity == "dark" then 200 else 100;
+      d2.theme =
+        if polarity == "dark"
+        then 200
+        else 100;
 
       layout_grid.color = base0D;
     };
 
+    # INFO: Code highlight theme sourced from stylix's bat template
     xdg.configFile."presenterm/themes/highlighting/base16-stylix.tmTheme".source =
       config.lib.stylix.colors
-        {
-          template = ./base16-stylix.tmTheme.mustache;
-          extension = ".tmTheme";
-        };
+      {
+        template = builtins.readFile "${inputs.stylix}/modules/bat/base16-stylix.tmTheme.mustache";
+        extension = ".tmTheme";
+      };
 
     programs.presenterm.settings.defaults.theme = lib.mkDefault "stylix";
   };
