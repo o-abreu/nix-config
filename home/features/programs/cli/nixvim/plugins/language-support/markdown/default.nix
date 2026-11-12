@@ -29,7 +29,8 @@
           file_types = ["markdown"];
           # Keep Setext headings (===, ---) as-is instead of rendering as ATX (#)
           heading.setext = false;
-          # Show concealed text (e.g., HTML comments) as greyed out instead of hidden
+          # Show comments greyed out instead of hidden
+          html.comment.conceal = false;
           win_options.conceallevel.rendered = 2;
         };
       };
