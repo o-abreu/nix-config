@@ -19,7 +19,7 @@ function(bufnr)
     "<localleader>P",
     group = "Partials",
     icon = "",
-    bufnr = bufnr,
+    buffer = bufnr,
     mode = "n",
   }
 
