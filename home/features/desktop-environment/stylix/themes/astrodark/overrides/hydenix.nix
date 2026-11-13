@@ -1,15 +1,13 @@
 {
-  config,
   lib,
   options,
   ...
-}:
-{
+}: {
   config = lib.optionalAttrs (options ? hydenix) {
     hydenix.hm.theme = {
       enable = true;
       active = "One Dark";
-      themes = [ "One Dark" ];
+      themes = ["One Dark"];
     };
 
     # INFO: Remove items set using HyDE theming
