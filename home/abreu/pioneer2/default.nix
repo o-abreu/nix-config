@@ -23,7 +23,11 @@
 
   xdg = {
     mimeApps.enable = true;
-    userDirs.setSessionVariables = false;
+    userDirs = {
+      enable = true;
+      setSessionVariables = false;
+      createDirectories = true;
+    };
   };
 
   sops = {
