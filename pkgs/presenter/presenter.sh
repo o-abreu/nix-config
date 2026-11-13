@@ -6,22 +6,29 @@
 # So: spawn a throwaway WezTerm sized for the back row, tag it with a known
 # `--class` so the compositor can find it, and fullscreen it.
 #
-# Usage: presenter [-s|--font-size SIZE] [presenterm-options...] <markdown-file>
+# Usage: presenter [-s|--font-size SIZE] [-l|--line-height LH] [presenterm-options...] <markdown-file>
 #
-# `--font-size` is consumed here; every other argument is forwarded verbatim to
-# presenterm. The LAST argument is the presentation file, resolved with realpath
-# so it survives the window launch.
+# `--font-size` and `--line-height` are consumed here; every other argument is
+# forwarded verbatim to presenterm. The LAST argument is the presentation file,
+# resolved with realpath so it survives the window launch.
 #
 # `presenterm` itself is provided by the wrapper in `default.nix`, which lets the
 # launcher be pointed at the Home-Manager-configured build.
 
 font_size=21
+# INFO: WezTerm's default line_height is 1.0, which packs lines tightly. On a
+# projector the extra leading reads far better, so default to 1.3 here.
+line_height=1.3
 presenterm_args=()
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
   -s | --font-size)
     font_size="$2"
+    shift 2
+    ;;
+  -l | --line-height)
+    line_height="$2"
     shift 2
     ;;
   *)
@@ -32,7 +39,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [[ ${#presenterm_args[@]} -eq 0 ]]; then
-  echo "Usage: $0 [--font-size SIZE] [presenterm-options...] <markdown-file>" >&2
+  echo "Usage: $0 [--font-size SIZE] [--line-height LH] [presenterm-options...] <markdown-file>" >&2
   exit 1
 fi
 
@@ -41,7 +48,7 @@ markdown_file="${presenterm_args[$last_idx]}"
 
 if [[ ! -f "$markdown_file" ]]; then
   echo "Error: File '$markdown_file' not found" >&2
-  echo "Usage: $0 [--font-size SIZE] [presenterm-options...] <markdown-file>" >&2
+  echo "Usage: $0 [--font-size SIZE] [--line-height LH] [presenterm-options...] <markdown-file>" >&2
   exit 1
 fi
 
@@ -57,6 +64,7 @@ presenterm_args[last_idx]="$markdown_file"
 wezterm \
   --config "enable_tab_bar=false" \
   --config "font_size=${font_size}" \
+  --config "line_height=${line_height}" \
   start \
   --class "presenterm" \
   --cwd "$(pwd)" \
