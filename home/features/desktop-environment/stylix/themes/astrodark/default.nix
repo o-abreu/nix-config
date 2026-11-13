@@ -1,5 +1,6 @@
 {pkgs, ...}: {
-  imports = [../common.nix];
+  # INFO: `common/` no longer needs explicit importing: import-tree picks up
+  # every module under `features/`, including the stylix module import.
 
   stylix = with pkgs; {
     enable = true;
