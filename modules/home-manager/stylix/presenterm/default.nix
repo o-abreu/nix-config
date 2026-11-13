@@ -33,7 +33,6 @@
         padding_bottom = 1;
         colors.foreground = base08;
         bold = true;
-        font_size = 2;
       };
 
       code = {
